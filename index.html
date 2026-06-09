@@ -243,6 +243,43 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 }
 /* btn-start moved to sticky footer */
 
+
+/* ── START SESSION BUTTON ─────────────────────────────────────────── */
+.btn-start{
+  width:100%;
+  padding:18px 16px;
+  background:var(--g);
+  color:#fff;
+  border:none;
+  border-radius:14px;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+  opacity:0.32;
+  transition:opacity .15s, transform .1s, box-shadow .1s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: 0 4px 12px rgba(29,158,117,0.0);
+  display:block;
+  min-height:56px;
+  letter-spacing:0.3px;
+}
+.btn-start:not(:disabled){
+  opacity:1;
+  box-shadow: 0 4px 16px rgba(29,158,117,0.35);
+}
+.btn-start:not(:disabled):active{
+  transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(29,158,117,0.2);
+  opacity:0.9;
+}
+.btn-start.tapping{
+  transform: scale(0.96);
+  opacity:0.85;
+}
+
 </style>
 </head>
 <body>
@@ -357,7 +394,11 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
       <!-- Start Session Footer — fixed to screen bottom, shown only on Setup tab -->
       <div id="start-footer" style="display:block">
         <div class="su-hint" id="su-hint" style="margin-bottom:8px">Connect at least one sensor to continue</div>
-        <button class="btn-start" id="btn-start" disabled onclick="startSession()">▶ Start Session</button>
+        <button class="btn-start" id="btn-start" disabled
+          onclick="startSession()"
+          ontouchstart="this.classList.add('tapping')"
+          ontouchend="this.classList.remove('tapping');startSession()"
+          ontouchcancel="this.classList.remove('tapping')">▶ Start Session</button>
       </div>
     </div>
 
@@ -759,7 +800,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.16-m';
+const VER = '2.1.18-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -2399,10 +2440,20 @@ function startSession() {
   localStorage.setItem('cl_job',  A.sess.job);
   localStorage.setItem('cl_shot', A.sess.shot);
   localStorage.setItem('cl_seg',  A.sess.seg);
+  // Guard against double-fire from touch + click both firing
+  if (A.sess.active) return;
   A.fbPath = `shots/${A.sess.job}/${A.sess.shot}/${A.sess.seg}/${A.sess.truck}`;
-  closeStartup();
-  initFB();
-  startDisp();
+  LOG('startSession: fbPath set to ' + A.fbPath, 'ok');
+  // Immediate visual feedback — disable button and show "Starting..."
+  const _btn = $('btn-start');
+  if (_btn) { _btn.disabled = true; _btn.textContent = '⏳ Starting…'; _btn.style.opacity='0.6'; }
+  const _hint = $('su-hint');
+  if (_hint) { _hint.textContent = 'Starting session…'; _hint.className = 'su-hint ok'; }
+  try { closeStartup(); LOG('startSession: closeStartup OK', 'ok'); }
+  catch(e) { LOG('startSession: closeStartup CRASHED — ' + e.message + ' (line:' + e.stack.split('\n')[1] + ')', 'err'); }
+  try { initFB(); LOG('startSession: initFB OK', 'ok'); }
+  catch(e) { LOG('startSession: initFB CRASHED — ' + e.message, 'err'); }
+  try { startDisp(); } catch(e) { LOG('startSession: startDisp CRASHED — ' + e.message, 'err'); }
   if (!A.uplH) A.uplH = setInterval(drainUpload, 2000);
   if (A.s1.con) kickPoll();
   LOG('Session started — ' + A.sess.truck + ' Job:' + A.sess.job + ' Shot:' + A.sess.shot + ' Seg:' + A.sess.seg, 'ok');
@@ -3164,6 +3215,8 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.18-m','Start Session button UX overhaul: immediate touchstart visual feedback, scale animation on press, proper tap highlight removal, double-fire guard, shows Starting… immediately on tap, larger touch target (56px min height)'],
+  ['2.1.17-m','Added try/catch around closeStartup/initFB/startDisp in startSession to catch and log any crash with exact error message'],
   ['2.1.16-m','CRITICAL FIX: closeStartup() was crashing on null DOM elements (tb-job, tb-shot, tb-seg do not exist on mobile) — crash prevented initFB() from running, causing silent Firebase failure; all closeStartup DOM writes now null-guarded'],
   ['2.1.15-m','Enhanced Firebase diagnostics: detailed per-request logging, explicit HTTP status in every response, standalone testFirebaseWrite() with full error reporting'],
   ['2.1.14-m','Fixed Start Session staying disabled: chkReady now runs on Setup tab open, browser tab focus, and at 300ms/1s/2.5s after boot; hint shows exactly which fields are missing'],
