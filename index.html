@@ -759,7 +759,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.14-m';
+const VER = '2.1.15-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -1910,21 +1910,62 @@ function pushReading({ psi, tempC, src, tsMs }) {
     : 'Showing ' + shownRdg.toLocaleString() + ' of ' + totalRdg.toLocaleString();
 }
 
-// ── Firebase REST helper — works from any origin including content:// ──────
+// ── Firebase REST helper ─────────────────────────────────────────────────
 const FB_REST = 'https://curelog-phase1-default-rtdb.firebaseio.com';
+
 function fbPush(path, data) {
-  return fetch(FB_REST + '/' + path + '.json', {
+  const url = FB_REST + '/' + path + '.json';
+  return fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
-  }).then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+  }).then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + r.statusText);
+    return r.json();
+  });
 }
+
 function fbSet(path, data) {
-  return fetch(FB_REST + '/' + path + '.json', {
+  const url = FB_REST + '/' + path + '.json';
+  return fetch(url, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
-  }).then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+  }).then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + r.statusText);
+    return r.json();
+  });
+}
+
+// Standalone Firebase connectivity test — called after session starts
+function testFirebaseWrite() {
+  const testUrl = FB_REST + '/_app_test.json';
+  LOG('Firebase: testing REST write to ' + testUrl, 'ok');
+  
+  fetch(testUrl, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ts: Date.now(), v: typeof VER !== 'undefined' ? VER : '?' })
+  })
+  .then(r => {
+    LOG('Firebase: fetch response received — HTTP ' + r.status + ' ' + r.statusText, r.ok ? 'ok' : 'err');
+    if (!r.ok) {
+      return r.text().then(t => { throw new Error('HTTP ' + r.status + ': ' + t.slice(0,100)); });
+    }
+    return r.json();
+  })
+  .then(result => {
+    LOG('Firebase: REST write SUCCESS ✓ — ' + JSON.stringify(result).slice(0,60), 'ok');
+    setCloud('on', 'Cloud: writing ✓');
+    // Clean up test node
+    fetch(testUrl, { method: 'DELETE' }).catch(() => {});
+  })
+  .catch(e => {
+    LOG('Firebase: REST write FAILED — ' + e.message, 'err');
+    LOG('  URL: ' + testUrl, 'warn');
+    LOG('  Check: Is this HTTPS? Is Firebase database provisioned?', 'warn');
+    setCloud('off', 'Cloud: write failed');
+  });
 }
 
 function drainUpload() {
@@ -2422,22 +2463,8 @@ function initFB() {
     }).then(() => LOG('Session metadata written ✓', 'ok'))
       .catch(e => LOG('Session meta write failed: ' + e.message, 'warn'));
 
-    // Test write via REST API
-    fbSet('_connection_test', { ts: Date.now(), app: 'CureLog-Phase1' })
-      .then(() => {
-        LOG('Firebase REST write test: OK ✓', 'ok');
-        fetch(FB_REST + '/_connection_test.json', { method: 'DELETE' });
-      })
-      .catch(e => {
-        LOG('Firebase REST write test FAILED: ' + e.message, 'err');
-        if (/Failed to fetch|NetworkError|CORS/.test(e.message)) {
-          LOG('→ App may be running from a local file (content:// or file://)', 'warn');
-          LOG('→ Host CureLog on HTTPS for full Firebase write support on iOS', 'warn');
-        } else {
-          LOG('→ Check Firebase Console: Realtime Database → Rules', 'warn');
-        }
-        setCloud('off', 'Cloud: write error');
-      });
+    // Run comprehensive write test
+    testFirebaseWrite();
   } catch(e) {
     LOG('Firebase error: ' + e.message, 'err');
     setCloud('off', 'Cloud: error');
@@ -3135,6 +3162,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.15-m','Enhanced Firebase diagnostics: detailed per-request logging, explicit HTTP status in every response, standalone testFirebaseWrite() with full error reporting'],
   ['2.1.14-m','Fixed Start Session staying disabled: chkReady now runs on Setup tab open, browser tab focus, and at 300ms/1s/2.5s after boot; hint shows exactly which fields are missing'],
   ['2.1.13-m','iOS support via Bluefy browser: detects Bluefy user agent, shows App Store link on iPhone/iPad, warns when local file URL blocks Bluetooth and Firebase; improved Firebase error messages'],
   ['2.1.12-m','Improved BLE compatibility messages: iPhone correctly identified as unsupported for sensors, iPad Safari directed to Chrome, generic Chrome guidance for other browsers'],
