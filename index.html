@@ -759,7 +759,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.15-m';
+const VER = '2.1.16-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -2429,14 +2429,16 @@ function closeStartup() {
   goPage('monitor'); // Navigate to Monitor tab on mobile
   const tb_t=$('tb-truck-badge');if(tb_t){tb_t.textContent=A.sess.truck;tb_t.style.display='';}
   const tb_j=$('tb-job-badge');if(tb_j){tb_j.textContent='Job '+A.sess.job;tb_j.style.display='';}
-  $('tb-job').textContent   = 'Job: '  + A.sess.job;
-  $('tb-shot').textContent  = 'Shot: ' + A.sess.shot;
-  $('tb-seg').textContent   = 'Seg: '  + A.sess.seg;
+  const _tj=$('tb-job');   if(_tj) _tj.textContent   = 'Job: '  + A.sess.job;
+  const _ts=$('tb-shot');  if(_ts) _ts.textContent  = 'Shot: ' + A.sess.shot;
+  const _tg=$('tb-seg');   if(_tg) _tg.textContent  = 'Seg: '  + A.sess.seg;
   const tbe=$('tb-end-btn');if(tbe)tbe.style.display='block';
   A.sessStart = Date.now();
-  A.elH = setInterval(() => { const ms=Date.now()-A.sessStart,s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60); $('tb-el').textContent=`${String(h).padStart(2,'0')}:${String(m%60).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`; }, 1000);
-  $('si-truck').textContent = A.sess.truck; $('si-job').textContent = A.sess.job;
-  $('si-shot').textContent  = A.sess.shot;  $('si-seg').textContent = A.sess.seg;
+  A.elH = setInterval(() => { const ms=Date.now()-A.sessStart,s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60); const _te=$('tb-el'); if(_te) _te.textContent=`${String(h).padStart(2,'0')}:${String(m%60).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`; }, 1000);
+  const _su=$('si-truck'); if(_su) _su.textContent = A.sess.truck;
+  const _sj=$('si-job');   if(_sj) _sj.textContent = A.sess.job;
+  const _ss=$('si-shot');  if(_ss) _ss.textContent = A.sess.shot;
+  const _sg=$('si-seg');   if(_sg) _sg.textContent = A.sess.seg;
   refreshJobInfo(); // sync the "no session" note
 }
 
@@ -3162,6 +3164,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.16-m','CRITICAL FIX: closeStartup() was crashing on null DOM elements (tb-job, tb-shot, tb-seg do not exist on mobile) — crash prevented initFB() from running, causing silent Firebase failure; all closeStartup DOM writes now null-guarded'],
   ['2.1.15-m','Enhanced Firebase diagnostics: detailed per-request logging, explicit HTTP status in every response, standalone testFirebaseWrite() with full error reporting'],
   ['2.1.14-m','Fixed Start Session staying disabled: chkReady now runs on Setup tab open, browser tab focus, and at 300ms/1s/2.5s after boot; hint shows exactly which fields are missing'],
   ['2.1.13-m','iOS support via Bluefy browser: detects Bluefy user agent, shows App Store link on iPhone/iPad, warns when local file URL blocks Bluetooth and Firebase; improved Firebase error messages'],
