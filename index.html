@@ -839,7 +839,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.33-m';
+const VER = '2.1.34-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3257,6 +3257,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.34-m','REAL root cause of truncated changelog: HTML tags in descriptions (v2.1.24 had &lt;style&gt;, v2.1.2 had &lt;/body&gt;) were parsed as actual HTML when set via innerHTML, consuming all remaining rows. Fixed by HTML-escaping all descriptions.'],
   ['2.1.33-m','About modal final fix: all header sections use fixed pixel heights (48/72/52px) so scroll area top:172px is exact -- no JS positioning, no sticky, no flex'],
   ['2.1.32-m','About modal rebuilt with sticky header inside single scroll container -- no JS positioning -- scroll guaranteed on all mobile browsers'],
   ['2.1.31-m','Fixed About modal showing only 7 entries -- non-ASCII characters (em-dash, info symbol, ellipsis) in CHANGELOG strings caused Android Chrome JS parser to stop reading the array; replaced all with ASCII equivalents'],
@@ -3266,7 +3267,7 @@ const CHANGELOG = [
   ['2.1.27-m','About modal rebuilt with position:absolute layout -- eliminates all flex scroll ambiguity on mobile; hdr/current/search are fixed; body uses explicit top:200px bottom:0 bounds for reliable scroll on all Android Chrome versions'],
   ['2.1.26-m','Fixed About modal scrolling on mobile: overflow-y:scroll with -webkit-overflow-scrolling:touch, min-height:0 on flex child, card uses full overlay height'],
   ['2.1.25-m','Fixed About modal only showing one entry -- about-body scroll wrapper was missing so table clipped; all 52 changelog entries now visible and scrollable'],
-  ['2.1.24-m','CRITICAL FIX: About modal CSS was missing from <style> block -- overlay rendered visible blocking ALL taps on the entire app; added complete About modal CSS including display:none initial state'],
+  ['2.1.24-m','CRITICAL FIX: About modal CSS was missing from &lt;style&gt; block -- overlay rendered visible blocking ALL taps on the entire app; added complete About modal CSS including display:none initial state'],
   ['2.1.23-m','Fixed About button not tappable -- was pushed off screen by tb-badges margin-left:auto; moved button inside tb-badges container'],
   ['2.1.22-m','Added (i) About button to topbar and Settings page -- shows app version and full changelog with search; version number shown in Settings header'],
   ['2.1.21-m','Wake Lock API: keeps phone screen on during active session -- prevents Android killing BLE or freezing timers; auto re-acquires if tab briefly switched'],
@@ -3288,17 +3289,17 @@ const CHANGELOG = [
   ['2.1.5-m','Start Session button moved to sticky footer -- always visible at bottom of Setup page regardless of scroll position; fixes button being hidden off-screen on small phones'],
   ['2.1.4-m','Job Information section now shows "No active session" note before session starts; refreshes automatically when navigating to Settings tab'],
   ['2.1.3-m','End Session button made larger and labeled End Session for clarity; modal bottom-sheet safe area fix for notched phones'],
-  ['2.1.2-m','Bug fixes for mobile: (1) Fixed Firebase not connecting -- pre-initialize Firebase at page load instead of waiting for session start; (2) Fixed duplicate </body></html> tags that broke mobile browser parsing; (3) Fixed DOMContentLoaded early return on non-BLE browsers that prevented settings and Firebase from loading; (4) Fixed Start Session not navigating to Monitor tab -- closeStartup() now calls goPage(monitor)'],
+  ['2.1.2-m','Bug fixes for mobile: (1) Fixed Firebase not connecting -- pre-initialize Firebase at page load instead of waiting for session start; (2) Fixed duplicate &lt;/body&gt;&lt;/html&gt; tags that broke mobile browser parsing; (3) Fixed DOMContentLoaded early return on non-BLE browsers that prevented settings and Firebase from loading; (4) Fixed Start Session not navigating to Monitor tab -- closeStartup() now calls goPage(monitor)'],
   ['2.1.1-m','Full sync to desktop v2.1.1: BLE Use-as-filter checkboxes, tube specs fields, session info in chart and readings log, rdMap pruning removed (no more lost data on long shots), About modal with full changelog, BLE availability warning'],
   ['2.0.0','Code cleanup: updateSessionInfoDisplays() helper consolidates 4 duplicate session info blocks; dead loadCal() removed; no-op stub references cleaned up'],
-  ['2.0.9','rdMap memory pruning removed -- all rows kept for full session. Table display cap raised 500 -> 2000 rows. Fix for early session data missing from CSV on long shots.'],
+  ['2.0.9','rdMap memory pruning removed -- all rows kept for full session. Table display cap raised 500 -&gt; 2000 rows. Fix for early session data missing from CSV on long shots.'],
   ['2.0.8','Startup overlay max-height tightened to 88vh -- prevents S2 Connect button being pushed off screen on small laptops'],
   ['2.0.7','BLE filter checkbox fix: only restores as checked if saved filter text is also non-empty; auto-unchecks when text is cleared'],
   ['2.0.6','Removed S1/S2 sensor assignment dropdown row from monitor panel'],
   ['2.0.5','Tube parameters moved inline next to Seg number in timer bar header (removed flex:1 gap that pushed tube info to right edge)'],
   ['2.0.4','Fixed chart session info not displaying -- moved population to startSession() with 100ms delay to ensure DOM is ready'],
   ['2.0.3','Session data (TVK . Job . Shot . Seg . tube specs) added above chart legend -- visible in screenshots'],
-  ['2.0.2','Min/Max stat values increased from 15px to 20px; stat labels 9px -> 10px'],
+  ['2.0.2','Min/Max stat values increased from 15px to 20px; stat labels 9px -&gt; 10px'],
   ['2.0.1','Tube parameters font matched to same size/color as session path text in timer bar'],
   ['2.0.0','Session info header row added to Active Collection timer bar showing TVK . Job . Shot . Seg . tube specs'],
   ['1.9.9','Structured file naming: App - LogType - TVK# - Job - Shot - Seg - Date.ext for all exports'],
@@ -3351,11 +3352,12 @@ function renderAboutTable(filter) {
   const rows = CHANGELOG.filter(([ver, desc]) =>
     !f || ver.includes(f) || desc.toLowerCase().includes(f)
   );
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   tbody.innerHTML = rows.map(([ver, desc]) => {
     const isCur = ver === curVer;
     return '<tr class="' + (isCur ? 'cur' : '') + '">' +
-      '<td><span class="abv ' + (isCur ? 'cur' : '') + '">v' + ver + '</span></td>' +
-      '<td><span class="abt">' + desc + '</span></td>' +
+      '<td><span class="abv ' + (isCur ? 'cur' : '') + '">v' + esc(ver) + '</span></td>' +
+      '<td><span class="abt">' + esc(desc) + '</span></td>' +
       '</tr>';
   }).join('');
 }
