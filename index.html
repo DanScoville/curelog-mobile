@@ -843,7 +843,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.24-m';
+const VER = '2.1.25-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3261,6 +3261,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.25-m','Fixed About modal only showing one entry — about-body scroll wrapper was missing so table clipped; all 52 changelog entries now visible and scrollable'],
   ['2.1.24-m','CRITICAL FIX: About modal CSS was missing from <style> block — overlay rendered visible blocking ALL taps on the entire app; added complete About modal CSS including display:none initial state'],
   ['2.1.23-m','Fixed About button not tappable — was pushed off screen by tb-badges margin-left:auto; moved button inside tb-badges container'],
   ['2.1.22-m','Added ℹ About button to topbar and Settings page — shows app version and full changelog with search; version number shown in Settings header'],
@@ -3495,21 +3496,23 @@ window.addEventListener('DOMContentLoaded', () => {
       <div class="about-current-ver" id="about-cur-ver">—</div>
       <div class="about-current-desc" id="about-cur-desc">—</div>
     </div>
-    <div class="about-search-wrap">
-      <input class="about-search" id="about-search" type="text"
-        placeholder="Search versions or changes…"
-        oninput="filterAbout(this.value)">
-    </div>
-    <div class="about-table-wrap">
-      <table class="about-table">
-        <thead>
-          <tr>
-            <th style="width:90px">Version</th>
-            <th>Changes</th>
-          </tr>
-        </thead>
-        <tbody id="about-tbody"></tbody>
-      </table>
+    <div class="about-body">
+      <div class="about-search-wrap">
+        <input class="about-search" id="about-search" type="text"
+          placeholder="Search versions or changes…"
+          oninput="filterAbout(this.value)">
+      </div>
+      <div class="about-table-wrap">
+        <table class="about-table">
+          <thead>
+            <tr>
+              <th style="width:90px">Version</th>
+              <th>Changes</th>
+            </tr>
+          </thead>
+          <tbody id="about-tbody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
