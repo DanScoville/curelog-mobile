@@ -265,7 +265,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 .sd-hdr h3{font-size:18px;font-weight:700;flex:1}
 .sd-close{background:none;border:none;font-size:20px;color:var(--t3);cursor:pointer;padding:4px;border-radius:6px}
 .sd-body{padding:20px 24px}
-.sd-step{display:none}.sd-step.on{display:block}
+.sd-step{display:none}
 .sd-q{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:16px}
 .sd-btns{display:flex;gap:10px;flex-wrap:wrap}
 .sd-btn{flex:1;min-width:120px;padding:14px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer}
@@ -720,17 +720,17 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
     <div class="sd-hdr">
       <div class="sd-hdr-ico">Stop</div>
       <h3>End Session</h3>
-      <button class="sd-close" onclick="$('sd-overlay').classList.remove('show')">X</button>
+      <button class="sd-close" onclick="sdCancel()">X</button>
     </div>
     <div class="sd-body">
-      <div class="sd-step on" id="sd-step1">
+      <div class="sd-step" id="sd-step1" style="display:block">
         <div class="sd-q">Session complete. Save logs before closing?</div>
         <div class="sd-btns">
-          <button class="sd-btn pri" onclick="_sd('step2')">Save Logs</button>
-          <button class="sd-btn sec" onclick="_sd('step3skip')">Skip</button>
+          <button class="sd-btn pri" onclick="sdChooseSave()">Save Logs</button>
+          <button class="sd-btn sec" onclick="sdSkipSave()">Skip</button>
         </div>
       </div>
-      <div class="sd-step" id="sd-step2">
+      <div class="sd-step" id="sd-step2" style="display:none">
         <div class="sd-q">Select files to save:</div>
         <div class="sd-cb-row"><input type="checkbox" id="sd-cb-conn" checked><label class="sd-cb-lbl" for="sd-cb-conn">Connection Log</label><span class="sd-cb-meta">.txt</span></div>
         <div class="sd-cb-row"><input type="checkbox" id="sd-cb-act" checked><label class="sd-cb-lbl" for="sd-cb-act">Activity Log</label><span class="sd-cb-meta">.txt</span></div>
@@ -749,15 +749,15 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
           <div class="sd-fn-wrap"><input class="sd-fn-inp" id="sd-fn-rdg"><span class="sd-fn-ext">.csv</span></div>
         </div>
         <div class="sd-btns">
-          <button class="sd-btn pri" onclick="_sd('doSave')">Save Selected</button>
-          <button class="sd-btn sec" onclick="_sd('step1')">Back</button>
+          <button class="sd-btn pri" onclick="sdProceed()">Save Selected</button>
+          <button class="sd-btn sec" onclick="sdBackToStep1()">Back</button>
         </div>
       </div>
-      <div class="sd-step" id="sd-step3">
+      <div class="sd-step" id="sd-step3" style="display:none">
         <div id="sd-step3-status"></div>
         <div class="sd-q">Session ended.</div>
         <div class="sd-btns">
-          <button class="sd-btn sec" onclick="$('sd-overlay').classList.remove('show')">Keep Open</button>
+          <button class="sd-btn sec" onclick="sdKeepOpen()">Keep Open</button>
           <button class="sd-btn dan" onclick="window.close ? window.close() : location.reload()">Close App</button>
         </div>
       </div>
@@ -916,7 +916,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.39-ipad';
+const VER = '2.1.41-ipad';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3353,6 +3353,8 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.41-m','Fixed Save Selected calling non-existent sdDoSave -- correct function is sdProceed'],
+  ['2.1.40-ipad','Fixed End Session dialog buttons not working: HTML called _sd() which does not exist as global function; updated to call correct functions sdChooseSave/sdSkipSave/sdDoSave/sdBackToStep1/sdCancel; fixed step visibility to use style.display'],
   ['2.1.39-ipad','Comprehensive iPad fixes: (1) su-overlay starts hidden so panels are immediately tappable; (2) landscape panel CSS fixed with position:relative+inset:auto for correct grid layout; (3) version display corrected; (4) su-ver removed from boot sequence'],
   ['2.1.38-ipad','Fixed connection log and activity log unreadable on iPad: default text color was inheriting dark-on-dark; set to #c8d6e5 light blue-grey, increased font to 12px and height to 180/250px'],
   ['2.1.37-ipad','Fixed stuck on Starting: Start Session button now hides after session starts and is replaced by Session Active banner with End Session button visible in always-on landscape setup panel'],
