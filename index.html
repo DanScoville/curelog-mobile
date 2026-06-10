@@ -282,26 +282,25 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
 
 /* ── ABOUT MODAL ─────────────────────────────────────────────────── */
-#about-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9998;background:rgba(0,0,0,.65);padding:20px;box-sizing:border-box}
+#about-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9998;background:rgba(0,0,0,.65)}
 #about-overlay.show{display:block}
-#about-card{position:absolute;top:20px;left:20px;right:20px;bottom:20px;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.4);overflow-y:scroll;-webkit-overflow-scrolling:touch}
-#about-sticky{position:sticky;top:0;left:0;right:0;background:#fff;z-index:2}
-#about-hdr-bar{background:#0e1a28;padding:12px 16px;display:flex;align-items:center;gap:10px;border-radius:16px 16px 0 0}
+#about-card{position:fixed;top:20px;left:16px;right:16px;bottom:20px;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.4)}
+#about-hdr-bar{position:absolute;top:0;left:0;right:0;height:48px;background:#0e1a28;border-radius:16px 16px 0 0;display:flex;align-items:center;padding:0 16px;gap:10px;box-sizing:border-box}
 #about-hdr-bar h2{font-size:16px;font-weight:700;color:#fff;margin:0;flex:1}
-#about-close-btn{background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:18px;line-height:32px;text-align:center;-webkit-tap-highlight-color:transparent}
-#about-cur-block{background:#e8f7f2;border-bottom:2px solid #1D9E75;padding:10px 16px}
+#about-close-btn{background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:18px;line-height:32px;text-align:center;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+#about-cur-block{position:absolute;top:48px;left:0;right:0;height:72px;background:#e8f7f2;border-bottom:2px solid #1D9E75;padding:8px 16px;box-sizing:border-box;overflow:hidden}
 #about-cur-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#1D9E75;margin-bottom:2px}
-#about-cur-ver{font-size:22px;font-weight:700;font-family:monospace;color:#0F6E56}
-#about-cur-desc{font-size:11px;color:#4a5568;margin-top:3px;line-height:1.4}
-#about-search-bar{padding:8px 16px;border-bottom:1px solid #e2e8f0;background:#fafbfc}
-#about-search-inp{width:100%;padding:7px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box}
+#about-cur-ver{font-size:20px;font-weight:700;font-family:monospace;color:#0F6E56;line-height:1.2}
+#about-cur-desc{font-size:10px;color:#4a5568;margin-top:2px;line-height:1.3;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#about-search-bar{position:absolute;top:120px;left:0;right:0;height:52px;padding:8px 16px;border-bottom:1px solid #e2e8f0;background:#fafbfc;box-sizing:border-box}
+#about-search-inp{width:100%;height:34px;padding:0 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box}
 #about-search-inp:focus{border-color:#1D9E75}
-#about-table-section{padding:0 0 20px}
-#about-table-section table{width:100%;border-collapse:collapse;font-size:12px}
-#about-table-section thead th{padding:7px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;color:#7a8fa8;border-bottom:2px solid #e2e8f0;background:#f5f6f8}
-#about-table-section tbody tr{border-bottom:1px solid #f0f4f8}
-#about-table-section tbody tr.cur{background:#e8f7f2}
-#about-table-section td{padding:9px 12px;vertical-align:top}
+#about-scroll{position:absolute;top:172px;left:0;right:0;bottom:0;overflow-y:scroll;-webkit-overflow-scrolling:touch}
+#about-scroll table{width:100%;border-collapse:collapse;font-size:12px}
+#about-scroll thead th{padding:6px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;color:#7a8fa8;border-bottom:2px solid #e2e8f0;background:#f5f6f8}
+#about-scroll tbody tr{border-bottom:1px solid #f0f4f8}
+#about-scroll tbody tr.cur{background:#e8f7f2}
+#about-scroll td{padding:8px 12px;vertical-align:top}
 .abv{display:inline-block;font-family:monospace;font-size:11px;font-weight:700;padding:2px 6px;border-radius:4px;background:#f0f4f8;color:#3a4f6a;white-space:nowrap}
 .abv.cur{background:#1D9E75;color:#fff}
 .abt{color:#1a2332;line-height:1.5;font-size:12px}
@@ -840,7 +839,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.32-m';
+const VER = '2.1.33-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3258,6 +3257,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.33-m','About modal final fix: all header sections use fixed pixel heights (48/72/52px) so scroll area top:172px is exact -- no JS positioning, no sticky, no flex'],
   ['2.1.32-m','About modal rebuilt with sticky header inside single scroll container -- no JS positioning -- scroll guaranteed on all mobile browsers'],
   ['2.1.31-m','Fixed About modal showing only 7 entries -- non-ASCII characters (em-dash, info symbol, ellipsis) in CHANGELOG strings caused Android Chrome JS parser to stop reading the array; replaced all with ASCII equivalents'],
   ['2.1.30-m','FINAL About modal fix: removed overflow:hidden from about-card which was clipping the scroll container; border-radius moved to about-fixed and about-scroll instead'],
@@ -3329,11 +3329,11 @@ function openAbout() {
   const verEl  = document.getElementById('about-cur-ver');
   const descEl = document.getElementById('about-cur-desc');
   const inpEl  = document.getElementById('about-search-inp');
-  const card   = document.getElementById('about-card');
+  const scroll = document.getElementById('about-scroll');
   if (verEl)  verEl.textContent = 'v' + curVer;
-  if (descEl) { const d = curEntry ? curEntry[1] : ''; descEl.textContent = d.length > 100 ? d.slice(0,97)+'...' : d; }
+  if (descEl) { const d = curEntry ? curEntry[1] : ''; descEl.textContent = d.length > 80 ? d.slice(0,77)+'...' : d; }
   if (inpEl)  inpEl.value = '';
-  if (card)   card.scrollTop = 0;
+  if (scroll) scroll.scrollTop = 0;
   renderAboutTable('');
   overlay.classList.add('show');
 }
@@ -3486,23 +3486,21 @@ window.addEventListener('DOMContentLoaded', () => {
 <!-- About Modal -->
 <div id="about-overlay" onclick="if(event.target===this)closeAbout()">
   <div id="about-card">
-    <div id="about-sticky">
-      <div id="about-hdr-bar">
-        <h2>CureLog</h2>
-        <button id="about-close-btn" onclick="closeAbout()">X</button>
-      </div>
-      <div id="about-cur-block">
-        <div id="about-cur-lbl">Current Version</div>
-        <div id="about-cur-ver">--</div>
-        <div id="about-cur-desc">--</div>
-      </div>
-      <div id="about-search-bar">
-        <input id="about-search-inp" type="text"
-          placeholder="Search versions or changes..."
-          oninput="filterAbout(this.value)">
-      </div>
+    <div id="about-hdr-bar">
+      <h2>CureLog</h2>
+      <button id="about-close-btn" onclick="closeAbout()">X</button>
     </div>
-    <div id="about-table-section">
+    <div id="about-cur-block">
+      <div id="about-cur-lbl">Current Version</div>
+      <div id="about-cur-ver">--</div>
+      <div id="about-cur-desc">--</div>
+    </div>
+    <div id="about-search-bar">
+      <input id="about-search-inp" type="text"
+        placeholder="Search versions or changes..."
+        oninput="filterAbout(this.value)">
+    </div>
+    <div id="about-scroll">
       <table>
         <thead><tr><th style="width:90px">Version</th><th>Changes</th></tr></thead>
         <tbody id="about-tbody"></tbody>
