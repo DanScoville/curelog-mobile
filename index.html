@@ -800,7 +800,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.18-m';
+const VER = '2.1.19-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -2428,6 +2428,9 @@ function startDevSim() {
 
 // ── SESSION ───────────────────────────────────────────────────
 function startSession() {
+  // Guard against double-fire (touchend + onclick both fire on mobile)
+  if (A.sess.active) { LOG('startSession: already active, ignoring duplicate call', 'warn'); return; }
+
   A.sess.truck     = 'TVK-' + $('fi-truck').value.trim();
   A.sess.job       = $('fi-job').value.trim();
   A.sess.shot      = $('fi-shot').value.trim();
@@ -2440,8 +2443,6 @@ function startSession() {
   localStorage.setItem('cl_job',  A.sess.job);
   localStorage.setItem('cl_shot', A.sess.shot);
   localStorage.setItem('cl_seg',  A.sess.seg);
-  // Guard against double-fire from touch + click both firing
-  if (A.sess.active) return;
   A.fbPath = `shots/${A.sess.job}/${A.sess.shot}/${A.sess.seg}/${A.sess.truck}`;
   LOG('startSession: fbPath set to ' + A.fbPath, 'ok');
   // Immediate visual feedback — disable button and show "Starting..."
@@ -3215,6 +3216,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.19-m','CRITICAL FIX: double-fire guard was placed AFTER sess.active=true causing immediate return every time — moved guard to top of function before any state changes'],
   ['2.1.18-m','Start Session button UX overhaul: immediate touchstart visual feedback, scale animation on press, proper tap highlight removal, double-fire guard, shows Starting… immediately on tap, larger touch target (56px min height)'],
   ['2.1.17-m','Added try/catch around closeStartup/initFB/startDisp in startSession to catch and log any crash with exact error message'],
   ['2.1.16-m','CRITICAL FIX: closeStartup() was crashing on null DOM elements (tb-job, tb-shot, tb-seg do not exist on mobile) — crash prevented initFB() from running, causing silent Firebase failure; all closeStartup DOM writes now null-guarded'],
