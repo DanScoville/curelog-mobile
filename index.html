@@ -800,7 +800,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.20-m';
+const VER = '2.1.21-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -2459,6 +2459,7 @@ function startSession() {
   if (A.s1.con) kickPoll();
   LOG('Session started — ' + A.sess.truck + ' Job:' + A.sess.job + ' Shot:' + A.sess.shot + ' Seg:' + A.sess.seg, 'ok');
   setTimeout(updateSessionInfoDisplays, 100);
+  acquireWakeLock();
 }
 
 function devBypass() {
@@ -2542,6 +2543,7 @@ function sdFilename(logType) {
 }
 
 function shutdownApp() {
+  releaseWakeLock();
   const connEl   = $('su-clog');
   const actEl    = $('alog');
   const connCount = connEl ? connEl.children.length : 0;
@@ -3216,6 +3218,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.21-m','Wake Lock API: keeps phone screen on during active session — prevents Android killing BLE or freezing timers; auto re-acquires if tab briefly switched'],
   ['2.1.20-m','Fixed last closeStartup crash: su-overlay null guard (element does not exist on mobile); Firebase now writing successfully'],
   ['2.1.19-m','CRITICAL FIX: double-fire guard was placed AFTER sess.active=true causing immediate return every time — moved guard to top of function before any state changes'],
   ['2.1.18-m','Start Session button UX overhaul: immediate touchstart visual feedback, scale animation on press, proper tap highlight removal, double-fire guard, shows Starting… immediately on tap, larger touch target (56px min height)'],
@@ -3357,6 +3360,27 @@ function checkBleAvailability() {
     hint.style.cssText = 'color:#b91c1c;background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;padding:12px 14px;font-size:12px;line-height:1.6;margin:0 0 10px;display:block';
   }
 }
+
+// ── WAKE LOCK ─────────────────────────────────────────────────────────────
+let _wakeLock = null;
+async function acquireWakeLock() {
+  if (!('wakeLock' in navigator)) { LOG('Wake Lock: not supported on this browser', 'warn'); return; }
+  try {
+    _wakeLock = await navigator.wakeLock.request('screen');
+    LOG('Wake Lock: screen will stay ON during session ✓', 'ok');
+    _wakeLock.addEventListener('release', () => {
+      LOG('Wake Lock released — Android may dim screen', 'warn');
+      if (A.sess && A.sess.active) setTimeout(acquireWakeLock, 2000);
+    });
+  } catch(e) { LOG('Wake Lock failed: ' + e.message + ' — keep screen on manually', 'warn'); }
+}
+function releaseWakeLock() {
+  if (_wakeLock) { _wakeLock.release().catch(()=>{}); _wakeLock = null; }
+}
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && A.sess && A.sess.active && !_wakeLock) acquireWakeLock();
+});
+
 // ── BOOT ─────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   // Always run settings/init — never bail out early
