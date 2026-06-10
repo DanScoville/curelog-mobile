@@ -807,10 +807,10 @@ function refreshJobInfo() {
   const note = $('si-no-session');
   if (note) note.style.display = active ? 'none' : '';
   if (active) {
-    if ($('si-truck')) $('si-truck').textContent = A.sess.truck || '—';
-    if ($('si-job'))   $('si-job').textContent   = A.sess.job   || '—';
-    if ($('si-shot'))  $('si-shot').textContent  = A.sess.shot  || '—';
-    if ($('si-seg'))   $('si-seg').textContent   = A.sess.seg   || '—';
+    if ($('si-truck')) $('si-truck').textContent = A.sess.truck || '--';
+    if ($('si-job'))   $('si-job').textContent   = A.sess.job   || '--';
+    if ($('si-shot'))  $('si-shot').textContent  = A.sess.shot  || '--';
+    if ($('si-seg'))   $('si-seg').textContent   = A.sess.seg   || '--';
   }
 }
 
@@ -839,7 +839,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.34-m';
+const VER = '2.1.35-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -896,7 +896,7 @@ const PER2  = 'a7643787-b986-4693-bc60-3028002646f2';
 const BAT2C = 'a7642a19-b986-4693-bc60-3028002646f2';
 
 // ── STATE ─────────────────────────────────────────────────────
-const A = { // app state — single object, no nested mutation issues
+const A = { // app state -- single object, no nested mutation issues
   sess: { truck:'',job:'',shot:'',seg:'',tubeDia:'',tubeThick:'',tubeLen:'',active:false }, sessStartMs: null,
   dev:  false,
   s1: { con:false, dev:null, srv:null, svc:null, chr:null, scale:1.0, useNotify:false,
@@ -907,7 +907,7 @@ const A = { // app state — single object, no nested mutation issues
   s2: { con:false, dev:null, srv:null, chr:null,
         tempC:null, batt:null, name:'',
         minT:null, maxT:null,
-        manualDisc:false,    // true when user clicked Disconnect — suppresses auto-reconnect
+        manualDisc:false,    // true when user clicked Disconnect -- suppresses auto-reconnect
         reConAttempts:0,     // backoff counter
         reConHandle:null,    // setTimeout handle for next reconnect
         keepAliveH:null },
@@ -928,7 +928,7 @@ const A = { // app state — single object, no nested mutation issues
 const sleep  = ms => new Promise(r => setTimeout(r, ms));
 const cToF   = c  => c * 9/5 + 32;
 const psiConv = (v,u) => u==='Bar' ? (v*.0689476).toFixed(3) : u==='kPa' ? (v*6.89476).toFixed(1) : v.toFixed(1);
-const hex    = dv => { if(!dv) return '—'; const a=[]; for(let i=0;i<dv.byteLength;i++) a.push(dv.getUint8(i).toString(16).padStart(2,'0').toUpperCase()); return a.join(' '); };
+const hex    = dv => { if(!dv) return '--'; const a=[]; for(let i=0;i<dv.byteLength;i++) a.push(dv.getUint8(i).toString(16).padStart(2,'0').toUpperCase()); return a.join(' '); };
 const $ = id => document.getElementById(id);
 
 // ── DUAL LOGGER ───────────────────────────────────────────────
@@ -1009,7 +1009,7 @@ function togColl(name) {
   A.collOpen[name] = !A.collOpen[name];
   const isOpen = A.collOpen[name];
   $('cbdy-' + name).classList.toggle('open', isOpen);
-  // coll-arr indicators removed — no arrow elements
+  // coll-arr indicators removed -- no arrow elements
   const hdr = $('coll-' + name).querySelector('.coll-hdr');
   if (hdr) hdr.classList.toggle('open', isOpen);
   // Settings: manage margin so it doesn't leave a gap when closed
@@ -1056,7 +1056,7 @@ function applyScales() {
   }
   // Update unit labels to match current pressure/temp units
   const pu = s.pUnit;
-  const tu = '°' + s.tUnit;
+  const tu = 'deg' + s.tUnit;
   ['yp-unit-lbl','yp-unit-lbl2'].forEach(id => { const el=$(id); if(el) el.textContent=pu; });
   ['yt-unit-lbl','yt-unit-lbl2'].forEach(id => { const el=$(id); if(el) el.textContent=tu; });
   // Read precision settings
@@ -1190,7 +1190,7 @@ function saveSettings() {
 function loadSettings() {
   let cfg;
   try { cfg = JSON.parse(localStorage.getItem('cl_settings') || 'null'); } catch(e) { cfg = null; }
-  if (!cfg) return; // no saved settings yet — use defaults
+  if (!cfg) return; // no saved settings yet -- use defaults
 
   const set  = (id, v) => { const el = $(id); if (el && v !== null && v !== undefined) el.value   = v; };
   const setB = (id, v) => { const el = $(id); if (el && v !== null && v !== undefined) el.checked = v; };
@@ -1248,7 +1248,7 @@ function loadSettings() {
   if (cfg.yTmax   !== undefined) A.set.yTmax  = parseFloat(cfg.yTmax) || 120;
   if (cfg.yTdec   !== undefined) A.set.tmpDecimals = parseInt(cfg.yTdec) || 1;
 
-  LOG('Settings restored from last session ✓', 'ok');
+  LOG('Settings restored from last session OK', 'ok');
 }
 
 function resetFilters() {
@@ -1267,7 +1267,7 @@ function chkReady() {
   const hint = $('su-hint');
   if (!hint) return;
   if (allOk) {
-    hint.textContent = '✓ Ready — tap Start Session to begin';
+    hint.textContent = 'OK Ready -- tap Start Session to begin';
     hint.className = 'su-hint ok';
   } else if (!sensOk && !fieldsOk) {
     hint.textContent = 'Connect a sensor and fill in all session fields above';
@@ -1281,7 +1281,7 @@ function chkReady() {
       .map(id => ({
         'fi-truck':'Truck ID','fi-job':'Job #','fi-shot':'Shot #','fi-seg':'Segment #'
       }[id]));
-    hint.textContent = '⚠ Fill in: ' + missing.join(', ');
+    hint.textContent = '! Fill in: ' + missing.join(', ');
     hint.style.cssText = 'color:#b45309;font-weight:600;font-size:12px;margin-bottom:8px;display:block';
   }
 }
@@ -1301,15 +1301,15 @@ function updS1UI() {
   // Startup card
   $('sd1').className = con ? 'su-dot g' : 'su-dot';
   $('sc1').className = con ? 'su-sc ok-s1' : 'su-sc';
-  $('ss1').textContent = con ? '✓ ' + (A.s1.name || 'Connected') : 'Not connected';
+  $('ss1').textContent = con ? 'OK ' + (A.s1.name || 'Connected') : 'Not connected';
   $('ss1').className  = 'su-sc-status ' + (con ? 'ok' : 'idle');
-  $('scb1').textContent = con ? '↺ Reconnect' : 'Connect';
+  $('scb1').textContent = con ? 'Reconnect Reconnect' : 'Connect';
   $('sdb1').disabled    = !con;
   // Settings info
-  $('si-n1').textContent = A.s1.name || '—';
-  $('si-b1').textContent = A.s1.batt !== null ? A.s1.batt + '%' : '—';
+  $('si-n1').textContent = A.s1.name || '--';
+  $('si-b1').textContent = A.s1.batt !== null ? A.s1.batt + '%' : '--';
   $('si-sc').textContent = A.s1.scale;
-  $('si-tx').textContent = A.s1.tx !== null ? A.s1.tx + ' dBm' : '—';
+  $('si-tx').textContent = A.s1.tx !== null ? A.s1.tx + ' dBm' : '--';
   // Kick display loop
     if (con && !A.dispH) startDisp();
   if (!con && !A.s2.con && A.collectActive) pauseCollectionTimer();
@@ -1329,21 +1329,21 @@ function updS2UI() {
   const mbt2=$('mbt2'); if(mbt2&&con&&A.s2.batt!==null){mbt2.textContent='🔋 '+A.s2.batt+'%';mbt2.style.display='';}
   $('sd2').className = con ? 'su-dot b' : 'su-dot';
   $('sc2').className = con ? 'su-sc ok-s2' : 'su-sc';
-  $('ss2').textContent = con ? '✓ ' + (A.s2.name || 'Connected') : 'Not connected';
+  $('ss2').textContent = con ? 'OK ' + (A.s2.name || 'Connected') : 'Not connected';
   $('ss2').className  = 'su-sc-status ' + (con ? 'ok' : 'idle');
-  $('scb2').textContent = con ? '↺ Reconnect' : 'Connect';
+  $('scb2').textContent = con ? 'Reconnect Reconnect' : 'Connect';
   $('sdb2').disabled    = !con;
-  $('si-n2').textContent = A.s2.name || '—';
-  $('si-b2').textContent = A.s2.batt !== null ? A.s2.batt + '%' : '—';
+  $('si-n2').textContent = A.s2.name || '--';
+  $('si-b2').textContent = A.s2.batt !== null ? A.s2.batt + '%' : '--';
     if (con && !A.dispH) startDisp();
   if (!con && !A.s1.con && A.collectActive) pauseCollectionTimer();
   chkReady();
 }
 
 // ── BLE CONNECT S1 ────────────────────────────────────────────
-// The button calls blePickS1() directly — requestDevice is the FIRST await
+// The button calls blePickS1() directly -- requestDevice is the FIRST await
 async function blePickS1() {
-  // requestDevice MUST be first — no awaits, no DOM writes before this
+  // requestDevice MUST be first -- no awaits, no DOM writes before this
   const fVal = $('sf1') ? $('sf1').value.trim() : '';
   const fUse = $('sf1-use') && $('sf1-use').checked && fVal.length > 0;
   let dev;
@@ -1359,12 +1359,12 @@ async function blePickS1() {
     LOG('S1 picker: ' + msg, 'warn');
     return;
   }
-  // Device picked — safe to update UI now
-  $('ss1').textContent = 'Connecting to ' + (dev.name || 'device') + '…';
+  // Device picked -- safe to update UI now
+  $('ss1').textContent = 'Connecting to ' + (dev.name || 'device') + '...';
   $('ss1').className   = 'su-sc-status busy';
   $('scb1').disabled   = true;
-  $('scb1').textContent = 'Connecting…';
-  LOG('S1: device picked — ' + (dev.name||'(no name)') + (fUse?' [filter: '+fVal+']':' [no filter]'), 'info');
+  $('scb1').textContent = 'Connecting...';
+  LOG('S1: device picked -- ' + (dev.name||'(no name)') + (fUse?' [filter: '+fVal+']':' [no filter]'), 'info');
   await doConnectS1(dev);
   $('scb1').disabled = false;
 }
@@ -1375,53 +1375,53 @@ async function doConnectS1(dev) {
   s.con = false; s.srv = null; s.chr = null; s.dev = dev;
   s.dev.addEventListener('gattserverdisconnected', onS1Disc);
 
-  LOG('S1: GATT connecting…', 'info');
+  LOG('S1: GATT connecting...', 'info');
   let gattOk1 = false;
   for (let attempt = 1; attempt <= 4; attempt++) {
     try {
       s.srv = await s.dev.gatt.connect();
       gattOk1 = true;
-      LOG('S1: GATT connected ✓ (attempt ' + attempt + ')', 'ok');
+      LOG('S1: GATT connected OK (attempt ' + attempt + ')', 'ok');
       break;
     } catch(e) {
-      LOG('S1: GATT attempt ' + attempt + ' failed — ' + e.message, 'warn');
+      LOG('S1: GATT attempt ' + attempt + ' failed -- ' + e.message, 'warn');
       if (attempt < 4) { await sleep(2000); }
     }
   }
   if (!gattOk1) {
     LOG('S1: GATT connect FAILED after 4 attempts', 'err');
-    $('ss1').textContent = '✗ Cannot connect — see log'; $('ss1').className = 'su-sc-status err';
+    $('ss1').textContent = 'X Cannot connect -- see log'; $('ss1').className = 'su-sc-status err';
     if (!s.manualDisc) scheduleS1Reconnect();
     return;
   }
   await sleep(800);
 
   // Discover ALL services
-  LOG('S1: discovering services…', 'info');
+  LOG('S1: discovering services...', 'info');
   let allSvcs1;
   try {
     allSvcs1 = await s.srv.getPrimaryServices();
     LOG('S1: ' + allSvcs1.length + ' service(s): ' + allSvcs1.map(x=>x.uuid).join(' | '), 'info');
-  } catch(e) { LOG('S1: service discovery failed — ' + e.message, 'err'); return; }
+  } catch(e) { LOG('S1: service discovery failed -- ' + e.message, 'err'); return; }
 
   const findSvc1 = uuid => allSvcs1.find(sv => sv.uuid.toLowerCase() === uuid.toLowerCase());
 
   // Pressure service (required)
-  LOG('S1: getting pressure service…', 'info');
+  LOG('S1: getting pressure service...', 'info');
   const svc = findSvc1(SVC1);
   A.s1.svc = svc; // cache for Gen5 feature reads
   if (!svc) {
-    LOG('S1: pressure service NOT found — wrong device?', 'err');
+    LOG('S1: pressure service NOT found -- wrong device?', 'err');
     LOG('S1: UUIDs seen: ' + allSvcs1.map(x=>x.uuid).join(', '), 'warn');
-    $('ss1').textContent = '✗ Wrong device — check log'; $('ss1').className = 'su-sc-status err';
+    $('ss1').textContent = 'X Wrong device -- check log'; $('ss1').className = 'su-sc-status err';
     return;
   }
-  LOG('S1: pressure service ✓', 'ok');
+  LOG('S1: pressure service OK', 'ok');
 
   // Pressure characteristic
   try { s.chr = await svc.getCharacteristic(CHR1); }
-  catch(e) { LOG('S1: pressure char NOT found — ' + e.message, 'err'); return; }
-  LOG('S1: pressure characteristic ✓', 'ok');
+  catch(e) { LOG('S1: pressure char NOT found -- ' + e.message, 'err'); return; }
+  LOG('S1: pressure characteristic OK', 'ok');
 
   // Scale descriptor (0x2904)
   try {
@@ -1439,29 +1439,29 @@ async function doConnectS1(dev) {
         const fmt = v.getUint8(0);
         const exp = v.getInt8(1);  // sint8 at byte 1, NOT byte 2
         s.scale = Math.pow(10, exp);
-        LOG('S1: format=' + fmt + ' exponent=' + exp + ' scale=' + s.scale + ' ✓', 'ok');
+        LOG('S1: format=' + fmt + ' exponent=' + exp + ' scale=' + s.scale + ' OK', 'ok');
         break;
       }
     }
-  } catch(e) { s.scale = 1.0; LOG('S1: scale fallback 1.0 — ' + e.message, 'warn'); }
+  } catch(e) { s.scale = 1.0; LOG('S1: scale fallback 1.0 -- ' + e.message, 'warn'); }
 
-  // Try NOTIFY on pressure — avoids blocking readValue() calls entirely
+  // Try NOTIFY on pressure -- avoids blocking readValue() calls entirely
   // If NOTIFY is supported the sensor pushes data at its own rate
   try {
     const props = s.chr.properties;
-    LOG('S1: pressure char properties — notify:' + props.notify + ' indicate:' + props.indicate + ' read:' + props.read, 'info');
+    LOG('S1: pressure char properties -- notify:' + props.notify + ' indicate:' + props.indicate + ' read:' + props.read, 'info');
     if (props.notify || props.indicate) {
       s.chr.addEventListener('characteristicvaluechanged', onS1PressNotify);
       await s.chr.startNotifications();
       s.useNotify = true;
-      LOG('S1: pressure NOTIFY active ✓ — no polling needed', 'ok');
+      LOG('S1: pressure NOTIFY active OK -- no polling needed', 'ok');
     } else {
       s.useNotify = false;
-      LOG('S1: NOTIFY not supported — will use readValue() polling', 'info');
+      LOG('S1: NOTIFY not supported -- will use readValue() polling', 'info');
     }
   } catch(e) {
     s.useNotify = false;
-    LOG('S1: NOTIFY start failed (' + e.message + ') — falling back to polling', 'warn');
+    LOG('S1: NOTIFY start failed (' + e.message + ') -- falling back to polling', 'warn');
   }
 
   // Battery
@@ -1471,9 +1471,9 @@ async function doConnectS1(dev) {
       const bc = await batSvc.getCharacteristic(BAT1C);
       const bv = await bc.readValue();
       s.batt = bv.getUint8(0);
-      LOG('S1: battery ' + s.batt + '% ✓', 'ok');
+      LOG('S1: battery ' + s.batt + '% OK', 'ok');
     }
-  } catch(e) { LOG('S1: battery skipped — ' + e.message, 'warn'); }
+  } catch(e) { LOG('S1: battery skipped -- ' + e.message, 'warn'); }
 
   // TX Power
   try {
@@ -1486,7 +1486,7 @@ async function doConnectS1(dev) {
     }
   } catch(e) {}
 
-  // Sample interval — read first to detect byte width, then write matching size
+  // Sample interval -- read first to detect byte width, then write matching size
   await sleep(300);
   try {
     const ic = await svc.getCharacteristic(INT1);
@@ -1500,7 +1500,7 @@ async function doConnectS1(dev) {
     } else if (current.byteLength === 4) {
       wbuf = new ArrayBuffer(4); new DataView(wbuf).setUint32(0, 500, true);
     } else {
-      LOG('S1: unexpected interval byte length ' + current.byteLength + ' — skipping write', 'warn');
+      LOG('S1: unexpected interval byte length ' + current.byteLength + ' -- skipping write', 'warn');
       wbuf = null;
     }
     if (wbuf) {
@@ -1508,21 +1508,21 @@ async function doConnectS1(dev) {
       await sleep(100);
       const confirm = await ic.readValue();
       const actualMs = confirm.byteLength >= 4 ? confirm.getUint32(0,true) : confirm.getUint16(0,true);
-      LOG('S1: sample interval → ' + actualMs + 'ms (confirmed) ✓', 'ok');
+      LOG('S1: sample interval -> ' + actualMs + 'ms (confirmed) OK', 'ok');
       A.s1.sensorIntervalMs = actualMs;
     }
   } catch(e) {
     // Interval characteristic not supported or wrong format on this firmware
-    // Not needed when using NOTIFY — suppress noisy error
+    // Not needed when using NOTIFY -- suppress noisy error
     A.s1.sensorIntervalMs = 1000;
-    LOG('S1: interval not configurable on this firmware (OK — using NOTIFY)', 'info');
+    LOG('S1: interval not configurable on this firmware (OK -- using NOTIFY)', 'info');
   }
 
   s.name = dev.name || 'TDWLB5';
   s.manualDisc = false; s.reConAttempts = 0;
   if (s.reConHandle) { clearTimeout(s.reConHandle); s.reConHandle = null; }
   s.con = true;
-  LOG('S1: FULLY CONNECTED — ' + s.name, 'ok');
+  LOG('S1: FULLY CONNECTED -- ' + s.name, 'ok');
   updS1UI();
   kickPoll();
   $('sf1').value = s.name; saveFilter(1, s.name);
@@ -1530,7 +1530,7 @@ async function doConnectS1(dev) {
   setTimeout(readGen5Features, 800);
 }
 
-// Pressure notification handler — fires whenever sensor pushes a new value
+// Pressure notification handler -- fires whenever sensor pushes a new value
 function onS1PressNotify(event) {
   const dv = event.target.value;
   const now = Date.now();
@@ -1558,8 +1558,8 @@ function onS1PressNotify(event) {
     raw = rawLE; psi = psiLE;
     if (!A.s1._notifyLogged) { LOG('S1: notify LE raw=' + rawLE + ' psi=' + psiLE.toFixed(1) + ' (using LE)', 'warn'); A.s1._notifyLogged = true; }
   } else {
-    // Both out of range — log it so we can see what's coming
-    if (!A.s1._notifyLogged) { LOG('S1: notify both out of range — BE=' + psiBE.toFixed(1) + ' LE=' + psiLE.toFixed(1) + ' scale=' + A.s1.scale, 'err'); A.s1._notifyLogged = true; }
+    // Both out of range -- log it so we can see what's coming
+    if (!A.s1._notifyLogged) { LOG('S1: notify both out of range -- BE=' + psiBE.toFixed(1) + ' LE=' + psiLE.toFixed(1) + ' scale=' + A.s1.scale, 'err'); A.s1._notifyLogged = true; }
     return; // skip this reading
   }
 
@@ -1591,10 +1591,10 @@ function scheduleS1Reconnect() {
   const delays = [2000, 4000, 8000, 15000];
   const delay  = delays[Math.min(A.s1.reConAttempts, delays.length - 1)];
   A.s1.reConAttempts++;
-  LOG('S1: auto-reconnect in ' + (delay/1000).toFixed(0) + 's (attempt ' + A.s1.reConAttempts + ')…', 'warn');
+  LOG('S1: auto-reconnect in ' + (delay/1000).toFixed(0) + 's (attempt ' + A.s1.reConAttempts + ')...', 'warn');
   A.s1.reConHandle = setTimeout(async () => {
     if (A.s1.manualDisc || !A.s1.dev) return;
-    LOG('S1: attempting auto-reconnect…', 'info');
+    LOG('S1: attempting auto-reconnect...', 'info');
     await doConnectS1(A.s1.dev);
   }, delay);
 }
@@ -1625,11 +1625,11 @@ async function blePickS2() {
     LOG('S2 picker: ' + msg, 'warn');
     return;
   }
-  $('ss2').textContent = 'Connecting to ' + (dev.name || 'device') + '…';
+  $('ss2').textContent = 'Connecting to ' + (dev.name || 'device') + '...';
   $('ss2').className   = 'su-sc-status busy';
   $('scb2').disabled   = true;
-  $('scb2').textContent = 'Connecting…';
-  LOG('S2: device picked — ' + (dev.name||'(no name)') + (fUse?' [filter: '+fVal+']':' [no filter]'), 'info');
+  $('scb2').textContent = 'Connecting...';
+  LOG('S2: device picked -- ' + (dev.name||'(no name)') + (fUse?' [filter: '+fVal+']':' [no filter]'), 'info');
   await doConnectS2(dev);
   $('scb2').disabled = false;
 }
@@ -1642,16 +1642,16 @@ async function doConnectS2(dev) {
   // Don't add the disconnect listener until AFTER we're fully connected
   // Adding it early means any blip during setup triggers auto-reconnect recursion
 
-  LOG('S2: GATT connecting…', 'info');
+  LOG('S2: GATT connecting...', 'info');
   let gattOk = false;
   for (let attempt = 1; attempt <= 5; attempt++) {
     try {
       s.srv = await s.dev.gatt.connect();
       gattOk = true;
-      LOG('S2: GATT connected ✓ (attempt ' + attempt + ')', 'ok');
+      LOG('S2: GATT connected OK (attempt ' + attempt + ')', 'ok');
       break;
     } catch(e) {
-      LOG('S2: GATT attempt ' + attempt + ' failed — ' + e.message, 'warn');
+      LOG('S2: GATT attempt ' + attempt + ' failed -- ' + e.message, 'warn');
       if (attempt < 5) await sleep(3000);
     }
   }
@@ -1663,7 +1663,7 @@ async function doConnectS2(dev) {
     LOG('S2: │ 3. Re-install battery and wait 5s', 'warn');
     LOG('S2: │ 4. Click Reconnect on this page', 'warn');
     LOG('S2: └────────────────────────────────────────────', 'warn');
-    $('ss2').textContent = '✗ Cannot connect — see log'; $('ss2').className = 'su-sc-status err';
+    $('ss2').textContent = 'X Cannot connect -- see log'; $('ss2').className = 'su-sc-status err';
     // After 5 hard failures, back off much longer before auto-retry
     if (!s.manualDisc) {
       A.s2.reConAttempts = 4; // jump to the long end of the backoff table
@@ -1674,33 +1674,33 @@ async function doConnectS2(dev) {
 
   // Verify connection is still alive before proceeding
   if (!s.dev.gatt.connected) {
-    LOG('S2: dropped immediately after GATT connect — sensor unstable', 'err');
-    LOG('S2: → Power cycle the WETS02 and try again', 'warn');
+    LOG('S2: dropped immediately after GATT connect -- sensor unstable', 'err');
+    LOG('S2: -> Power cycle the WETS02 and try again', 'warn');
     if (!s.manualDisc) scheduleS2Reconnect();
     return;
   }
 
-  // Extended settle — WETS02 needs time after GATT before it accepts service requests
-  LOG('S2: settling 1.5s…', 'info');
+  // Extended settle -- WETS02 needs time after GATT before it accepts service requests
+  LOG('S2: settling 1.5s...', 'info');
   await sleep(1500);
 
   // Check still connected after settle
   if (!s.dev.gatt.connected) {
-    LOG('S2: dropped during settle — retrying', 'warn');
+    LOG('S2: dropped during settle -- retrying', 'warn');
     if (!s.manualDisc) scheduleS2Reconnect();
     return;
   }
 
   // Discover ALL services
-  LOG('S2: discovering services…', 'info');
+  LOG('S2: discovering services...', 'info');
   let allSvcs;
   try {
     allSvcs = await s.srv.getPrimaryServices();
     LOG('S2: ' + allSvcs.length + ' service(s): ' + allSvcs.map(x=>x.uuid).join(' | '), 'info');
   } catch(e) {
-    LOG('S2: service discovery failed — ' + e.message, 'err');
+    LOG('S2: service discovery failed -- ' + e.message, 'err');
     if (e.message.includes('disconnected') || e.message.includes('connect first')) {
-      LOG('S2: sensor disconnected during discovery — will retry', 'warn');
+      LOG('S2: sensor disconnected during discovery -- will retry', 'warn');
     }
     if (!s.manualDisc) scheduleS2Reconnect();
     return;
@@ -1708,36 +1708,36 @@ async function doConnectS2(dev) {
 
   const findSvc = uuid => allSvcs.find(sv => sv.uuid.toLowerCase() === uuid.toLowerCase());
 
-  // Set sample period 500ms (optional — skip gracefully if unavailable)
+  // Set sample period 500ms (optional -- skip gracefully if unavailable)
   const settSvc = findSvc(SET2);
   if (settSvc) {
     try {
       const pc = await settSvc.getCharacteristic(PER2);
       const buf = new ArrayBuffer(2); new DataView(buf).setUint16(0, 500, true);
       await pc.writeValue(buf);
-      LOG('S2: sample period → 500ms ✓', 'ok');
-    } catch(e) { LOG('S2: period set skipped — ' + e.message, 'warn'); }
+      LOG('S2: sample period -> 500ms OK', 'ok');
+    } catch(e) { LOG('S2: period set skipped -- ' + e.message, 'warn'); }
   }
 
   // Diagnostics service (required)
-  LOG('S2: getting diagnostics service…', 'info');
+  LOG('S2: getting diagnostics service...', 'info');
   const ds = findSvc(SVC2);
   if (!ds) {
-    LOG('S2: diagnostics service NOT found — wrong device?', 'err');
+    LOG('S2: diagnostics service NOT found -- wrong device?', 'err');
     LOG('S2: UUIDs seen: ' + allSvcs.map(x=>x.uuid).join(', '), 'warn');
-    $('ss2').textContent = '✗ Wrong device?'; $('ss2').className = 'su-sc-status err';
+    $('ss2').textContent = 'X Wrong device?'; $('ss2').className = 'su-sc-status err';
     return;
   }
-  LOG('S2: diagnostics service ✓', 'ok');
+  LOG('S2: diagnostics service OK', 'ok');
 
   // Temperature NOTIFY
   try {
     s.chr = await ds.getCharacteristic(CHR2);
     s.chr.addEventListener('characteristicvaluechanged', onS2Temp);
     await s.chr.startNotifications();
-    LOG('S2: temperature NOTIFY active ✓', 'ok');
+    LOG('S2: temperature NOTIFY active OK', 'ok');
   } catch(e) {
-    LOG('S2: temp characteristic FAILED — ' + e.message, 'err');
+    LOG('S2: temp characteristic FAILED -- ' + e.message, 'err');
     if (!s.manualDisc) scheduleS2Reconnect();
     return;
   }
@@ -1747,8 +1747,8 @@ async function doConnectS2(dev) {
     const bc = await ds.getCharacteristic(BAT2C);
     const bv = await bc.readValue();
     s.batt = bv.getUint16(0, true);
-    LOG('S2: battery ' + s.batt + '% ✓', 'ok');
-  } catch(e) { LOG('S2: battery skipped — ' + e.message, 'warn'); }
+    LOG('S2: battery ' + s.batt + '% OK', 'ok');
+  } catch(e) { LOG('S2: battery skipped -- ' + e.message, 'warn'); }
 
   // Device name (optional)
   try {
@@ -1757,25 +1757,25 @@ async function doConnectS2(dev) {
       const nc = await ga.getCharacteristic('00002a00-0000-1000-8000-00805f9b34fb');
       const nv = await nc.readValue();
       s.name = new TextDecoder().decode(nv);
-      LOG('S2: device name "' + s.name + '" ✓', 'ok');
+      LOG('S2: device name "' + s.name + '" OK', 'ok');
     } else { s.name = dev.name || 'WETS02'; }
   } catch(e) { s.name = dev.name || 'WETS02'; }
 
-  // NOW add disconnect listener — after full setup is complete
+  // NOW add disconnect listener -- after full setup is complete
   s.dev.addEventListener('gattserverdisconnected', onS2Disc);
 
   // Reset reconnect state
   s.manualDisc = false; s.reConAttempts = 0;
   if (s.reConHandle) { clearTimeout(s.reConHandle); s.reConHandle = null; }
   s.con = true;
-  LOG('S2: FULLY CONNECTED — ' + s.name, 'ok');
-  LOG('S2: keep-alive active — pinging every 10s to prevent auto-sleep', 'info');
+  LOG('S2: FULLY CONNECTED -- ' + s.name, 'ok');
+  LOG('S2: keep-alive active -- pinging every 10s to prevent auto-sleep', 'info');
   updS2UI();
   $('sf2').value = s.name; saveFilter(2, s.name);
 
   // Keep-alive ping every 10s to prevent WETS02 auto-sleep disconnect.
   // Uses the already-resolved characteristic reference (s.chr) from setup
-  // rather than re-discovering services each time — much lighter weight.
+  // rather than re-discovering services each time -- much lighter weight.
   // Reduced to 10s interval since the sensor dropped at ~4min39s with 20s pings.
   // Also logs each ping so we can confirm it's actually running.
   if (s.keepAliveH) clearInterval(s.keepAliveH);
@@ -1784,18 +1784,18 @@ async function doConnectS2(dev) {
     if (!s.con || !s.dev || !s.dev.gatt.connected) return;
     _kaCount++;
     try {
-      // Read temperature characteristic directly — it's already cached in s.chr
+      // Read temperature characteristic directly -- it's already cached in s.chr
       // Any GATT read resets the WETS02 idle timer
       if (s.chr) {
         await s.chr.readValue();
         // Log every 3rd ping (every 30s) so we know it's working without flooding the log
         if (_kaCount % 3 === 0) {
-          LOG('S2: keep-alive ping #' + _kaCount + ' ✓ (idle timer reset)', 'info');
+          LOG('S2: keep-alive ping #' + _kaCount + ' OK (idle timer reset)', 'info');
         }
       }
     } catch(e) {
-      LOG('S2: keep-alive ping FAILED — ' + e.message + ' (sensor may have slept)', 'err');
-      // Don't call onS2Disc here — the gattserverdisconnected event will fire if truly gone
+      LOG('S2: keep-alive ping FAILED -- ' + e.message + ' (sensor may have slept)', 'err');
+      // Don't call onS2Disc here -- the gattserverdisconnected event will fire if truly gone
     }
   }, 10000);
 }
@@ -1816,14 +1816,14 @@ function onS2Disc() {
 function scheduleS2Reconnect() {
   if (A.s2.reConHandle) clearTimeout(A.s2.reConHandle);
   // Backoff: 2s, 4s, 8s, 15s, 15s, 15s...
-  // Short first retry — device may just need a moment to re-advertise
+  // Short first retry -- device may just need a moment to re-advertise
   const delays = [3000, 6000, 12000, 20000, 30000];
   const delay  = delays[Math.min(A.s2.reConAttempts, delays.length - 1)];
   A.s2.reConAttempts++;
-  LOG('S2: auto-reconnect in ' + (delay/1000).toFixed(0) + 's (attempt ' + A.s2.reConAttempts + ')…', 'warn');
+  LOG('S2: auto-reconnect in ' + (delay/1000).toFixed(0) + 's (attempt ' + A.s2.reConAttempts + ')...', 'warn');
   A.s2.reConHandle = setTimeout(async () => {
     if (A.s2.manualDisc || !A.s2.dev) return;
-    LOG('S2: attempting auto-reconnect…', 'info');
+    LOG('S2: attempting auto-reconnect...', 'info');
     await doConnectS2(A.s2.dev);
   }, delay);
 }
@@ -1847,7 +1847,7 @@ function onS2Temp(event) {
   A.s2._lastNotify = now;
   $('raw-t').textContent = hex(dv);
   if (dv.byteLength < 2) return;
-  const tempC = dv.getInt16(0, true) * 0.1; // sint16 LE × 0.1 = °C
+  const tempC = dv.getInt16(0, true) * 0.1; // sint16 LE x 0.1 = degC
   A.s2.tempC = tempC;
   const disp = A.set.tUnit === 'F' ? cToF(tempC) : tempC;
   if (A.s2.minT === null || disp < A.s2.minT) A.s2.minT = disp;
@@ -1864,9 +1864,9 @@ async function monReconnect(n) {
 
 // ── PRESSURE POLL LOOP ────────────────────────────────────────
 function kickPoll() {
-  // If sensor supports NOTIFY, no polling needed — data arrives via onS1PressNotify
+  // If sensor supports NOTIFY, no polling needed -- data arrives via onS1PressNotify
   if (A.s1.useNotify) {
-    LOG('S1: using NOTIFY — poll loop not needed', 'info');
+    LOG('S1: using NOTIFY -- poll loop not needed', 'info');
     return;
   }
   // Fallback: readValue() polling for sensors that don't support NOTIFY
@@ -1900,7 +1900,7 @@ async function runPoll() {
       if (elapsed > 600) {
         A.poll.slowCount = (A.poll.slowCount || 0) + 1;
         if (A.poll.slowCount === 3) {
-          LOG('S1: reads taking ~' + Math.round(elapsed) + 'ms — sensor running at its default interval', 'warn');
+          LOG('S1: reads taking ~' + Math.round(elapsed) + 'ms -- sensor running at its default interval', 'warn');
           LOG('S1: data will update every ~' + Math.round(elapsed) + 'ms', 'info');
           A.poll.slowCount = 0;
         }
@@ -1923,7 +1923,7 @@ async function runPoll() {
     }
   }
 
-  // Schedule next poll — target 250ms after start of this cycle
+  // Schedule next poll -- target 250ms after start of this cycle
   // If the read took longer than 250ms this fires immediately (wait=0)
   const elapsed = performance.now() - t0;
   const wait = Math.max(0, 250 - elapsed);
@@ -1934,7 +1934,7 @@ async function runPoll() {
 function pushReading({ psi, tempC, src, tsMs }) {
   // Start collection timer on first real data
   if (!A.collectActive && A.sess.active) startCollectionTimer();
-  // ── Readings map: keyed by whole second — one row per second in the log ──
+  // ── Readings map: keyed by whole second -- one row per second in the log ──
   // Multiple readings within the same second update the same row (latest wins)
   const k = Math.floor(tsMs / 1000) * 1000;
 
@@ -1944,10 +1944,10 @@ function pushReading({ psi, tempC, src, tsMs }) {
       psi: null, tempC: null,
       s1TsMs: null, s2TsMs: null,  // actual sensor fire times for precise dashboard pairing
       // Stamp session info at row creation time so the table always shows it
-      job:   A.sess.job   || '—',
-      shot:  A.sess.shot  || '—',
-      seg:   A.sess.seg   || '—',
-      truck: A.sess.truck || '—'
+      job:   A.sess.job   || '--',
+      shot:  A.sess.shot  || '--',
+      seg:   A.sess.seg   || '--',
+      truck: A.sess.truck || '--'
     };
   }
   if (src === 's1' && psi   !== undefined) { A.rdMap[k].psi = psi; A.rdMap[k].s1TsMs = tsMs; }
@@ -1956,7 +1956,7 @@ function pushReading({ psi, tempC, src, tsMs }) {
   // Chart: update on every reading from either sensor
   const row = A.rdMap[k];
   if (!row._ca) {
-    // First reading for this second — create new chart point
+    // First reading for this second -- create new chart point
     row._ca = true;
     const chartPsi  = row.psi   !== null ? row.psi   : null;
     const chartTemp = row.tempC !== null ? (A.set.tUnit === 'F' ? cToF(row.tempC) : row.tempC) : null;
@@ -1975,12 +1975,12 @@ function pushReading({ psi, tempC, src, tsMs }) {
     }
   }
 
-  // Firebase upload queue — deduplicated per bucket key
+  // Firebase upload queue -- deduplicated per bucket key
   if (A.sess.active && !A.rdMap[k]._qu) { A.rdMap[k]._qu = true; A.upQ.push(k); }
 
   // Cap readings map at 5000 entries to prevent memory growth
   const keys = Object.keys(A.rdMap);
-  // rdMap kept in full — no pruning. Firebase is source of truth.
+  // rdMap kept in full -- no pruning. Firebase is source of truth.
 
   // rdg-cnt = unique 1-second buckets in rdMap (S1+S2 merged, one row per second)
   const totalRdg = Object.keys(A.rdMap).length;
@@ -2017,7 +2017,7 @@ function fbSet(path, data) {
   });
 }
 
-// Standalone Firebase connectivity test — called after session starts
+// Standalone Firebase connectivity test -- called after session starts
 function testFirebaseWrite() {
   const testUrl = FB_REST + '/_app_test.json';
   LOG('Firebase: testing REST write to ' + testUrl, 'ok');
@@ -2028,20 +2028,20 @@ function testFirebaseWrite() {
     body: JSON.stringify({ ts: Date.now(), v: typeof VER !== 'undefined' ? VER : '?' })
   })
   .then(r => {
-    LOG('Firebase: fetch response received — HTTP ' + r.status + ' ' + r.statusText, r.ok ? 'ok' : 'err');
+    LOG('Firebase: fetch response received -- HTTP ' + r.status + ' ' + r.statusText, r.ok ? 'ok' : 'err');
     if (!r.ok) {
       return r.text().then(t => { throw new Error('HTTP ' + r.status + ': ' + t.slice(0,100)); });
     }
     return r.json();
   })
   .then(result => {
-    LOG('Firebase: REST write SUCCESS ✓ — ' + JSON.stringify(result).slice(0,60), 'ok');
-    setCloud('on', 'Cloud: writing ✓');
+    LOG('Firebase: REST write SUCCESS OK -- ' + JSON.stringify(result).slice(0,60), 'ok');
+    setCloud('on', 'Cloud: writing OK');
     // Clean up test node
     fetch(testUrl, { method: 'DELETE' }).catch(() => {});
   })
   .catch(e => {
-    LOG('Firebase: REST write FAILED — ' + e.message, 'err');
+    LOG('Firebase: REST write FAILED -- ' + e.message, 'err');
     LOG('  URL: ' + testUrl, 'warn');
     LOG('  Check: Is this HTTPS? Is Firebase database provisioned?', 'warn');
     setCloud('off', 'Cloud: write failed');
@@ -2099,11 +2099,11 @@ function drainUpload() {
   }
   if (writeCount > 0) {
     if (!A._fbWriteLogged) {
-      LOG('Firebase: first REST batch queued (' + writeCount + ' records) — waiting for server ack…', 'ok');
+      LOG('Firebase: first REST batch queued (' + writeCount + ' records) -- waiting for server ack...', 'ok');
       A._fbWriteLogged = true;
     }
   } else if (A.upQ.length === 0 && Object.keys(A.rdMap).length > 0) {
-    // Queue empty but we have data — all caught up
+    // Queue empty but we have data -- all caught up
   }
 }
 
@@ -2113,11 +2113,11 @@ function startCollectionTimer() {
   A.collectActive = true;
   if (!A.collectStart) {
     A.collectStart = Date.now();
-    LOG('Data collection timer started ▶', 'ok');
+    LOG('Data collection timer started >', 'ok');
   } else if (A.collectPauseStart) {
     A.collectPaused += Date.now() - A.collectPauseStart;
     A.collectPauseStart = null;
-    LOG('Data collection timer resumed ▶', 'info');
+    LOG('Data collection timer resumed >', 'info');
   }
   const dot = $('collect-dot');
   if (dot) { dot.style.background='var(--g)'; dot.style.animation='dp 1.4s infinite'; }
@@ -2176,7 +2176,7 @@ function logDiagnostics() {
   if (A.s2.con) {
     const iv2 = A.s2._notifyIntervals||[];
     const avg2 = iv2.length ? Math.round(iv2.reduce((a,b)=>a+b,0)/iv2.length) : null;
-    const td = A.s2.tempC!==null ? (A.set.tUnit==='F'?cToF(A.s2.tempC):A.s2.tempC).toFixed(1)+'°'+A.set.tUnit : 'no data';
+    const td = A.s2.tempC!==null ? (A.set.tUnit==='F'?cToF(A.s2.tempC):A.s2.tempC).toFixed(1)+'deg'+A.set.tUnit : 'no data';
     LOG('  S2 (' + (A.s2.name||'WETS02') + '): ' + td
       + (avg2 ? ' | avg interval ' + avg2 + 'ms' : '')
       + (A.s2.batt!==null ? ' | batt '+A.s2.batt+'%' : '')
@@ -2197,7 +2197,7 @@ function logDiagnostics() {
       const lastWriteStr = A.fbLastWrite
         ? Math.round((Date.now() - A.fbLastWrite) / 1000) + 's ago'
         : 'none yet';
-      const status = A.fbErrors > 0 ? '⚠ ' + A.fbErrors + ' error(s)' : 'OK';
+      const status = A.fbErrors > 0 ? '! ' + A.fbErrors + ' error(s)' : 'OK';
       LOG('  Firebase: ' + A.fbWrites + ' records written | last write: ' + lastWriteStr + ' | status: ' + status + ' | queue: ' + A.upQ.length, A.fbErrors > 0 ? 'warn' : 'ok');
     } else {
       LOG('  Firebase: NOT connected', 'err');
@@ -2217,7 +2217,7 @@ function updateDisp() {
   }
   if (A.s2.con && A.s2.tempC !== null) {
     const disp = s.tUnit === 'F' ? cToF(A.s2.tempC) : A.s2.tempC;
-    const unit = '°' + s.tUnit;
+    const unit = 'deg' + s.tUnit;
     setText('sv2', disp.toFixed(1)); $('su2').textContent = unit;
     $('smn2').textContent = A.s2.minT !== null ? A.s2.minT.toFixed(1) + unit : '--';
     $('smx2').textContent = A.s2.maxT !== null ? A.s2.maxT.toFixed(1) + unit : '--';
@@ -2243,8 +2243,8 @@ function updateDisp() {
       : null;
     const r1 = $('collect-rate-s1');
     const r2 = $('collect-rate-s2');
-    if (r1) r1.textContent = A.s1.con && s1avg ? s1avg+'ms' : A.s1.con ? 'waiting…' : 'offline';
-    if (r2) r2.textContent = A.s2.con && s2avg ? s2avg+'ms' : A.s2.con ? 'waiting…' : 'offline';
+    if (r1) r1.textContent = A.s1.con && s1avg ? s1avg+'ms' : A.s1.con ? 'waiting...' : 'offline';
+    if (r2) r2.textContent = A.s2.con && s2avg ? s2avg+'ms' : A.s2.con ? 'waiting...' : 'offline';
     if ($('tb-el')) $('tb-el').textContent = fmtCollect(elMs);
   }
 
@@ -2264,28 +2264,28 @@ function rebuildTbl() {
   const strip = $('rdg-session-strip');
   if (strip && A.sess.active) {
     const tubeParts = [];
-    if (A.sess.tubeDia)   tubeParts.push('Ø ' + A.sess.tubeDia + '"');
+    if (A.sess.tubeDia)   tubeParts.push('O ' + A.sess.tubeDia + '"');
     if (A.sess.tubeThick) tubeParts.push('Wall ' + A.sess.tubeThick + ' mm');
     if (A.sess.tubeLen)   tubeParts.push(A.sess.tubeLen + ' ft');
     const tubeStr = tubeParts.length > 0
-      ? '<span style="color:var(--t3)"> &nbsp;|&nbsp; 📐 ' + tubeParts.join(' · ') + '</span>'
+      ? '<span style="color:var(--t3)"> &nbsp;|&nbsp; 📐 ' + tubeParts.join(' . ') + '</span>'
       : '';
     strip.innerHTML =
-      '<span style="font-weight:700;color:var(--t1)">' + (A.sess.truck||'—') + '</span>' +
-      ' &nbsp;·&nbsp; Job <span style="font-weight:600">' + (A.sess.job||'—')  + '</span>' +
-      ' &nbsp;·&nbsp; Shot <span style="font-weight:600">' + (A.sess.shot||'—') + '</span>' +
-      ' &nbsp;·&nbsp; Seg <span style="font-weight:600">'  + (A.sess.seg||'—')  + '</span>' +
+      '<span style="font-weight:700;color:var(--t1)">' + (A.sess.truck||'--') + '</span>' +
+      ' &nbsp;.&nbsp; Job <span style="font-weight:600">' + (A.sess.job||'--')  + '</span>' +
+      ' &nbsp;.&nbsp; Shot <span style="font-weight:600">' + (A.sess.shot||'--') + '</span>' +
+      ' &nbsp;.&nbsp; Seg <span style="font-weight:600">'  + (A.sess.seg||'--')  + '</span>' +
       tubeStr;
     strip.style.display = '';
   }
   const rows = Object.values(A.rdMap).sort((a,b) => b.tsMs - a.tsMs).slice(0, 2000);
   $('rdg-tbody').innerHTML = rows.map(r => {
-    const p   = r.psi   !== null ? psiConv(r.psi, s.pUnit) + ' ' + s.pUnit : '—';
-    const t   = r.tempC !== null ? (s.tUnit==='F'?cToF(r.tempC):r.tempC).toFixed(1) + '°' + s.tUnit : '—';
+    const p   = r.psi   !== null ? psiConv(r.psi, s.pUnit) + ' ' + s.pUnit : '--';
+    const t   = r.tempC !== null ? (s.tUnit==='F'?cToF(r.tempC):r.tempC).toFixed(1) + 'deg' + s.tUnit : '--';
     const ucl = s.uclEn && r.psi !== null && r.psi > s.ucl;
     const lcl = s.lclEn && r.psi !== null && r.psi < s.lcl;
     const ts  = new Date(r.tsMs).toLocaleTimeString();
-    return `<tr class="${ucl?'ucl-row':lcl?'lcl-row':''}"><td>${ts}</td><td>${p}</td><td>${t}</td><td>${r.job||'—'}</td><td>${r.shot||'—'}</td><td>${r.seg||'—'}</td></tr>`;
+    return `<tr class="${ucl?'ucl-row':lcl?'lcl-row':''}"><td>${ts}</td><td>${p}</td><td>${t}</td><td>${r.job||'--'}</td><td>${r.shot||'--'}</td><td>${r.seg||'--'}</td></tr>`;
   }).join('');
 }
 
@@ -2300,13 +2300,13 @@ function exportLog(e) {
   }
   // Header
   const now  = new Date();
-  lines.push('═══════════════════════════════════════════════');
-  lines.push('  CureLog Phase 1 — Activity Log');
+  lines.push('===============================================');
+  lines.push('  CureLog Phase 1 -- Activity Log');
   lines.push('  Version: v' + VER + '  (CureLog Truck App)');
   lines.push('  Exported: ' + now.toLocaleString());
   lines.push('');
   sessionInfoBlock().forEach(l => lines.push(l));
-  lines.push('═══════════════════════════════════════════════');
+  lines.push('===============================================');
   lines.push('');
   // Log entries
   Array.from(el.children).forEach(d => lines.push(d.textContent));
@@ -2330,18 +2330,18 @@ function doCSV() {
   const s = A.set;
   const rows = Object.values(A.rdMap).sort((a,b) => a.tsMs - b.tsMs);
   const meta = [
-    '# CureLog Phase 1 — Readings Log',
+    '# CureLog Phase 1 -- Readings Log',
     '# Version: v' + VER + '  (CureLog Truck App)',
-    '# Truck: '     + (A.sess.truck     || '—'),
-    '# Job: '       + (A.sess.job       || '—'),
-    '# Shot: '      + (A.sess.shot      || '—'),
-    '# Segment: '   + (A.sess.seg       || '—'),
-    '# Tube Dia: '  + (A.sess.tubeDia   ? A.sess.tubeDia + '"'   : '—'),
-    '# Tube Thick: '+ (A.sess.tubeThick ? A.sess.tubeThick + ' mm' : '—'),
-    '# Tube Len: '  + (A.sess.tubeLen   ? A.sess.tubeLen + ' ft' : '—'),
+    '# Truck: '     + (A.sess.truck     || '--'),
+    '# Job: '       + (A.sess.job       || '--'),
+    '# Shot: '      + (A.sess.shot      || '--'),
+    '# Segment: '   + (A.sess.seg       || '--'),
+    '# Tube Dia: '  + (A.sess.tubeDia   ? A.sess.tubeDia + '"'   : '--'),
+    '# Tube Thick: '+ (A.sess.tubeThick ? A.sess.tubeThick + ' mm' : '--'),
+    '# Tube Len: '  + (A.sess.tubeLen   ? A.sess.tubeLen + ' ft' : '--'),
     '#'
   ];
-  const hdr  = ['Timestamp','Time','Inlet Press ('+s.pUnit+')','Inlet Temp (°'+s.tUnit+')','Job','Shot','Seg','Truck','Tube Dia','Tube Thick','Tube Len'].join(',');
+  const hdr  = ['Timestamp','Time','Inlet Press ('+s.pUnit+')','Inlet Temp (deg'+s.tUnit+')','Job','Shot','Seg','Truck','Tube Dia','Tube Thick','Tube Len'].join(',');
   const body = rows.map(r => [ r.ts, new Date(r.tsMs).toLocaleTimeString(), r.psi!==null?psiConv(r.psi,s.pUnit):'', r.tempC!==null?(s.tUnit==='F'?cToF(r.tempC):r.tempC).toFixed(1):'' , r.job,r.shot,r.seg,r.truck, A.sess.tubeDia||'', A.sess.tubeThick||'', A.sess.tubeLen||'' ].join(','));
   const blob = new Blob([[...meta,hdr,...body].join('\n')], {type:'text/csv'});
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
@@ -2367,11 +2367,11 @@ function initChart() {
   });
   updateChartAnnotations();
 }
-// Chart stores ALL data — never discards.
+// Chart stores ALL data -- never discards.
 // A.chart.lbl/psi/tmp are the master arrays.
-// secMap maps epoch-second → array index for fast lookup.
+// secMap maps epoch-second -> array index for fast lookup.
 // applyChartRange() creates a VIEW (not a copy) into these arrays.
-// Max 18000 points = 5 hours at 1/s — adjust if needed.
+// Max 18000 points = 5 hours at 1/s -- adjust if needed.
 const MAX_CHART_PTS = 18000;
 
 function addChartPt(tsMs, psi, temp) {
@@ -2382,12 +2382,12 @@ function addChartPt(tsMs, psi, temp) {
     if (psi  !== null && psi  !== undefined) A.chart.psi[i] = parseFloat(psiConv(psi, A.set.pUnit));
     if (temp !== null && temp !== undefined) A.chart.tmp[i] = parseFloat(temp.toFixed(1));
   } else {
-    // New second — append
+    // New second -- append
     A.chart.lbl.push(lbl);
     A.chart.psi.push(psi  !== null && psi  !== undefined ? parseFloat(psiConv(psi, A.set.pUnit)) : null);
     A.chart.tmp.push(temp !== null && temp !== undefined ? parseFloat(temp.toFixed(1)) : null);
     secMap[k] = A.chart.lbl.length - 1;
-    // Cap at MAX_CHART_PTS — remove oldest when exceeded
+    // Cap at MAX_CHART_PTS -- remove oldest when exceeded
     if (A.chart.lbl.length > MAX_CHART_PTS) {
       A.chart.lbl.shift();
       A.chart.psi.shift();
@@ -2420,7 +2420,7 @@ function applyChartRange() {
     }
   }
 
-  // ALWAYS use the master arrays — never reassign them.
+  // ALWAYS use the master arrays -- never reassign them.
   // Use slice only for the chart view so master data is preserved.
   const viewLbl = startIdx === 0 ? A.chart.lbl : A.chart.lbl.slice(startIdx);
   const viewPsi = startIdx === 0 ? A.chart.psi : A.chart.psi.slice(startIdx);
@@ -2484,19 +2484,19 @@ function startSession() {
   localStorage.setItem('cl_seg',  A.sess.seg);
   A.fbPath = `shots/${A.sess.job}/${A.sess.shot}/${A.sess.seg}/${A.sess.truck}`;
   LOG('startSession: fbPath set to ' + A.fbPath, 'ok');
-  // Immediate visual feedback — disable button and show "Starting..."
+  // Immediate visual feedback -- disable button and show "Starting..."
   const _btn = $('btn-start');
-  if (_btn) { _btn.disabled = true; _btn.textContent = '⏳ Starting…'; _btn.style.opacity='0.6'; }
+  if (_btn) { _btn.disabled = true; _btn.textContent = '... Starting...'; _btn.style.opacity='0.6'; }
   const _hint = $('su-hint');
-  if (_hint) { _hint.textContent = 'Starting session…'; _hint.className = 'su-hint ok'; }
+  if (_hint) { _hint.textContent = 'Starting session...'; _hint.className = 'su-hint ok'; }
   try { closeStartup(); LOG('startSession: closeStartup OK', 'ok'); }
-  catch(e) { LOG('startSession: closeStartup CRASHED — ' + e.message + ' (line:' + e.stack.split('\n')[1] + ')', 'err'); }
+  catch(e) { LOG('startSession: closeStartup CRASHED -- ' + e.message + ' (line:' + e.stack.split('\n')[1] + ')', 'err'); }
   try { initFB(); LOG('startSession: initFB OK', 'ok'); }
-  catch(e) { LOG('startSession: initFB CRASHED — ' + e.message, 'err'); }
-  try { startDisp(); } catch(e) { LOG('startSession: startDisp CRASHED — ' + e.message, 'err'); }
+  catch(e) { LOG('startSession: initFB CRASHED -- ' + e.message, 'err'); }
+  try { startDisp(); } catch(e) { LOG('startSession: startDisp CRASHED -- ' + e.message, 'err'); }
   if (!A.uplH) A.uplH = setInterval(drainUpload, 2000);
   if (A.s1.con) kickPoll();
-  LOG('Session started — ' + A.sess.truck + ' Job:' + A.sess.job + ' Shot:' + A.sess.shot + ' Seg:' + A.sess.seg, 'ok');
+  LOG('Session started -- ' + A.sess.truck + ' Job:' + A.sess.job + ' Shot:' + A.sess.shot + ' Seg:' + A.sess.seg, 'ok');
   setTimeout(updateSessionInfoDisplays, 100);
   acquireWakeLock();
 }
@@ -2511,8 +2511,8 @@ function devBypass() {
   $('tb-dev').style.display = '';
   startDisp();
   startDevSim();
-  setCloud('off', 'Dev mode — no cloud');
-  LOG('Dev Bypass active — simulated data, no Firebase', 'warn');
+  setCloud('off', 'Dev mode -- no cloud');
+  LOG('Dev Bypass active -- simulated data, no Firebase', 'warn');
 }
 
 function closeStartup() {
@@ -2537,16 +2537,16 @@ function closeStartup() {
 // ── FIREBASE ─────────────────────────────────────────────────
 function initFB() {
   try {
-    // Firebase may already be initialized at boot — just get the db reference
+    // Firebase may already be initialized at boot -- just get the db reference
     if (!firebase.apps.length) firebase.initializeApp(FB_CFG);
     if (!A.fbDb) A.fbDb = firebase.database();
     setCloud('on', 'Cloud: connected');
-    LOG('Firebase connected ✓', 'ok');
+    LOG('Firebase connected OK', 'ok');
     LOG('Firebase path: ' + A.fbPath, 'info');
     $('sf-fb').textContent = 'curelog-phase1-default-rtdb.firebaseio.com';
     // Write session start timestamp so dashboard can measure duration correctly
     A.sessStartMs = Date.now();
-    // Use REST API for _session write — works from content:// origin on Android
+    // Use REST API for _session write -- works from content:// origin on Android
     fbSet(A.fbPath + '/_session', {
       startMs: A.sessStartMs,
       truck: A.sess.truck, job: A.sess.job, shot: A.sess.shot, seg: A.sess.seg,
@@ -2554,7 +2554,7 @@ function initFB() {
       tubeDia:   A.sess.tubeDia   || null,
       tubeThick: A.sess.tubeThick || null,
       tubeLen:   A.sess.tubeLen   || null
-    }).then(() => LOG('Session metadata written ✓', 'ok'))
+    }).then(() => LOG('Session metadata written OK', 'ok'))
       .catch(e => LOG('Session meta write failed: ' + e.message, 'warn'));
 
     // Run comprehensive write test
@@ -2594,7 +2594,7 @@ function shutdownApp() {
   $('sd-rdg-count').textContent  = rdgCount;
 
   const sess = A.sess.active
-    ? A.sess.truck + '  ·  Job ' + A.sess.job + '  ·  Shot ' + A.sess.shot
+    ? A.sess.truck + '  .  Job ' + A.sess.job + '  .  Shot ' + A.sess.shot
     : 'No active session';
   $('sd-session-info').textContent = sess;
 
@@ -2624,8 +2624,8 @@ function sdSkipSave() {
   $('sd-step1').style.display = 'none';
   $('sd-step3').style.display = 'block';
   $('sd-save-result').textContent = 'No logs saved';
-  $('sd-saved-summary').textContent = 'Skipped — no files saved.';
-  $('sd-shutdown-log').textContent = 'Shutting down services…';
+  $('sd-saved-summary').textContent = 'Skipped -- no files saved.';
+  $('sd-shutdown-log').textContent = 'Shutting down services...';
   doShutdownSequence();
 }
 
@@ -2657,14 +2657,14 @@ async function sdProceed() {
     const el = $('su-clog');
     if (el && el.children.length > 0) {
       const lines = [
-        '═══════════════════════════════════════════════',
-        '  CureLog Phase 1 — Connection Log',
+        '===============================================',
+        '  CureLog Phase 1 -- Connection Log',
         '  Version: v' + VER + '  (CureLog Truck App)',
         '  Exported: ' + now.toLocaleString(),
         ''
       ];
       sessionInfoBlock().forEach(l => lines.push(l));
-      lines.push('═══════════════════════════════════════════════');
+      lines.push('===============================================');
       lines.push('');
       Array.from(el.children).forEach(d => lines.push(d.textContent));
       lines.push('', '--- END OF CONNECTION LOG ---');
@@ -2674,7 +2674,7 @@ async function sdProceed() {
       a.download = fnConn + '.txt';
       a.click(); URL.revokeObjectURL(a.href);
       saved.push('Connection Log');
-      LOG('Connection log saved ✓', 'ok');
+      LOG('Connection log saved OK', 'ok');
     }
     await sleep(300);
   }
@@ -2684,14 +2684,14 @@ async function sdProceed() {
     const el = $('alog');
     if (el && el.children.length > 0) {
       const lines = [
-        '═══════════════════════════════════════════════',
-        '  CureLog Phase 1 — Activity Log',
+        '===============================================',
+        '  CureLog Phase 1 -- Activity Log',
         '  Version: v' + VER + '  (CureLog Truck App)',
         '  Exported: ' + now.toLocaleString(),
         ''
       ];
       sessionInfoBlock().forEach(l => lines.push(l));
-      lines.push('═══════════════════════════════════════════════');
+      lines.push('===============================================');
       lines.push('');
       Array.from(el.children).forEach(d => lines.push(d.textContent));
       lines.push('', '--- END OF ACTIVITY LOG ---');
@@ -2701,7 +2701,7 @@ async function sdProceed() {
       a.download = fnAct  + '.txt';
       a.click(); URL.revokeObjectURL(a.href);
       saved.push('Activity Log');
-      LOG('Activity log saved ✓', 'ok');
+      LOG('Activity log saved OK', 'ok');
     }
     await sleep(300);
   }
@@ -2712,18 +2712,18 @@ async function sdProceed() {
     const rows = Object.values(A.rdMap).sort((a,b) => a.tsMs - b.tsMs);
     if (rows.length > 0) {
       const sdMeta = [
-        '# CureLog Phase 1 — Readings Log',
+        '# CureLog Phase 1 -- Readings Log',
         '# Version: v' + VER + '  (CureLog Truck App)',
-        '# Truck: '      + (A.sess.truck     || '—'),
-        '# Job: '        + (A.sess.job       || '—'),
-        '# Shot: '       + (A.sess.shot      || '—'),
-        '# Segment: '    + (A.sess.seg       || '—'),
-        '# Tube Dia: '   + (A.sess.tubeDia   ? A.sess.tubeDia   + '"'   : '—'),
-        '# Tube Thick: ' + (A.sess.tubeThick ? A.sess.tubeThick + ' mm'   : '—'),
-        '# Tube Len: '   + (A.sess.tubeLen   ? A.sess.tubeLen   + ' ft' : '—'),
+        '# Truck: '      + (A.sess.truck     || '--'),
+        '# Job: '        + (A.sess.job       || '--'),
+        '# Shot: '       + (A.sess.shot      || '--'),
+        '# Segment: '    + (A.sess.seg       || '--'),
+        '# Tube Dia: '   + (A.sess.tubeDia   ? A.sess.tubeDia   + '"'   : '--'),
+        '# Tube Thick: ' + (A.sess.tubeThick ? A.sess.tubeThick + ' mm'   : '--'),
+        '# Tube Len: '   + (A.sess.tubeLen   ? A.sess.tubeLen   + ' ft' : '--'),
         '#'
       ];
-      const hdr = ['Timestamp','Time','Inlet Press ('+s.pUnit+')','Inlet Temp (°'+s.tUnit+')','Job','Shot','Seg','Truck','Tube Dia','Tube Thick','Tube Len'].join(',');
+      const hdr = ['Timestamp','Time','Inlet Press ('+s.pUnit+')','Inlet Temp (deg'+s.tUnit+')','Job','Shot','Seg','Truck','Tube Dia','Tube Thick','Tube Len'].join(',');
       const body = rows.map(r => [
         r.ts, new Date(r.tsMs).toLocaleTimeString(),
         r.psi   !== null ? psiConv(r.psi, s.pUnit)                                  : '',
@@ -2737,7 +2737,7 @@ async function sdProceed() {
       a.download = fnRdg  + '.csv';
       a.click(); URL.revokeObjectURL(a.href);
       saved.push('Readings Log (' + rows.length + ' rows)');
-      LOG('Readings log saved ✓ (' + rows.length + ' rows)', 'ok');
+      LOG('Readings log saved OK (' + rows.length + ' rows)', 'ok');
     }
     await sleep(300);
   }
@@ -2745,13 +2745,13 @@ async function sdProceed() {
   // Update summary
   $('sd-saved-summary').textContent = saved.length > 0
     ? 'Saved: ' + saved.join(', ')
-    : 'Nothing saved — all deselected';
+    : 'Nothing saved -- all deselected';
 
   // Switch to step 3 and run shutdown sequence
   $('sd-step2').style.display = 'none';
   $('sd-step3').style.display = 'block';
-  $('sd-save-result').textContent = saved.length > 0 ? 'Files saved ✓' : 'No files saved';
-  $('sd-shutdown-log').textContent = 'Shutting down services…';
+  $('sd-save-result').textContent = saved.length > 0 ? 'Files saved OK' : 'No files saved';
+  $('sd-shutdown-log').textContent = 'Shutting down services...';
 
   // Run the actual shutdown sequence (sensors, timers) and log to modal
   await doShutdownSequence();
@@ -2767,17 +2767,17 @@ async function doShutdownSequence() {
   sdAppendLog('');
 
   const _sd = (msg, type) => { LOG(msg, type||'info'); sdAppendLog(msg); };
-  _sd('════════════════════════════════', 'info');
+  _sd('================================', 'info');
   _sd('SHUTDOWN SEQUENCE STARTED', 'warn');
-  _sd('Session: ' + (A.sess.truck||'—') + ' | Job: ' + (A.sess.job||'—') + ' | Shot: ' + (A.sess.shot||'—') + ' | Seg: ' + (A.sess.seg||'—'), 'info');
+  _sd('Session: ' + (A.sess.truck||'--') + ' | Job: ' + (A.sess.job||'--') + ' | Shot: ' + (A.sess.shot||'--') + ' | Seg: ' + (A.sess.seg||'--'), 'info');
   _sd('Time: ' + new Date().toLocaleString(), 'info');
 
   // Step 1: Stop pressure poll loop
-  _sd('Step 1: Stopping pressure poll loop…', 'info');
+  _sd('Step 1: Stopping pressure poll loop...', 'info');
   A.poll.run = false;
   A.poll.inFlight = false;
   if (A.poll.h) { clearTimeout(A.poll.h); A.poll.h = null; }
-  _sd('Step 1: Poll loop stopped ✓', 'ok');
+  _sd('Step 1: Poll loop stopped OK', 'ok');
   if (A.collectStart) {
     const finalMs = getCollectionElapsed();
     A.collectActive = false;
@@ -2785,33 +2785,33 @@ async function doShutdownSequence() {
   }
 
   // Step 2: Stop display refresh timer
-  _sd('Step 2: Stopping display timer…', 'info');
+  _sd('Step 2: Stopping display timer...', 'info');
   if (A.dispH) { clearInterval(A.dispH); A.dispH = null; }
-  _sd('Step 2: Display timer stopped ✓', 'ok');
+  _sd('Step 2: Display timer stopped OK', 'ok');
 
   // Step 3: Stop elapsed time counter
-  _sd('Step 3: Stopping session timer…', 'info');
+  _sd('Step 3: Stopping session timer...', 'info');
   if (A.elH)   { clearInterval(A.elH);   A.elH   = null; }
   if (A.diagH) { clearInterval(A.diagH); A.diagH = null; }
-  _sd('Step 3: Session timer stopped ✓', 'ok');
+  _sd('Step 3: Session timer stopped OK', 'ok');
 
   // Step 4: Flush Firebase upload queue
-  _sd('Step 4: Flushing upload queue (' + A.upQ.length + ' pending)…', 'info');
+  _sd('Step 4: Flushing upload queue (' + A.upQ.length + ' pending)...', 'info');
   if (!A.dev && A.fbDb && A.upQ.length > 0) {
     drainUpload();
     await sleep(1500);
-    _sd('Step 4: Upload queue flushed ✓', 'ok');
+    _sd('Step 4: Upload queue flushed OK', 'ok');
   } else {
-    _sd('Step 4: No pending uploads ✓', 'ok');
+    _sd('Step 4: No pending uploads OK', 'ok');
   }
 
   // Step 5: Stop upload timer
-  _sd('Step 5: Stopping upload timer…', 'info');
+  _sd('Step 5: Stopping upload timer...', 'info');
   if (A.uplH) { clearInterval(A.uplH); A.uplH = null; }
-  _sd('Step 5: Upload timer stopped ✓', 'ok');
+  _sd('Step 5: Upload timer stopped OK', 'ok');
 
   // Step 6: Disconnect S2 temperature sensor
-  _sd('Step 6: Disconnecting S2 (' + (A.s2.name||'WETS02') + ')…', 'info');
+  _sd('Step 6: Disconnecting S2 (' + (A.s2.name||'WETS02') + ')...', 'info');
   A.s2.manualDisc = true;
   if (A.s2.keepAliveH)  { clearInterval(A.s2.keepAliveH);  A.s2.keepAliveH  = null; }
   if (A.s2.reConHandle) { clearTimeout(A.s2.reConHandle);  A.s2.reConHandle = null; }
@@ -2819,39 +2819,39 @@ async function doShutdownSequence() {
     if (A.s2.chr) {
       A.s2.chr.removeEventListener('characteristicvaluechanged', onS2Temp);
       await A.s2.chr.stopNotifications();
-      _sd('Step 6: S2 notifications stopped ✓', 'ok');
+      _sd('Step 6: S2 notifications stopped OK', 'ok');
     }
-  } catch(e) { LOG('Step 6: S2 notify stop skipped — ' + e.message, 'warn'); }
+  } catch(e) { LOG('Step 6: S2 notify stop skipped -- ' + e.message, 'warn'); }
   try {
-    if (A.s2.dev) { A.s2.dev.gatt.disconnect(); LOG('Step 6: S2 BLE disconnected ✓', 'ok'); }
+    if (A.s2.dev) { A.s2.dev.gatt.disconnect(); LOG('Step 6: S2 BLE disconnected OK', 'ok'); }
     else { LOG('Step 6: S2 was not connected', 'info'); }
-  } catch(e) { LOG('Step 6: S2 disconnect error — ' + e.message, 'warn'); }
+  } catch(e) { LOG('Step 6: S2 disconnect error -- ' + e.message, 'warn'); }
 
   // Step 7: Disconnect S1 pressure sensor
-  _sd('Step 7: Disconnecting S1 (' + (A.s1.name||'TDWLB5') + ')…', 'info');
+  _sd('Step 7: Disconnecting S1 (' + (A.s1.name||'TDWLB5') + ')...', 'info');
   A.s1.manualDisc = true;
   if (A.s1.reConHandle) { clearTimeout(A.s1.reConHandle); A.s1.reConHandle = null; }
   try {
     if (A.s1.chr && A.s1.useNotify) {
       A.s1.chr.removeEventListener('characteristicvaluechanged', onS1PressNotify);
       await A.s1.chr.stopNotifications();
-      _sd('Step 7: S1 notifications stopped ✓', 'ok');
+      _sd('Step 7: S1 notifications stopped OK', 'ok');
     }
-  } catch(e) { LOG('Step 7: S1 notify stop skipped — ' + e.message, 'warn'); }
+  } catch(e) { LOG('Step 7: S1 notify stop skipped -- ' + e.message, 'warn'); }
   try {
-    if (A.s1.dev) { A.s1.dev.gatt.disconnect(); LOG('Step 7: S1 BLE disconnected ✓', 'ok'); }
+    if (A.s1.dev) { A.s1.dev.gatt.disconnect(); LOG('Step 7: S1 BLE disconnected OK', 'ok'); }
     else { LOG('Step 7: S1 was not connected', 'info'); }
-  } catch(e) { LOG('Step 7: S1 disconnect error — ' + e.message, 'warn'); }
+  } catch(e) { LOG('Step 7: S1 disconnect error -- ' + e.message, 'warn'); }
 
-  _sd('Step 8: All services stopped ✓', 'ok');
-  _sd('════════════════════════════════', 'info');
+  _sd('Step 8: All services stopped OK', 'ok');
+  _sd('================================', 'info');
   _sd('SHUTDOWN COMPLETE', 'ok');
-  _sd('════════════════════════════════', 'info');
+  _sd('================================', 'info');
 }
 
 function sdKeepOpen() {
   $('sd-overlay').classList.remove('show');
-  LOG('Session ended — app left open (no close)', 'info');
+  LOG('Session ended -- app left open (no close)', 'info');
 }
 
 async function sdClose() {
@@ -2863,7 +2863,7 @@ async function sdClose() {
     document.body.innerHTML = `
       <div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0f1620;font-family:Segoe UI,sans-serif">
         <div style="text-align:center;color:#c8d6e5;padding:40px">
-          <div style="font-size:56px;margin-bottom:16px">✓</div>
+          <div style="font-size:56px;margin-bottom:16px">OK</div>
           <div style="font-size:22px;font-weight:700;color:#1D9E75;margin-bottom:8px">Session Ended</div>
           <div style="font-size:13px;color:#8896a5;margin-bottom:6px">All sensors disconnected. Data saved to Firebase.</div>
           <div style="font-size:13px;color:#8896a5;margin-bottom:24px">Selected logs saved to your Downloads folder.</div>
@@ -2895,11 +2895,11 @@ function downloadConnLog() {
   const NL = String.fromCharCode(10);
   const now = new Date();
   const lines = [
-    '═══════════════════════════════════════════════',
-    '  CureLog Phase 1 — Connection Log',
+    '===============================================',
+    '  CureLog Phase 1 -- Connection Log',
     '  Version: v' + VER + '  (CureLog Truck App)',
     '  Downloaded: ' + now.toLocaleString(),
-    '═══════════════════════════════════════════════',
+    '===============================================',
     ''
   ];
   Array.from(el.children).forEach(d => lines.push(d.textContent));
@@ -2915,7 +2915,7 @@ function downloadConnLog() {
 }
 
 // ── WIRE BUTTONS ─────────────────────────────────────────────
-// Assign onclick here — NOT in HTML — to guarantee functions are in scope
+// Assign onclick here -- NOT in HTML -- to guarantee functions are in scope
 window.addEventListener('DOMContentLoaded', () => {
   $('scb1').onclick = blePickS1;  // S1 Connect
   $('scb2').onclick = blePickS2;  // S2 Connect
@@ -2942,8 +2942,8 @@ async function readGen5Features(manual = false) {
     if (el) { el.textContent = msg; el.style.color = color || 'var(--t2)'; el.style.fontStyle = 'normal'; }
   };
 
-  LOG('Gen5: reading radio features from sensor…', 'info');
-  setStatus('Reading from sensor…', 'var(--t3)');
+  LOG('Gen5: reading radio features from sensor...', 'info');
+  setStatus('Reading from sensor...', 'var(--t3)');
 
   let lrOk = false, hpOk = false;
   let lrResult = '?', hpResult = '?';
@@ -2968,15 +2968,15 @@ async function readGen5Features(manual = false) {
       if (lrEl) { lrEl.checked = lrEn; lrEl.disabled = false; }
       const siLr = document.getElementById('si-lr-confirmed');
       if (siLr) {
-        siLr.textContent = lrEn ? '✓ ON (confirmed)' : '✗ OFF (confirmed)';
+        siLr.textContent = lrEn ? 'OK ON (confirmed)' : 'X OFF (confirmed)';
         siLr.style.color = lrEn ? 'var(--g)' : 'var(--t3)';
       }
-      LOG('Gen5 Long Range: raw byte=0x' + rawByte.toString(16).padStart(2,'0') + ' → ' + lrResult, 'ok');
+      LOG('Gen5 Long Range: raw byte=0x' + rawByte.toString(16).padStart(2,'0') + ' -> ' + lrResult, 'ok');
     } catch(e) {
       lrResult = 'READ FAILED';
       LOG('Gen5 Long Range read failed: ' + e.message, 'err');
       const siLr = document.getElementById('si-lr-confirmed');
-      if (siLr) { siLr.textContent = '⚠ Read failed'; siLr.style.color = 'var(--re)'; }
+      if (siLr) { siLr.textContent = '! Read failed'; siLr.style.color = 'var(--re)'; }
     }
 
     // ── High Power ──────────────────────────────────────────────────
@@ -3002,20 +3002,20 @@ async function readGen5Features(manual = false) {
       const siHp = document.getElementById('si-hp-confirmed');
       if (siHp) {
         if (xBit === 0) {
-          siHp.textContent = '⚠ Not supported';
+          siHp.textContent = '! Not supported';
           siHp.style.color = 'var(--am)';
         } else {
-          siHp.textContent = yBit === 1 ? '✓ ON (confirmed)' : '✗ OFF (confirmed)';
+          siHp.textContent = yBit === 1 ? 'OK ON (confirmed)' : 'X OFF (confirmed)';
           siHp.style.color = yBit === 1 ? 'var(--g)' : 'var(--t3)';
         }
       }
       LOG('Gen5 High Power: raw byte=0x' + byte.toString(16).padStart(2,'0') +
-          ' → X(supported)=' + xBit + ' Y(enabled)=' + yBit, 'ok');
+          ' -> X(supported)=' + xBit + ' Y(enabled)=' + yBit, 'ok');
     } catch(e) {
       hpResult = 'READ FAILED';
       LOG('Gen5 High Power read failed: ' + e.message, 'err');
       const siHp = document.getElementById('si-hp-confirmed');
-      if (siHp) { siHp.textContent = '⚠ Read failed'; siHp.style.color = 'var(--re)'; }
+      if (siHp) { siHp.textContent = '! Read failed'; siHp.style.color = 'var(--re)'; }
     }
 
     // ── Update status card ──────────────────────────────────────────
@@ -3024,10 +3024,10 @@ async function readGen5Features(manual = false) {
       const hpTxt = !A.s1.hpSupported ? 'not supported by this hardware'
                   : A.s1.hpEnabled    ? 'ON (M8 power required)'
                                       : 'OFF';
-      setStatus(`Long Range: ${lrTxt}  ·  High Power: ${hpTxt}`, 'var(--t2)');
-      LOG('Gen5 read complete — LR:' + lrTxt + '  HP:' + hpTxt, 'ok');
+      setStatus(`Long Range: ${lrTxt}  .  High Power: ${hpTxt}`, 'var(--t2)');
+      LOG('Gen5 read complete -- LR:' + lrTxt + '  HP:' + hpTxt, 'ok');
     } else {
-      setStatus('Partial read — check Activity Log for details.', 'var(--am)');
+      setStatus('Partial read -- check Activity Log for details.', 'var(--am)');
     }
 
   } catch(e) {
@@ -3041,13 +3041,13 @@ async function readGen5Features(manual = false) {
 
 async function setLongRange(enable) {
   if (!A.s1.srv) { LOG('S1 not connected', 'warn'); return; }
-  LOG('Gen5: setting Long Range → ' + (enable ? 'ON' : 'OFF') + '…', 'info');
+  LOG('Gen5: setting Long Range -> ' + (enable ? 'ON' : 'OFF') + '...', 'info');
 
   // Disable toggle while working
   const lrEl = document.getElementById('set-lr');
   if (lrEl) lrEl.disabled = true;
   const siLr = document.getElementById('si-lr-confirmed');
-  if (siLr) { siLr.textContent = 'Writing…'; siLr.style.color = 'var(--t3)'; }
+  if (siLr) { siLr.textContent = 'Writing...'; siLr.style.color = 'var(--t3)'; }
 
   try {
     const svc    = A.s1.svc || await A.s1.srv.getPrimaryService(SVC1);
@@ -3065,7 +3065,7 @@ async function setLongRange(enable) {
 
     if (lrEl) { lrEl.checked = confirmed; lrEl.disabled = false; }
     if (siLr) {
-      siLr.textContent = confirmed ? '✓ ON (confirmed)' : '✗ OFF (confirmed)';
+      siLr.textContent = confirmed ? 'OK ON (confirmed)' : 'X OFF (confirmed)';
       siLr.style.color = confirmed ? 'var(--g)' : 'var(--t3)';
     }
     LOG('Gen5 Long Range confirmed by re-read: ' + confirmTxt + ' (raw=0x' + verify.getUint8(0).toString(16) + ')', 'ok');
@@ -3075,29 +3075,29 @@ async function setLongRange(enable) {
                 : A.s1.hpEnabled    ? 'ON' : 'OFF';
     const statusEl = document.getElementById('gen5-status-text');
     if (statusEl) {
-      statusEl.textContent = `Long Range: ${confirmTxt}  ·  High Power: ${hpTxt}`;
+      statusEl.textContent = `Long Range: ${confirmTxt}  .  High Power: ${hpTxt}`;
       statusEl.style.color = 'var(--t2)';
     }
 
     if (enable !== confirmed) {
-      LOG('⚠ Gen5 Long Range: wrote ' + (enable?'ON':'OFF') + ' but sensor confirmed ' + confirmTxt + ' — check sensor firmware', 'warn');
+      LOG('! Gen5 Long Range: wrote ' + (enable?'ON':'OFF') + ' but sensor confirmed ' + confirmTxt + ' -- check sensor firmware', 'warn');
     }
   } catch(e) {
     LOG('Gen5 Long Range write failed: ' + e.message, 'err');
     // Revert toggle to previous state
     if (lrEl) { lrEl.checked = !enable; lrEl.disabled = false; }
-    if (siLr) { siLr.textContent = '⚠ Write failed'; siLr.style.color = 'var(--re)'; }
+    if (siLr) { siLr.textContent = '! Write failed'; siLr.style.color = 'var(--re)'; }
   }
 }
 
 async function setHighPower(enable) {
   if (!A.s1.srv) { LOG('S1 not connected', 'warn'); return; }
-  LOG('Gen5: setting High Power → ' + (enable ? 'ON' : 'OFF') + '…', 'info');
+  LOG('Gen5: setting High Power -> ' + (enable ? 'ON' : 'OFF') + '...', 'info');
 
   const hpEl = document.getElementById('set-hp');
   if (hpEl) hpEl.disabled = true;
   const siHp = document.getElementById('si-hp-confirmed');
-  if (siHp) { siHp.textContent = 'Writing…'; siHp.style.color = 'var(--t3)'; }
+  if (siHp) { siHp.textContent = 'Writing...'; siHp.style.color = 'var(--t3)'; }
 
   try {
     const svc    = A.s1.svc || await A.s1.srv.getPrimaryService(SVC1);
@@ -3111,7 +3111,7 @@ async function setHighPower(enable) {
     LOG('Gen5 High Power: wrote 0x' + newByte.toString(16).padStart(2,'0') +
         ' (X=' + xBit + ' Y=' + (enable?1:0) + ')', 'ok');
 
-    if (enable) LOG('⚠ High Power: sensor must be powered via M8 connector for this to take effect', 'warn');
+    if (enable) LOG('! High Power: sensor must be powered via M8 connector for this to take effect', 'warn');
 
     // Re-read to confirm
     await new Promise(r => setTimeout(r, 300));
@@ -3126,10 +3126,10 @@ async function setHighPower(enable) {
     if (hpEl) { hpEl.checked = vY === 1; hpEl.disabled = vX === 0; }
     if (siHp) {
       if (vX === 0) {
-        siHp.textContent = '⚠ Not supported';
+        siHp.textContent = '! Not supported';
         siHp.style.color = 'var(--am)';
       } else {
-        siHp.textContent = vY === 1 ? '✓ ON (confirmed)' : '✗ OFF (confirmed)';
+        siHp.textContent = vY === 1 ? 'OK ON (confirmed)' : 'X OFF (confirmed)';
         siHp.style.color = vY === 1 ? 'var(--g)' : 'var(--t3)';
       }
     }
@@ -3141,17 +3141,17 @@ async function setHighPower(enable) {
     const hpTxt = vX === 0 ? 'not supported' : vY === 1 ? 'ON (M8 power required)' : 'OFF';
     const statusEl = document.getElementById('gen5-status-text');
     if (statusEl) {
-      statusEl.textContent = `Long Range: ${lrTxt}  ·  High Power: ${hpTxt}`;
+      statusEl.textContent = `Long Range: ${lrTxt}  .  High Power: ${hpTxt}`;
       statusEl.style.color = 'var(--t2)';
     }
 
     if (enable !== (vY === 1)) {
-      LOG('⚠ Gen5 High Power: wrote ' + (enable?'ON':'OFF') + ' but sensor confirmed ' + confirmTxt + ' — check sensor firmware', 'warn');
+      LOG('! Gen5 High Power: wrote ' + (enable?'ON':'OFF') + ' but sensor confirmed ' + confirmTxt + ' -- check sensor firmware', 'warn');
     }
   } catch(e) {
     LOG('Gen5 High Power write failed: ' + e.message, 'err');
     if (hpEl) { hpEl.checked = !enable; hpEl.disabled = false; }
-    if (siHp) { siHp.textContent = '⚠ Write failed'; siHp.style.color = 'var(--re)'; }
+    if (siHp) { siHp.textContent = '! Write failed'; siHp.style.color = 'var(--re)'; }
   }
 }
 
@@ -3193,17 +3193,17 @@ function updateHpBitDisplay(byte) {
     if (!el) return;
     el.textContent = val;
     if (isFixed) {
-      // always-0 bits — grey
+      // always-0 bits -- grey
       el.style.background = '#e2e6ea';
       el.style.borderColor = '#c8d0d8';
       el.style.color = '#8896a5';
     } else if (val === 1) {
-      // active/ON — green
+      // active/ON -- green
       el.style.background = '#d4f0e4';
       el.style.borderColor = 'var(--g)';
       el.style.color = 'var(--gd)';
     } else {
-      // inactive/OFF — light grey
+      // inactive/OFF -- light grey
       el.style.background = '#f0f3f7';
       el.style.borderColor = '#c8d0d8';
       el.style.color = 'var(--t2)';
@@ -3211,8 +3211,8 @@ function updateHpBitDisplay(byte) {
   };
   setBox('hp-bit3', b3, true);
   setBox('hp-bit2', b2, true);
-  setBox('hp-bit1', x,  false); // X — TD set, show but not editable
-  setBox('hp-bit0', y,  false); // Y — customer set
+  setBox('hp-bit1', x,  false); // X -- TD set, show but not editable
+  setBox('hp-bit0', y,  false); // Y -- customer set
   const rawEl = document.getElementById('hp-raw-hex');
   if (rawEl) rawEl.textContent = '0x' + byte.toString(16).padStart(2,'0').toUpperCase();
 }
@@ -3220,14 +3220,14 @@ function updateHpBitDisplay(byte) {
 
 function sessionInfoBlock() {
   const s = A.sess;
-  const ti = s.tubeDia    ? s.tubeDia    + '"'  : '—';
-  const tt = s.tubeThick  ? s.tubeThick  + ' mm'  : '—';
-  const tl = s.tubeLen    ? s.tubeLen    + ' ft' : '—';
+  const ti = s.tubeDia    ? s.tubeDia    + '"'  : '--';
+  const tt = s.tubeThick  ? s.tubeThick  + ' mm'  : '--';
+  const tl = s.tubeLen    ? s.tubeLen    + ' ft' : '--';
   return [
-    '  Truck:          ' + (s.truck   || '—'),
-    '  Job:            ' + (s.job     || '—'),
-    '  Shot:           ' + (s.shot    || '—'),
-    '  Segment:        ' + (s.seg     || '—'),
+    '  Truck:          ' + (s.truck   || '--'),
+    '  Job:            ' + (s.job     || '--'),
+    '  Shot:           ' + (s.shot    || '--'),
+    '  Segment:        ' + (s.seg     || '--'),
     '  Tube Diameter:  ' + ti,
     '  Tube Thickness: ' + tt,
     '  Tube Length:    ' + tl,
@@ -3239,15 +3239,15 @@ function sessionInfoBlock() {
 function updateSessionInfoDisplays() {
   if (!A.sess.active) return;
   const tp = [];
-  if (A.sess.tubeDia)   tp.push('Ø '    + A.sess.tubeDia   + '"');
+  if (A.sess.tubeDia)   tp.push('O '    + A.sess.tubeDia   + '"');
   if (A.sess.tubeThick) tp.push('Wall ' + A.sess.tubeThick + ' mm');
   if (A.sess.tubeLen)   tp.push(A.sess.tubeLen + ' ft');
-  const tubeHtml = tp.length > 0 ? '&nbsp; | &nbsp;📐 ' + tp.join(' · ') : '';
+  const tubeHtml = tp.length > 0 ? '&nbsp; | &nbsp;📐 ' + tp.join(' . ') : '';
   const html =
     '<b>' + A.sess.truck + '</b>' +
-    '&nbsp; · &nbsp;Job <b>'  + A.sess.job  + '</b>' +
-    '&nbsp; · &nbsp;Shot <b>' + A.sess.shot + '</b>' +
-    '&nbsp; · &nbsp;Seg <b>'  + A.sess.seg  + '</b>' +
+    '&nbsp; . &nbsp;Job <b>'  + A.sess.job  + '</b>' +
+    '&nbsp; . &nbsp;Shot <b>' + A.sess.shot + '</b>' +
+    '&nbsp; . &nbsp;Seg <b>'  + A.sess.seg  + '</b>' +
     tubeHtml;
   const pathEl = $('coll-session-path');
   if (pathEl) pathEl.innerHTML = html;
@@ -3257,6 +3257,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.35-m','Fixed Wake Lock not working: non-ASCII chars (checkmark, em-dash) in Wake Lock LOG strings caused silent JS parse failure on some Android Chrome versions; all JS string literals now ASCII-only'],
   ['2.1.34-m','REAL root cause of truncated changelog: HTML tags in descriptions (v2.1.24 had &lt;style&gt;, v2.1.2 had &lt;/body&gt;) were parsed as actual HTML when set via innerHTML, consuming all remaining rows. Fixed by HTML-escaping all descriptions.'],
   ['2.1.33-m','About modal final fix: all header sections use fixed pixel heights (48/72/52px) so scroll area top:172px is exact -- no JS positioning, no sticky, no flex'],
   ['2.1.32-m','About modal rebuilt with sticky header inside single scroll container -- no JS positioning -- scroll guaranteed on all mobile browsers'],
@@ -3368,7 +3369,7 @@ function filterAbout(val) {
 
 
 function checkBleAvailability() {
-  if (typeof navigator.bluetooth !== 'undefined') return; // BLE available — all good
+  if (typeof navigator.bluetooth !== 'undefined') return; // BLE available -- all good
 
   const ua        = navigator.userAgent;
   const isIphone  = /iPhone/.test(ua);
@@ -3381,24 +3382,24 @@ function checkBleAvailability() {
   let msg, detail;
 
   if (isIOS && isBluefy) {
-    // Bluefy is installed but BLE still not available — likely needs HTTPS
-    msg    = '⚠ CureLog must be hosted on HTTPS to use Bluetooth in Bluefy';
+    // Bluefy is installed but BLE still not available -- likely needs HTTPS
+    msg    = '! CureLog must be hosted on HTTPS to use Bluetooth in Bluefy';
     detail = 'You are running Bluefy (great choice!) but Web Bluetooth requires a secure ' +
              'HTTPS connection. Open CureLog from its hosted URL instead of a local file. ' +
              'Visit: https://[your-hosted-url] in Bluefy.';
   } else if (isIOS) {
-    // iOS but not Bluefy — direct them to install it
-    msg    = '⚠ Bluetooth requires the Bluefy browser on iPhone/iPad';
+    // iOS but not Bluefy -- direct them to install it
+    msg    = '! Bluetooth requires the Bluefy browser on iPhone/iPad';
     detail = 'Safari and Chrome on iOS cannot access Bluetooth. ' +
-             'Install the free "Bluefy – Web BLE Browser" app from the App Store, ' +
+             'Install the free "Bluefy -- Web BLE Browser" app from the App Store, ' +
              'then open CureLog hosted URL in Bluefy. ' +
              'Bluefy supports the same Web Bluetooth API used by CureLog.';
   } else {
-    msg    = '⚠ Web Bluetooth is not available';
+    msg    = '! Web Bluetooth is not available';
     detail = 'Please open CureLog in Google Chrome (version 70 or later) on Windows, Mac, or Android.';
   }
 
-  const fullMsg = msg + ' — ' + detail;
+  const fullMsg = msg + ' -- ' + detail;
   LOG(fullMsg, 'err');
   [$('scb1'),$('scb2')].forEach(b => {
     if (b) { b.disabled = true; b.textContent = isIOS ? 'Need Bluefy' : 'Need Chrome'; b.style.opacity = '0.4'; }
@@ -3406,25 +3407,25 @@ function checkBleAvailability() {
   const hint = $('su-hint');
   if (hint) {
     const storeLink = isIOS
-      ? ' <a href="https://apps.apple.com/app/bluefy-web-ble-browser/id1492822055" style="color:#b91c1c;font-weight:700">→ Get Bluefy on App Store</a>'
+      ? ' <a href="https://apps.apple.com/app/bluefy-web-ble-browser/id1492822055" style="color:#b91c1c;font-weight:700">-> Get Bluefy on App Store</a>'
       : '';
     hint.innerHTML = '<b>' + msg + '</b><br><span style="font-weight:400">' + detail + '</span>' + storeLink;
     hint.style.cssText = 'color:#b91c1c;background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;padding:12px 14px;font-size:12px;line-height:1.6;margin:0 0 10px;display:block';
   }
 }
 
-// ── WAKE LOCK ─────────────────────────────────────────────────────────────
+// -- WAKE LOCK -------------------------------------------------------------
 let _wakeLock = null;
 async function acquireWakeLock() {
   if (!('wakeLock' in navigator)) { LOG('Wake Lock: not supported on this browser', 'warn'); return; }
   try {
     _wakeLock = await navigator.wakeLock.request('screen');
-    LOG('Wake Lock: screen will stay ON during session ✓', 'ok');
+    LOG('Wake Lock: screen will stay ON during session OK', 'ok');
     _wakeLock.addEventListener('release', () => {
-      LOG('Wake Lock released — Android may dim screen', 'warn');
+      LOG('Wake Lock released -- Android may dim screen', 'warn');
       if (A.sess && A.sess.active) setTimeout(acquireWakeLock, 2000);
     });
-  } catch(e) { LOG('Wake Lock failed: ' + e.message + ' — keep screen on manually', 'warn'); }
+  } catch(e) { LOG('Wake Lock failed: ' + e.message + ' -- keep screen on manually', 'warn'); }
 }
 function releaseWakeLock() {
   if (_wakeLock) { _wakeLock.release().catch(()=>{}); _wakeLock = null; }
@@ -3435,11 +3436,11 @@ document.addEventListener('visibilitychange', () => {
 
 // ── BOOT ─────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  // Always run settings/init — never bail out early
+  // Always run settings/init -- never bail out early
   loadSettings(); loadTruck(); loadFilters();
   updateLegend();
   ['sf-ver','su-ver','tb-ver'].forEach(id => { const e = $(id); if(e) e.textContent = 'v' + VER; });
-  LOG('CureLog Phase 1 Mobile Truck App — v' + VER, 'ok');
+  LOG('CureLog Phase 1 Mobile Truck App -- v' + VER, 'ok');
   // Sync Start Session button state on load
   setTimeout(chkReady, 300);
   setTimeout(chkReady, 1000);
@@ -3452,21 +3453,21 @@ window.addEventListener('DOMContentLoaded', () => {
   const _isIOS = /iPhone|iPad/.test(_ua) || (/Mac/.test(_ua) && 'ontouchend' in document);
   const _isLocal = location.protocol !== 'https:';
   if (_isIOS && _isLocal) {
-    LOG('⚠ iOS detected with local file URL — Bluetooth and Firebase writes require HTTPS hosting', 'warn');
-    LOG('→ Host CureLog on GitHub Pages or any HTTPS server for full iOS support', 'warn');
+    LOG('! iOS detected with local file URL -- Bluetooth and Firebase writes require HTTPS hosting', 'warn');
+    LOG('-> Host CureLog on GitHub Pages or any HTTPS server for full iOS support', 'warn');
   }
 
-  // BLE check — warn but DO NOT return early (settings must always load)
+  // BLE check -- warn but DO NOT return early (settings must always load)
   if (!navigator.bluetooth) {
-    LOG('⚠ Web Bluetooth NOT available — use Chrome', 'err');
+    LOG('! Web Bluetooth NOT available -- use Chrome', 'err');
     checkBleAvailability(); // show inline warning
   } else {
-    LOG('Web Bluetooth: present ✓', 'ok');
+    LOG('Web Bluetooth: present OK', 'ok');
     navigator.bluetooth.getAvailability().then(ok => {
-      LOG('Bluetooth adapter: ' + (ok ? 'ready ✓' : '⚠ unavailable — enable Bluetooth in settings'), ok ? 'ok' : 'err');
+      LOG('Bluetooth adapter: ' + (ok ? 'ready OK' : '! unavailable -- enable Bluetooth in settings'), ok ? 'ok' : 'err');
       if (!ok) {
         const hint = $('su-hint');
-        if (hint) { hint.textContent = '⚠ Bluetooth is off — enable in system settings'; hint.style.color='var(--re)'; }
+        if (hint) { hint.textContent = '! Bluetooth is off -- enable in system settings'; hint.style.color='var(--re)'; }
       }
     }).catch(e => LOG('BLE availability check: ' + e.message, 'warn'));
   }
@@ -3476,7 +3477,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (!firebase.apps.length) firebase.initializeApp(FB_CFG);
     A.fbDb = firebase.database();
     setCloud('on', 'Cloud: connected');
-    LOG('Firebase: pre-connected ✓', 'ok');
+    LOG('Firebase: pre-connected OK', 'ok');
   } catch(e) {
     LOG('Firebase pre-init: ' + e.message, 'err');
     setCloud('off', 'Cloud: offline');
