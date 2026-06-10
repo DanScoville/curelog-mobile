@@ -219,7 +219,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 .log-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bor);background:#f8f9fa}
 .log-hdr-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2)}
 .log-save-btn{padding:6px 14px;background:var(--g);color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer}
-#alog{background:#0e1a28;padding:12px;height:200px;overflow-y:auto;-webkit-overflow-scrolling:touch;font-family:monospace;font-size:10px}
+#alog{background:#0e1a28;color:#c8d6e5;padding:12px;height:250px;overflow-y:auto;-webkit-overflow-scrolling:touch;font-family:monospace;font-size:12px}
 #alog div{margin-bottom:2px;line-height:1.4}
 #alog .ok{color:#4ade80}
 #alog .err{color:#f87171}
@@ -227,7 +227,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 #alog .info{color:#7a8fa8}
 .conn-log-toggle{cursor:pointer;user-select:none}
 #su-clog-wrap{display:block}
-#su-clog{background:#0e1a28;padding:10px;height:120px;overflow-y:auto;-webkit-overflow-scrolling:touch;font-family:monospace;font-size:10px;-webkit-overflow-scrolling:touch}
+#su-clog{background:#0e1a28;color:#c8d6e5;padding:12px;height:180px;overflow-y:auto;-webkit-overflow-scrolling:touch;font-family:monospace;font-size:12px}
 #su-clog div{margin-bottom:2px;line-height:1.4}
 #su-clog .ok{color:#4ade80}
 #su-clog .err{color:#f87171}
@@ -481,6 +481,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
         &#9654; Start Session
       </button>
       <button class="dev-bypass-btn" onclick="devBypass()">Dev Bypass</button>
+
+      <!-- Session active banner - shown instead of Start Session button during session -->
+      <div id="session-active-banner" style="display:none;margin-top:12px;padding:16px;background:linear-gradient(135deg,#0e1a28,#1a2e44);border-radius:14px;text-align:center">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.6);margin-bottom:6px">Session Active</div>
+        <div id="sab-info" style="font-size:14px;font-weight:700;color:#fff;margin-bottom:12px"></div>
+        <button onclick="shutdownApp()" style="background:var(--re);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;width:100%">Stop  End Session</button>
+      </div>
 
     </div><!-- /panel-setup -->
 
@@ -911,7 +918,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.36-ipad';
+const VER = '2.1.38-ipad';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -2604,6 +2611,20 @@ function closeStartup() {
   const _ss=$('si-shot');  if(_ss) _ss.textContent = A.sess.shot;
   const _sg=$('si-seg');   if(_sg) _sg.textContent = A.sess.seg;
   refreshJobInfo(); // sync the "no session" note
+  // Hide Start Session button and show session-active state in setup panel
+  const _btnStart = $('btn-start');
+  if (_btnStart) { _btnStart.style.display = 'none'; }
+  const _hint = $('su-hint');
+  if (_hint) {
+    _hint.textContent = 'Session active -- ' + A.sess.truck + ' Job:' + A.sess.job + ' Shot:' + A.sess.shot;
+    _hint.className = 'su-hint ok';
+    _hint.style.display = 'block';
+  }
+  // Show session-active banner in setup panel
+  const _sab = $('session-active-banner');
+  if (_sab) _sab.style.display = 'block';
+  const _sabInfo = $('sab-info');
+  if (_sabInfo) _sabInfo.textContent = A.sess.truck + '  --  Job ' + A.sess.job + '  --  Shot ' + A.sess.shot + '  --  Seg ' + A.sess.seg;
 }
 
 // ── FIREBASE ─────────────────────────────────────────────────
@@ -2655,6 +2676,11 @@ function sdFilename(logType) {
 
 function shutdownApp() {
   releaseWakeLock();
+  // Reset Setup panel to pre-session state
+  const _btnStart = $('btn-start');
+  if (_btnStart) { _btnStart.style.display = ''; _btnStart.disabled = false; _btnStart.textContent = '&#9654; Start Session'; }
+  const _sab = $('session-active-banner');
+  if (_sab) _sab.style.display = 'none';
   const connEl   = $('su-clog');
   const actEl    = $('alog');
   const connCount = connEl ? connEl.children.length : 0;
@@ -3329,6 +3355,8 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.38-ipad','Fixed connection log and activity log unreadable on iPad: default text color was inheriting dark-on-dark; set to #c8d6e5 light blue-grey, increased font to 12px and height to 180/250px'],
+  ['2.1.37-ipad','Fixed stuck on Starting: Start Session button now hides after session starts and is replaced by Session Active banner with End Session button visible in always-on landscape setup panel'],
   ['2.1.36-ipad','Fixed BLE sensor not connecting on iPad: 62 missing element IDs caused JS crash in updS1UI before connection state could update; all missing IDs stubbed, 16 display IDs renamed to match JS expectations'],
   ['2.1.35-ipad','Initial iPad app rebuild: full v2.1.35 JS (Firebase REST, Wake Lock, About modal, all bug fixes), iPad-optimized layout with top tab bar, two-column sensor grid, landscape split view, larger touch targets'],
   ['2.1.35-m','Fixed Wake Lock not working: non-ASCII chars (checkmark, em-dash) in Wake Lock LOG strings caused silent JS parse failure on some Android Chrome versions; all JS string literals now ASCII-only'],
