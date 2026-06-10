@@ -84,23 +84,21 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
 /* ── LANDSCAPE SPLIT LAYOUT ────────────────────────────────────────── */
 @media (orientation:landscape) and (min-width:768px) {
-  #panels{display:grid;grid-template-columns:1fr 1fr;gap:0}
-  .panel{position:relative;display:block;overflow-y:auto}
-  #panel-setup{border-right:1px solid var(--bor)}
-  #panel-monitor,#panel-logs,#panel-settings{display:none}
+  #panels{display:grid;grid-template-columns:1fr 1fr;gap:0;position:relative}
+  /* Override absolute positioning for grid layout */
+  .panel{position:relative;inset:auto;display:none;overflow-y:auto;
+         padding:16px 20px calc(16px + var(--safe-bottom))}
+  /* Setup panel always visible on left */
+  #panel-setup{display:block !important;border-right:1px solid var(--bor)}
+  /* Right panel: only show the active one */
   #panel-monitor.active,#panel-logs.active,#panel-settings.active{display:block}
-  /* In landscape, setup always shows on left */
-  #panel-setup{display:block !important}
-  #tabbar .tab-btn[id="tab-setup"]{display:none}
+  /* Hide setup tab button in landscape (it's always shown) */
+  #tab-setup{display:none !important}
 }
 
 /* ── STARTUP OVERLAY ───────────────────────────────────────────────── */
 #su-overlay{
-  position:fixed;inset:0;z-index:500;
-  background:var(--bg);
-  display:flex;align-items:center;justify-content:center;
-  padding:20px;
-  opacity:1;transition:opacity .3s;
+  display:none;  /* iPad uses setup panel directly, no startup overlay needed */
 }
 #su-card{
   background:var(--card);border-radius:20px;
@@ -918,7 +916,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.38-ipad';
+const VER = '2.1.39-ipad';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3355,6 +3353,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.39-ipad','Comprehensive iPad fixes: (1) su-overlay starts hidden so panels are immediately tappable; (2) landscape panel CSS fixed with position:relative+inset:auto for correct grid layout; (3) version display corrected; (4) su-ver removed from boot sequence'],
   ['2.1.38-ipad','Fixed connection log and activity log unreadable on iPad: default text color was inheriting dark-on-dark; set to #c8d6e5 light blue-grey, increased font to 12px and height to 180/250px'],
   ['2.1.37-ipad','Fixed stuck on Starting: Start Session button now hides after session starts and is replaced by Session Active banner with End Session button visible in always-on landscape setup panel'],
   ['2.1.36-ipad','Fixed BLE sensor not connecting on iPad: 62 missing element IDs caused JS crash in updS1UI before connection state could update; all missing IDs stubbed, 16 display IDs renamed to match JS expectations'],
@@ -3541,7 +3540,9 @@ window.addEventListener('DOMContentLoaded', () => {
   // Always run settings/init -- never bail out early
   loadSettings(); loadTruck(); loadFilters();
   updateLegend();
-  ['sf-ver','su-ver','tb-ver'].forEach(id => { const e = $(id); if(e) e.textContent = 'v' + VER; });
+  ['sf-ver','tb-ver'].forEach(id => { const e = $(id); if(e) e.textContent = 'v' + VER; });
+  // Also set version in settings display
+  const svd = $('settings-ver-display'); if(svd) svd.textContent = 'v' + VER;
   LOG('CureLog Phase 1 Mobile Truck App -- v' + VER, 'ok');
   // Sync Start Session button state on load
   setTimeout(chkReady, 300);
