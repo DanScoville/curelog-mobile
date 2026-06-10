@@ -294,10 +294,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 .about-current-ver{font-size:22px;font-weight:700;font-family:monospace;color:#0F6E56;line-height:1}
 .about-current-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#1D9E75;margin-bottom:3px}
 .about-current-desc{font-size:11px;color:#4a5568;margin-top:4px;line-height:1.4}
-.about-search-wrap{position:absolute;top:148px;left:0;right:0;padding:8px 18px;border-bottom:1px solid #e2e8f0;background:#fafbfc;z-index:1}
+.about-search-wrap{position:absolute;left:0;right:0;padding:8px 18px;border-bottom:1px solid #e2e8f0;background:#fafbfc;z-index:1}
 .about-search{width:100%;padding:8px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box}
 .about-search:focus{border-color:#1D9E75}
-.about-body{position:absolute;top:200px;left:0;right:0;bottom:0;overflow-y:scroll;-webkit-overflow-scrolling:touch}
+.about-body{position:absolute;left:0;right:0;bottom:0;overflow-y:scroll;-webkit-overflow-scrolling:touch}
 .about-table-wrap{padding:8px 18px 40px}
 .about-table{width:100%;border-collapse:collapse;font-size:12px}
 .about-table thead th{background:#f5f6f8;padding:8px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#7a8fa8;border-bottom:2px solid #e2e8f0}
@@ -842,7 +842,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.27-m';
+const VER = '2.1.28-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3260,6 +3260,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.28-m','Fixed About modal showing only 4 entries: search-wrap and body now dynamically positioned via JS requestAnimationFrame after render instead of hardcoded top values; current version desc capped at 120 chars'],
   ['2.1.27-m','About modal rebuilt with position:absolute layout — eliminates all flex scroll ambiguity on mobile; hdr/current/search are fixed; body uses explicit top:200px bottom:0 bounds for reliable scroll on all Android Chrome versions'],
   ['2.1.26-m','Fixed About modal scrolling on mobile: overflow-y:scroll with -webkit-overflow-scrolling:touch, min-height:0 on flex child, card uses full overlay height'],
   ['2.1.25-m','Fixed About modal only showing one entry — about-body scroll wrapper was missing so table clipped; all 52 changelog entries now visible and scrollable'],
@@ -3327,13 +3328,27 @@ function openAbout() {
   const curVerEl = document.getElementById('about-cur-ver');
   const curDescEl = document.getElementById('about-cur-desc');
   if (curVerEl)  curVerEl.textContent = 'v' + curVer;
-  if (curDescEl) curDescEl.textContent = curEntry ? curEntry[1] : '';
+  if (curDescEl) { const d = curEntry ? curEntry[1] : ''; curDescEl.textContent = d.length > 120 ? d.slice(0,117) + '…' : d; }
   // Render table
   renderAboutTable('');
   // Clear search
   const s = document.getElementById('about-search');
   if (s) s.value = '';
   overlay.classList.add('show');
+  // Dynamically position search + body based on actual rendered heights
+  requestAnimationFrame(() => {
+    const hdr     = document.querySelector('.about-hdr');
+    const current = document.querySelector('.about-current');
+    const search  = document.querySelector('.about-search-wrap');
+    const body    = document.querySelector('.about-body');
+    if (hdr && current && search && body) {
+      const hdrH     = hdr.offsetHeight;
+      const currentH = current.offsetHeight;
+      const searchH  = search.offsetHeight;
+      search.style.top = (hdrH + currentH) + 'px';
+      body.style.top   = (hdrH + currentH + searchH) + 'px';
+    }
+  });
 }
 
 function closeAbout() {
