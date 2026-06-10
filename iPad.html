@@ -492,12 +492,12 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
         <div class="ctb-row1">
           <div class="ctb-dot"></div>
           <div class="ctb-label">Active Collection</div>
-          <div class="ctb-timer" id="coll-timer">00:00:00</div>
+          <div class="ctb-timer" id="collect-elapsed">00:00:00</div>
         </div>
         <div class="ctb-stats">
-          <div class="ctb-stat">Readings: <span id="coll-count">0</span></div>
-          <div class="ctb-stat">S1: <span id="coll-s1-int">--</span></div>
-          <div class="ctb-stat">S2: <span id="coll-s2-int">--</span></div>
+          <div class="ctb-stat">Readings: <span id="collect-readings">0</span></div>
+          <div class="ctb-stat">S1: <span id="collect-rate-s1">--</span></div>
+          <div class="ctb-stat">S2: <span id="collect-rate-s2">--</span></div>
         </div>
         <div id="coll-session-path"></div>
       </div>
@@ -507,25 +507,25 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
         <div id="tile-s1" class="tile">
           <div class="tile-label">
             <span>S1 &mdash; INLET</span>
-            <span id="mb1t" class="stile-badge off">OFF</span>
+            <span id="ml1t" class="stile-badge off">OFF</span>
           </div>
           <div class="tile-label" style="font-size:9px;color:var(--t4);margin-top:2px">INLET PRESSURE</div>
-          <div class="tile-val s1"><span id="disp-psi">--</span><span class="tile-unit">PSI</span></div>
+          <div class="tile-val s1"><span id="live-psi">--</span><span class="tile-unit">PSI</span></div>
           <div class="tile-minmax">
-            <div class="tile-mm"><div class="tile-mm-lbl">MIN</div><div class="tile-mm-val" id="disp-pmin">--</div></div>
-            <div class="tile-mm"><div class="tile-mm-lbl">MAX</div><div class="tile-mm-val" id="disp-pmax">--</div></div>
+            <div class="tile-mm"><div class="tile-mm-lbl">MIN</div><div class="tile-mm-val" id="live-pmin">--</div></div>
+            <div class="tile-mm"><div class="tile-mm-lbl">MAX</div><div class="tile-mm-val" id="live-pmax">--</div></div>
           </div>
         </div>
         <div id="tile-s2" class="tile">
           <div class="tile-label">
             <span>S2 &mdash; INLET</span>
-            <span id="mb2t" class="stile-badge off">OFF</span>
+            <span id="ml2t" class="stile-badge off">OFF</span>
           </div>
           <div class="tile-label" style="font-size:9px;color:var(--t4);margin-top:2px">INLET TEMPERATURE</div>
-          <div class="tile-val s2"><span id="disp-temp">--</span><span class="tile-unit" id="disp-temp-unit">&#8457;</span></div>
+          <div class="tile-val s2"><span id="live-temp">--</span><span class="tile-unit" id="live-temp-unit">&#8457;</span></div>
           <div class="tile-minmax">
-            <div class="tile-mm"><div class="tile-mm-lbl">MIN</div><div class="tile-mm-val" id="disp-tmin">--</div></div>
-            <div class="tile-mm"><div class="tile-mm-lbl">MAX</div><div class="tile-mm-val" id="disp-tmax">--</div></div>
+            <div class="tile-mm"><div class="tile-mm-lbl">MIN</div><div class="tile-mm-val" id="live-tmin">--</div></div>
+            <div class="tile-mm"><div class="tile-mm-lbl">MAX</div><div class="tile-mm-val" id="live-tmax">--</div></div>
           </div>
         </div>
       </div>
@@ -568,8 +568,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
       <!-- Raw data -->
       <div class="card">
         <div class="sec-hdr">Raw BLE Data</div>
-        <div class="raw-row"><span class="raw-lbl">S1 Pressure bytes</span><span class="raw-val" id="raw-s1">--</span></div>
-        <div class="raw-row"><span class="raw-lbl">S2 Temperature bytes</span><span class="raw-val" id="raw-s2">--</span></div>
+        <div class="raw-row"><span class="raw-lbl">S1 Pressure bytes</span><span class="raw-val" id="raw-p">--</span></div>
+        <div class="raw-row"><span class="raw-lbl">S2 Temperature bytes</span><span class="raw-val" id="raw-t">--</span></div>
       </div>
 
       <!-- Sensor info -->
@@ -577,16 +577,16 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
         <div class="sec-hdr">Sensor Info</div>
         <table class="si-table" id="sinfo-s1" style="margin-bottom:14px">
           <tr><td colspan="2" style="font-weight:700;color:var(--g);padding-bottom:6px">S1 &mdash; Pressure (TDWLB5)</td></tr>
-          <tr><td>Name</td><td id="sinfo-s1-name">--</td></tr>
-          <tr><td>Battery</td><td id="sinfo-s1-batt">--</td></tr>
-          <tr><td>Scale</td><td id="sinfo-s1-scale">--</td></tr>
-          <tr><td>TX Power</td><td id="sinfo-s1-tx">--</td></tr>
+          <tr><td>Name</td><td id="si-sn1">--</td></tr>
+          <tr><td>Battery</td><td id="si-sb1">--</td></tr>
+          <tr><td>Scale</td><td id="si-ssc">--</td></tr>
+          <tr><td>TX Power</td><td id="si-stx">--</td></tr>
         </table>
         <table class="si-table" id="sinfo-s2">
           <tr><td colspan="2" style="font-weight:700;color:var(--bl);padding-bottom:6px">S2 &mdash; Temperature (WETS02)</td></tr>
-          <tr><td>Name</td><td id="sinfo-s2-name">--</td></tr>
-          <tr><td>Battery</td><td id="sinfo-s2-batt">--</td></tr>
-          <tr><td>Period</td><td id="sinfo-s2-period">--</td></tr>
+          <tr><td>Name</td><td id="si-sn2">--</td></tr>
+          <tr><td>Battery</td><td id="si-sb2">--</td></tr>
+          <tr><td>Period</td><td id="si-sp2">--</td></tr>
         </table>
       </div>
 
@@ -608,7 +608,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
       <div class="log-section">
         <div class="rdg-hdr">
           <span class="log-hdr-title">Readings Log</span>
-          <span class="rdg-count" id="rdg-count">0</span>
+          <span class="rdg-count" id="rdg-cnt">0</span>
           <button class="log-save-btn" onclick="exportCsv()">&#8595; CSV</button>
         </div>
         <div id="rdg-session-strip"></div>
@@ -638,7 +638,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
       <div class="ssec">
         <div style="display:flex;align-items:center;justify-content:space-between">
           <div>
-            <div style="font-size:14px;font-weight:700;color:var(--t1)" id="settings-ver-display">v--</div>
+            <div style="font-size:14px;font-weight:700;color:var(--t1)" id="sf-ver">v--</div>
             <div style="font-size:11px;color:var(--t3);margin-top:2px">CureLog iPad Truck App</div>
           </div>
           <button onclick="openAbout()" style="padding:10px 18px;background:var(--g);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;min-height:44px">(i) About</button>
@@ -696,9 +696,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
       <div class="ssec">
         <div class="ssec-hdr">Firebase Status</div>
         <div class="ssec-bdy">
-          <div class="srow"><label>Cloud writes</label><span id="sf-writes" style="font-weight:700;color:var(--g)">0</span></div>
-          <div class="srow"><label>Queue</label><span id="sf-queue" style="font-weight:700">0</span></div>
-          <div class="srow"><label>Errors</label><span id="sf-errors" style="font-weight:700;color:var(--re)">0</span></div>
+          <div class="srow"><label>Cloud writes</label><span id="sf-wc" style="font-weight:700;color:var(--g)">0</span></div>
+          <div class="srow"><label>Queue</label><span id="sf-qc" style="font-weight:700">0</span></div>
+          <div class="srow"><label>Errors</label><span id="sf-ec" style="font-weight:700;color:var(--re)">0</span></div>
           <div class="srow"><label>Firebase</label><span id="sf-fb" style="font-size:11px;color:var(--t3)">--</span></div>
         </div>
       </div>
@@ -786,6 +786,71 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
   </div>
 </div>
 
+
+<div style="display:none" aria-hidden="true">
+  <span id="clr-s1"></span>
+  <span id="clr-s2"></span>
+  <span id="coll-settings"></span>
+  <span id="collect-dot"></span>
+  <span id="leg-lbl-s1"></span>
+  <span id="leg-lbl-s2"></span>
+  <span id="mbt1"></span>
+  <span id="mbt2"></span>
+  <span id="pause-bdg"></span>
+  <span id="sb1"></span>
+  <span id="sb2"></span>
+  <span id="sc1"></span>
+  <span id="sc2"></span>
+  <span id="sd-act-count"></span>
+  <span id="sd-conn-count"></span>
+  <span id="sd-rdg-count"></span>
+  <span id="sd-save-result"></span>
+  <span id="sd-saved-summary"></span>
+  <span id="sd-session-info"></span>
+  <span id="sd-shutdown-log"></span>
+  <span id="sd1"></span>
+  <span id="sd2"></span>
+  <span id="set-cal"></span>
+  <span id="set-n1"></span>
+  <span id="set-n2"></span>
+  <span id="set-punit"></span>
+  <span id="settings-ver-display"></span>
+  <span id="si-b1"></span>
+  <span id="si-b2"></span>
+  <span id="si-n1"></span>
+  <span id="si-n2"></span>
+  <span id="si-sc"></span>
+  <span id="si-tx"></span>
+  <span id="smn1"></span>
+  <span id="smn2"></span>
+  <span id="smx1"></span>
+  <span id="smx2"></span>
+  <span id="ss1"></span>
+  <span id="ss2"></span>
+  <span id="style-s1"></span>
+  <span id="style-s2"></span>
+  <span id="su-log-expand-btn"></span>
+  <span id="su-overlay"></span>
+  <span id="su1"></span>
+  <span id="su2"></span>
+  <span id="tb-dev"></span>
+  <span id="tb-el"></span>
+  <span id="tb-job"></span>
+  <span id="tb-seg"></span>
+  <span id="tb-shot"></span>
+  <span id="thick-s1"></span>
+  <span id="thick-s2"></span>
+  <span id="yp-auto"></span>
+  <span id="yp-dec"></span>
+  <span id="yp-max"></span>
+  <span id="yp-min"></span>
+  <span id="yp-range-wrap"></span>
+  <span id="yt-auto"></span>
+  <span id="yt-dec"></span>
+  <span id="yt-max"></span>
+  <span id="yt-min"></span>
+  <span id="yt-range-wrap"></span>
+</div>
 <script>
 
 
@@ -846,7 +911,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.35-ipad';
+const VER = '2.1.36-ipad';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3264,6 +3329,8 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.36-ipad','Fixed BLE sensor not connecting on iPad: 62 missing element IDs caused JS crash in updS1UI before connection state could update; all missing IDs stubbed, 16 display IDs renamed to match JS expectations'],
+  ['2.1.35-ipad','Initial iPad app rebuild: full v2.1.35 JS (Firebase REST, Wake Lock, About modal, all bug fixes), iPad-optimized layout with top tab bar, two-column sensor grid, landscape split view, larger touch targets'],
   ['2.1.35-m','Fixed Wake Lock not working: non-ASCII chars (checkmark, em-dash) in Wake Lock LOG strings caused silent JS parse failure on some Android Chrome versions; all JS string literals now ASCII-only'],
   ['2.1.34-m','REAL root cause of truncated changelog: HTML tags in descriptions (v2.1.24 had &lt;style&gt;, v2.1.2 had &lt;/body&gt;) were parsed as actual HTML when set via innerHTML, consuming all remaining rows. Fixed by HTML-escaping all descriptions.'],
   ['2.1.33-m','About modal final fix: all header sections use fixed pixel heights (48/72/52px) so scroll area top:172px is exact -- no JS positioning, no sticky, no flex'],
