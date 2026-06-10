@@ -604,7 +604,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
       <div class="log-section">
         <div class="log-hdr">
           <span class="log-hdr-title">Activity Log</span>
-          <button class="log-save-btn" onclick="saveActivityLog()">&#8595; Save</button>
+          <button class="log-save-btn" onclick="exportLog(event)">&#8595; Save</button>
         </div>
         <div id="alog"></div>
       </div>
@@ -614,7 +614,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
         <div class="rdg-hdr">
           <span class="log-hdr-title">Readings Log</span>
           <span class="rdg-count" id="rdg-cnt">0</span>
-          <button class="log-save-btn" onclick="exportCsv()">&#8595; CSV</button>
+          <button class="log-save-btn" onclick="doCSV()">&#8595; CSV</button>
         </div>
         <div id="rdg-session-strip"></div>
         <div class="rdg-tbl-wrap">
@@ -916,7 +916,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.41-ipad';
+const VER = '2.1.42-ipad';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -1101,11 +1101,7 @@ function resumeLog(e) {
   $('pause-bdg').style.display = 'none';
   const al = $('alog'); if (al) al.scrollTop = al.scrollHeight;
 }
-$('alog').addEventListener('scroll', function() {
-  const atBot = this.scrollHeight - this.scrollTop - this.clientHeight < 30;
-  if (atBot && A.logPaused) { A.logPaused = false; $('pause-bdg').style.display = 'none'; }
-  else if (!atBot && !A.logPaused) { A.logPaused = true; $('pause-bdg').style.display = 'inline'; }
-});
+// alog scroll listener registered below in DOMContentLoaded
 
 // ── SETTINGS ─────────────────────────────────────────────────
 function loadCal()  { A.s1.calOff = parseFloat(localStorage.getItem('cl_cal') || '0'); $('set-cal').value = A.s1.calOff; }
@@ -3013,6 +3009,14 @@ function downloadConnLog() {
 // ── WIRE BUTTONS ─────────────────────────────────────────────
 // Assign onclick here -- NOT in HTML -- to guarantee functions are in scope
 window.addEventListener('DOMContentLoaded', () => {
+  // Register alog scroll listener now that DOM is ready
+  const _alogEl = $('alog');
+  if (_alogEl) _alogEl.addEventListener('scroll', function() {
+    const atBot = this.scrollHeight - this.scrollTop - this.clientHeight < 30;
+    const pb = $('pause-bdg');
+    if (atBot && A.logPaused) { A.logPaused = false; if(pb) pb.style.display='none'; }
+    else if (!atBot && !A.logPaused) { A.logPaused = true; if(pb) pb.style.display='inline'; }
+  });
   $('scb1').onclick = blePickS1;  // S1 Connect
   $('scb2').onclick = blePickS2;  // S2 Connect
   $('sdb1').onclick = () => { A.s1.manualDisc=true; discS1(); $('ss1').textContent='Disconnected'; $('ss1').className='su-sc-status idle'; chkReady(); };
@@ -3353,6 +3357,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.42-ipad','CRITICAL FIX: top-level alog.addEventListener crashed JS on load causing ALL features to fail (tabs, version display, buttons); moved to DOMContentLoaded; fixed saveActivityLog and exportCsv button names'],
   ['2.1.41-m','Fixed Save Selected calling non-existent sdDoSave -- correct function is sdProceed'],
   ['2.1.40-ipad','Fixed End Session dialog buttons not working: HTML called _sd() which does not exist as global function; updated to call correct functions sdChooseSave/sdSkipSave/sdDoSave/sdBackToStep1/sdCancel; fixed step visibility to use style.display'],
   ['2.1.39-ipad','Comprehensive iPad fixes: (1) su-overlay starts hidden so panels are immediately tappable; (2) landscape panel CSS fixed with position:relative+inset:auto for correct grid layout; (3) version display corrected; (4) su-ver removed from boot sequence'],
