@@ -282,14 +282,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
 
 /* ── ABOUT MODAL ─────────────────────────────────────────────────── */
-#about-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9998;background:rgba(0,0,0,.65);padding:16px;box-sizing:border-box}
+#about-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9998;background:rgba(0,0,0,.65);padding:20px;box-sizing:border-box}
 #about-overlay.show{display:block}
-#about-card{position:absolute;top:16px;left:16px;right:16px;bottom:16px;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.35)}
-#about-fixed{position:absolute;top:0;left:0;right:0;background:#fff;z-index:2;border-radius:16px 16px 0 0;overflow:hidden}
-#about-hdr-bar{background:#0e1a28;padding:12px 16px;display:flex;align-items:center;gap:10px}
-#about-hdr-bar h2{font-size:16px;font-weight:700;color:#fff;margin:0}
-#about-hdr-bar p{font-size:11px;color:#7a8fa8;margin:0}
-#about-close-btn{margin-left:auto;background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:18px;line-height:32px;text-align:center;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+#about-card{position:absolute;top:20px;left:20px;right:20px;bottom:20px;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.4);overflow-y:scroll;-webkit-overflow-scrolling:touch}
+#about-sticky{position:sticky;top:0;left:0;right:0;background:#fff;z-index:2}
+#about-hdr-bar{background:#0e1a28;padding:12px 16px;display:flex;align-items:center;gap:10px;border-radius:16px 16px 0 0}
+#about-hdr-bar h2{font-size:16px;font-weight:700;color:#fff;margin:0;flex:1}
+#about-close-btn{background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:18px;line-height:32px;text-align:center;-webkit-tap-highlight-color:transparent}
 #about-cur-block{background:#e8f7f2;border-bottom:2px solid #1D9E75;padding:10px 16px}
 #about-cur-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#1D9E75;margin-bottom:2px}
 #about-cur-ver{font-size:22px;font-weight:700;font-family:monospace;color:#0F6E56}
@@ -297,12 +296,12 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 #about-search-bar{padding:8px 16px;border-bottom:1px solid #e2e8f0;background:#fafbfc}
 #about-search-inp{width:100%;padding:7px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box}
 #about-search-inp:focus{border-color:#1D9E75}
-#about-scroll{position:absolute;left:0;right:0;bottom:0;overflow-y:scroll;-webkit-overflow-scrolling:touch;border-radius:0 0 16px 16px}
-#about-scroll table{width:100%;border-collapse:collapse;font-size:12px}
-#about-scroll thead th{padding:7px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;color:#7a8fa8;border-bottom:2px solid #e2e8f0;background:#f5f6f8}
-#about-scroll tbody tr{border-bottom:1px solid #f0f4f8}
-#about-scroll tbody tr.cur{background:#e8f7f2}
-#about-scroll td{padding:8px 12px;vertical-align:top}
+#about-table-section{padding:0 0 20px}
+#about-table-section table{width:100%;border-collapse:collapse;font-size:12px}
+#about-table-section thead th{padding:7px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;color:#7a8fa8;border-bottom:2px solid #e2e8f0;background:#f5f6f8}
+#about-table-section tbody tr{border-bottom:1px solid #f0f4f8}
+#about-table-section tbody tr.cur{background:#e8f7f2}
+#about-table-section td{padding:9px 12px;vertical-align:top}
 .abv{display:inline-block;font-family:monospace;font-size:11px;font-weight:700;padding:2px 6px;border-radius:4px;background:#f0f4f8;color:#3a4f6a;white-space:nowrap}
 .abv.cur{background:#1D9E75;color:#fff}
 .abt{color:#1a2332;line-height:1.5;font-size:12px}
@@ -841,7 +840,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.30-m';
+const VER = '2.1.32-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3259,47 +3258,49 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.32-m','About modal rebuilt with sticky header inside single scroll container -- no JS positioning -- scroll guaranteed on all mobile browsers'],
+  ['2.1.31-m','Fixed About modal showing only 7 entries -- non-ASCII characters (em-dash, info symbol, ellipsis) in CHANGELOG strings caused Android Chrome JS parser to stop reading the array; replaced all with ASCII equivalents'],
   ['2.1.30-m','FINAL About modal fix: removed overflow:hidden from about-card which was clipping the scroll container; border-radius moved to about-fixed and about-scroll instead'],
-  ['2.1.29-m','About modal completely rebuilt with single scroll container — #about-fixed holds header/version/search, #about-scroll is the ONLY scrollable element with top set dynamically via JS after render'],
+  ['2.1.29-m','About modal completely rebuilt with single scroll container -- #about-fixed holds header/version/search, #about-scroll is the ONLY scrollable element with top set dynamically via JS after render'],
   ['2.1.28-m','Fixed About modal showing only 4 entries: search-wrap and body now dynamically positioned via JS requestAnimationFrame after render instead of hardcoded top values; current version desc capped at 120 chars'],
-  ['2.1.27-m','About modal rebuilt with position:absolute layout — eliminates all flex scroll ambiguity on mobile; hdr/current/search are fixed; body uses explicit top:200px bottom:0 bounds for reliable scroll on all Android Chrome versions'],
+  ['2.1.27-m','About modal rebuilt with position:absolute layout -- eliminates all flex scroll ambiguity on mobile; hdr/current/search are fixed; body uses explicit top:200px bottom:0 bounds for reliable scroll on all Android Chrome versions'],
   ['2.1.26-m','Fixed About modal scrolling on mobile: overflow-y:scroll with -webkit-overflow-scrolling:touch, min-height:0 on flex child, card uses full overlay height'],
-  ['2.1.25-m','Fixed About modal only showing one entry — about-body scroll wrapper was missing so table clipped; all 52 changelog entries now visible and scrollable'],
-  ['2.1.24-m','CRITICAL FIX: About modal CSS was missing from <style> block — overlay rendered visible blocking ALL taps on the entire app; added complete About modal CSS including display:none initial state'],
-  ['2.1.23-m','Fixed About button not tappable — was pushed off screen by tb-badges margin-left:auto; moved button inside tb-badges container'],
-  ['2.1.22-m','Added ℹ About button to topbar and Settings page — shows app version and full changelog with search; version number shown in Settings header'],
-  ['2.1.21-m','Wake Lock API: keeps phone screen on during active session — prevents Android killing BLE or freezing timers; auto re-acquires if tab briefly switched'],
+  ['2.1.25-m','Fixed About modal only showing one entry -- about-body scroll wrapper was missing so table clipped; all 52 changelog entries now visible and scrollable'],
+  ['2.1.24-m','CRITICAL FIX: About modal CSS was missing from <style> block -- overlay rendered visible blocking ALL taps on the entire app; added complete About modal CSS including display:none initial state'],
+  ['2.1.23-m','Fixed About button not tappable -- was pushed off screen by tb-badges margin-left:auto; moved button inside tb-badges container'],
+  ['2.1.22-m','Added (i) About button to topbar and Settings page -- shows app version and full changelog with search; version number shown in Settings header'],
+  ['2.1.21-m','Wake Lock API: keeps phone screen on during active session -- prevents Android killing BLE or freezing timers; auto re-acquires if tab briefly switched'],
   ['2.1.20-m','Fixed last closeStartup crash: su-overlay null guard (element does not exist on mobile); Firebase now writing successfully'],
-  ['2.1.19-m','CRITICAL FIX: double-fire guard was placed AFTER sess.active=true causing immediate return every time — moved guard to top of function before any state changes'],
-  ['2.1.18-m','Start Session button UX overhaul: immediate touchstart visual feedback, scale animation on press, proper tap highlight removal, double-fire guard, shows Starting… immediately on tap, larger touch target (56px min height)'],
+  ['2.1.19-m','CRITICAL FIX: double-fire guard was placed AFTER sess.active=true causing immediate return every time -- moved guard to top of function before any state changes'],
+  ['2.1.18-m','Start Session button UX overhaul: immediate touchstart visual feedback, scale animation on press, proper tap highlight removal, double-fire guard, shows Starting... immediately on tap, larger touch target (56px min height)'],
   ['2.1.17-m','Added try/catch around closeStartup/initFB/startDisp in startSession to catch and log any crash with exact error message'],
-  ['2.1.16-m','CRITICAL FIX: closeStartup() was crashing on null DOM elements (tb-job, tb-shot, tb-seg do not exist on mobile) — crash prevented initFB() from running, causing silent Firebase failure; all closeStartup DOM writes now null-guarded'],
+  ['2.1.16-m','CRITICAL FIX: closeStartup() was crashing on null DOM elements (tb-job, tb-shot, tb-seg do not exist on mobile) -- crash prevented initFB() from running, causing silent Firebase failure; all closeStartup DOM writes now null-guarded'],
   ['2.1.15-m','Enhanced Firebase diagnostics: detailed per-request logging, explicit HTTP status in every response, standalone testFirebaseWrite() with full error reporting'],
   ['2.1.14-m','Fixed Start Session staying disabled: chkReady now runs on Setup tab open, browser tab focus, and at 300ms/1s/2.5s after boot; hint shows exactly which fields are missing'],
   ['2.1.13-m','iOS support via Bluefy browser: detects Bluefy user agent, shows App Store link on iPhone/iPad, warns when local file URL blocks Bluetooth and Firebase; improved Firebase error messages'],
   ['2.1.12-m','Improved BLE compatibility messages: iPhone correctly identified as unsupported for sensors, iPad Safari directed to Chrome, generic Chrome guidance for other browsers'],
-  ['2.1.11-m','Fixed End Session button not appearing after session start — was setting display to empty string (falling back to CSS display:none) instead of display:block; goPage now re-applies button visibility on every tab switch'],
-  ['2.1.10-m','Fixed Start Session button not responding to taps — z-index raised above nav bar (was 50, nav is 200); chkReady called on boot to sync button state; End Session button tap highlight improved'],
-  ['2.1.9-m','Fixed Firebase writes not working from Android content:// origin — replaced Firebase SDK push/set with REST API fetch calls which work from any origin including SD card file URLs'],
-  ['2.1.8-m','Fixed Start Session button showing on all tabs — footer now position:fixed, only visible on Setup tab before session starts; hidden automatically when session begins'],
+  ['2.1.11-m','Fixed End Session button not appearing after session start -- was setting display to empty string (falling back to CSS display:none) instead of display:block; goPage now re-applies button visibility on every tab switch'],
+  ['2.1.10-m','Fixed Start Session button not responding to taps -- z-index raised above nav bar (was 50, nav is 200); chkReady called on boot to sync button state; End Session button tap highlight improved'],
+  ['2.1.9-m','Fixed Firebase writes not working from Android content:// origin -- replaced Firebase SDK push/set with REST API fetch calls which work from any origin including SD card file URLs'],
+  ['2.1.8-m','Fixed Start Session button showing on all tabs -- footer now position:fixed, only visible on Setup tab before session starts; hidden automatically when session begins'],
   ['2.1.7-m','Connection log moved into sensor card section (always visible after sensors); page auto-scrolls to log on new BLE entries; no longer buried at bottom of setup page'],
   ['2.1.6-m','Connection log now starts expanded and auto-expands on any new entry; height increased to 180px; expand/collapse arrow added to header; scrolls to latest entry on open'],
-  ['2.1.5-m','Start Session button moved to sticky footer — always visible at bottom of Setup page regardless of scroll position; fixes button being hidden off-screen on small phones'],
+  ['2.1.5-m','Start Session button moved to sticky footer -- always visible at bottom of Setup page regardless of scroll position; fixes button being hidden off-screen on small phones'],
   ['2.1.4-m','Job Information section now shows "No active session" note before session starts; refreshes automatically when navigating to Settings tab'],
   ['2.1.3-m','End Session button made larger and labeled End Session for clarity; modal bottom-sheet safe area fix for notched phones'],
-  ['2.1.2-m','Bug fixes for mobile: (1) Fixed Firebase not connecting — pre-initialize Firebase at page load instead of waiting for session start; (2) Fixed duplicate </body></html> tags that broke mobile browser parsing; (3) Fixed DOMContentLoaded early return on non-BLE browsers that prevented settings and Firebase from loading; (4) Fixed Start Session not navigating to Monitor tab — closeStartup() now calls goPage(monitor)'],
+  ['2.1.2-m','Bug fixes for mobile: (1) Fixed Firebase not connecting -- pre-initialize Firebase at page load instead of waiting for session start; (2) Fixed duplicate </body></html> tags that broke mobile browser parsing; (3) Fixed DOMContentLoaded early return on non-BLE browsers that prevented settings and Firebase from loading; (4) Fixed Start Session not navigating to Monitor tab -- closeStartup() now calls goPage(monitor)'],
   ['2.1.1-m','Full sync to desktop v2.1.1: BLE Use-as-filter checkboxes, tube specs fields, session info in chart and readings log, rdMap pruning removed (no more lost data on long shots), About modal with full changelog, BLE availability warning'],
   ['2.0.0','Code cleanup: updateSessionInfoDisplays() helper consolidates 4 duplicate session info blocks; dead loadCal() removed; no-op stub references cleaned up'],
-  ['2.0.9','rdMap memory pruning removed — all rows kept for full session. Table display cap raised 500 → 2000 rows. Fix for early session data missing from CSV on long shots.'],
-  ['2.0.8','Startup overlay max-height tightened to 88vh — prevents S2 Connect button being pushed off screen on small laptops'],
+  ['2.0.9','rdMap memory pruning removed -- all rows kept for full session. Table display cap raised 500 -> 2000 rows. Fix for early session data missing from CSV on long shots.'],
+  ['2.0.8','Startup overlay max-height tightened to 88vh -- prevents S2 Connect button being pushed off screen on small laptops'],
   ['2.0.7','BLE filter checkbox fix: only restores as checked if saved filter text is also non-empty; auto-unchecks when text is cleared'],
   ['2.0.6','Removed S1/S2 sensor assignment dropdown row from monitor panel'],
   ['2.0.5','Tube parameters moved inline next to Seg number in timer bar header (removed flex:1 gap that pushed tube info to right edge)'],
-  ['2.0.4','Fixed chart session info not displaying — moved population to startSession() with 100ms delay to ensure DOM is ready'],
-  ['2.0.3','Session data (TVK · Job · Shot · Seg · tube specs) added above chart legend — visible in screenshots'],
-  ['2.0.2','Min/Max stat values increased from 15px to 20px; stat labels 9px → 10px'],
+  ['2.0.4','Fixed chart session info not displaying -- moved population to startSession() with 100ms delay to ensure DOM is ready'],
+  ['2.0.3','Session data (TVK . Job . Shot . Seg . tube specs) added above chart legend -- visible in screenshots'],
+  ['2.0.2','Min/Max stat values increased from 15px to 20px; stat labels 9px -> 10px'],
   ['2.0.1','Tube parameters font matched to same size/color as session path text in timer bar'],
-  ['2.0.0','Session info header row added to Active Collection timer bar showing TVK · Job · Shot · Seg · tube specs'],
+  ['2.0.0','Session info header row added to Active Collection timer bar showing TVK . Job . Shot . Seg . tube specs'],
   ['1.9.9','Structured file naming: App - LogType - TVK# - Job - Shot - Seg - Date.ext for all exports'],
   ['1.9.8','Version string in all log headers now includes app name: (CureLog Truck App)'],
   ['1.9.7','Session info strip in readings log upgraded to full session header with tube specs'],
@@ -3313,32 +3314,28 @@ const CHANGELOG = [
   ['1.8.9','Sensor tile main value font increased from 36px to 52px to match dashboard'],
   ['1.8.8','Active Collection timer bar moved above S1/S2 sensor tiles'],
   ['1.8.7','Chart canvas height increased from 200px to 240px to match dashboard'],
-  ['1.8.6','Added spanGaps:true to chart datasets — pressure/temp lines bridge BLE dropout gaps'],
-  ['1.8.5','Fixed chart gap bug — removed applySet() call from applyChartRange() which was causing double-render'],
+  ['1.8.6','Added spanGaps:true to chart datasets -- pressure/temp lines bridge BLE dropout gaps'],
+  ['1.8.5','Fixed chart gap bug -- removed applySet() call from applyChartRange() which was causing double-render'],
   ['1.8.4','Y-axis decimal precision controls added to Chart Scale settings (0/1/2 decimal places per axis)'],
-  ['1.8.3','Initial release — BLE filter, tube specs, log headers, session management'],
+  ['1.8.3','Initial release -- BLE filter, tube specs, log headers, session management'],
 ];
 
 // ── ABOUT MODAL ───────────────────────────────────────────────────────────
 function openAbout() {
   const overlay = document.getElementById('about-overlay');
   if (!overlay) return;
-  const curVer   = typeof VER !== 'undefined' ? VER : '—';
+  const curVer   = typeof VER !== 'undefined' ? VER : '--';
   const curEntry = CHANGELOG.find(c => c[0] === curVer) || CHANGELOG[0];
   const verEl  = document.getElementById('about-cur-ver');
   const descEl = document.getElementById('about-cur-desc');
   const inpEl  = document.getElementById('about-search-inp');
-  if (verEl)  verEl.textContent  = 'v' + curVer;
-  if (descEl) { const d = curEntry ? curEntry[1] : ''; descEl.textContent = d.length > 100 ? d.slice(0,97)+'…' : d; }
+  const card   = document.getElementById('about-card');
+  if (verEl)  verEl.textContent = 'v' + curVer;
+  if (descEl) { const d = curEntry ? curEntry[1] : ''; descEl.textContent = d.length > 100 ? d.slice(0,97)+'...' : d; }
   if (inpEl)  inpEl.value = '';
+  if (card)   card.scrollTop = 0;
   renderAboutTable('');
   overlay.classList.add('show');
-  // Set scroll area top = height of fixed header section
-  requestAnimationFrame(() => {
-    const fixed  = document.getElementById('about-fixed');
-    const scroll = document.getElementById('about-scroll');
-    if (fixed && scroll) scroll.style.top = fixed.offsetHeight + 'px';
-  });
 }
 
 function closeAbout() {
@@ -3489,30 +3486,27 @@ window.addEventListener('DOMContentLoaded', () => {
 <!-- About Modal -->
 <div id="about-overlay" onclick="if(event.target===this)closeAbout()">
   <div id="about-card">
-    <div id="about-fixed">
+    <div id="about-sticky">
       <div id="about-hdr-bar">
-        <div>
-          <h2>CureLog</h2>
-          <p id="about-app-subtitle">Phase 1 — Mobile Truck App</p>
-        </div>
-        <button id="about-close-btn" onclick="closeAbout()">✕</button>
+        <h2>CureLog</h2>
+        <button id="about-close-btn" onclick="closeAbout()">X</button>
       </div>
       <div id="about-cur-block">
         <div id="about-cur-lbl">Current Version</div>
-        <div id="about-cur-ver">—</div>
-        <div id="about-cur-desc">—</div>
+        <div id="about-cur-ver">--</div>
+        <div id="about-cur-desc">--</div>
       </div>
       <div id="about-search-bar">
-        <input id="about-search-inp" type="text" placeholder="Search versions or changes…" oninput="filterAbout(this.value)">
+        <input id="about-search-inp" type="text"
+          placeholder="Search versions or changes..."
+          oninput="filterAbout(this.value)">
       </div>
     </div>
-    <div id="about-scroll">
+    <div id="about-table-section">
       <table>
         <thead><tr><th style="width:90px">Version</th><th>Changes</th></tr></thead>
         <tbody id="about-tbody"></tbody>
       </table>
     </div>
   </div>
-</div>
-</body>
-</html>
+</div>>
