@@ -295,9 +295,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
       <span id="tb-truck-badge"></span>
       <span id="tb-job-badge"></span>
       <div id="tb-cloud"><div class="cdot off" id="cdot"></div><span id="clbl">Offline</span></div>
+      <button onclick="openAbout()" title="About" style="background:none;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.9);border-radius:7px;padding:4px 9px;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;min-height:34px;line-height:1">ℹ</button>
       <span class="tb-ver" id="tb-ver">v0</span>
     </div>
-    <button onclick="openAbout()" title="About" style="background:none;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);border-radius:7px;padding:5px 10px;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;min-height:36px">ℹ</button>
     <button id="tb-end-btn" onclick="shutdownApp()">⏹ End Session</button>
   </div>
 
@@ -814,7 +814,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.22-m';
+const VER = '2.1.23-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3232,6 +3232,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.23-m','Fixed About button not tappable — was pushed off screen by tb-badges margin-left:auto; moved button inside tb-badges container'],
   ['2.1.22-m','Added ℹ About button to topbar and Settings page — shows app version and full changelog with search; version number shown in Settings header'],
   ['2.1.21-m','Wake Lock API: keeps phone screen on during active session — prevents Android killing BLE or freezing timers; auto re-acquires if tab briefly switched'],
   ['2.1.20-m','Fixed last closeStartup crash: su-overlay null guard (element does not exist on mobile); Firebase now writing successfully'],
