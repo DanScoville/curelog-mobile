@@ -818,7 +818,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.44-ipad';
+const VER = '2.1.45-ipad';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -924,7 +924,7 @@ function LOG(msg, type='info') {
     d.className = cls;
     d.textContent = text;
     sl.appendChild(d);
-    if (sl.children.length > 120) sl.removeChild(sl.firstChild);
+    // No FIFO limit on connection log -- lightweight BLE events only
     sl.scrollTop = sl.scrollHeight;
     // Auto-expand the connection log on first real entry
     const wrap = $('su-clog-wrap');
@@ -953,7 +953,7 @@ function LOG(msg, type='info') {
     d2.className = 'al-' + type;
     d2.textContent = text;
     al.appendChild(d2);
-    if (al.children.length > 500) al.removeChild(al.firstChild);
+    // No FIFO limit on activity log -- text entries are lightweight
     if (!A.logPaused) al.scrollTop = al.scrollHeight;
   }
 }
@@ -3245,6 +3245,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.45-ipad','Removed FIFO limits on connection log (was 120) and activity log (was 500) -- text entries are lightweight and an 8-10hr session generates well under 1MB; readings table display cap of 2000 rows kept as that is the correct bottleneck'],
   ['2.1.44-ipad','Complete iPad rebuild from desktop base: clean DOMContentLoaded boot, desktop su-overlay startup, switchTab panel navigation with .on/.active classes, no stub elements, iPad CSS with top tab bar and landscape split layout'],
   ['2.1.35-m','Fixed Wake Lock not working: non-ASCII chars (checkmark, em-dash) in Wake Lock LOG strings caused silent JS parse failure on some Android Chrome versions; all JS string literals now ASCII-only'],
   ['2.1.34-m','REAL root cause of truncated changelog: HTML tags in descriptions (v2.1.24 had &lt;style&gt;, v2.1.2 had &lt;/body&gt;) were parsed as actual HTML when set via innerHTML, consuming all remaining rows. Fixed by HTML-escaping all descriptions.'],
