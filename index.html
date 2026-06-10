@@ -282,30 +282,29 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
 
 /* ── ABOUT MODAL ─────────────────────────────────────────────────── */
-#about-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9998;align-items:center;justify-content:center;padding:20px}
-#about-overlay.show{display:flex}
-#about-card{background:#fff;border-radius:16px;width:100%;max-width:720px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.4);overflow:hidden}
-.about-hdr{background:#0e1a28;padding:18px 24px;display:flex;align-items:center;gap:14px;flex-shrink:0}
-.about-logo{width:36px;height:36px;background:#1D9E75;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.about-hdr-text h2{font-size:20px;font-weight:700;color:#fff;margin:0 0 2px}
-.about-hdr-text p{font-size:12px;color:#7a8fa8;margin:0}
-.about-close-btn{margin-left:auto;background:rgba(255,255,255,.12);border:none;color:#fff;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.about-close-btn:hover{background:rgba(255,255,255,.22)}
-.about-body{flex:1;overflow-y:auto;padding:0}
-.about-current{background:linear-gradient(135deg,#e8f7f2,#f0faf6);border-bottom:2px solid #1D9E75;padding:16px 24px}
-.about-current-ver{font-size:28px;font-weight:700;font-family:monospace;color:#0F6E56;line-height:1}
-.about-current-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#1D9E75;margin-bottom:4px}
-.about-current-desc{font-size:12px;color:#4a5568;margin-top:6px;line-height:1.5}
-.about-search-wrap{padding:12px 24px 8px;border-bottom:1px solid #e2e8f0;flex-shrink:0;background:#fafbfc}
-.about-search{width:100%;padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;outline:none}
+#about-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.65);z-index:9998}
+#about-overlay.show{display:block}
+#about-card{position:absolute;top:16px;left:16px;right:16px;bottom:16px;max-width:720px;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,.4);overflow:hidden}
+.about-hdr{position:absolute;top:0;left:0;right:0;background:#0e1a28;padding:14px 18px;display:flex;align-items:center;gap:12px;height:60px;box-sizing:border-box}
+.about-logo{width:32px;height:32px;background:#1D9E75;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.about-hdr-text h2{font-size:17px;font-weight:700;color:#fff;margin:0 0 2px}
+.about-hdr-text p{font-size:11px;color:#7a8fa8;margin:0}
+.about-close-btn{margin-left:auto;background:rgba(255,255,255,.15);border:none;color:#fff;width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:20px;line-height:34px;text-align:center;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.about-current{position:absolute;top:60px;left:0;right:0;background:#e8f7f2;border-bottom:2px solid #1D9E75;padding:10px 18px}
+.about-current-ver{font-size:22px;font-weight:700;font-family:monospace;color:#0F6E56;line-height:1}
+.about-current-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#1D9E75;margin-bottom:3px}
+.about-current-desc{font-size:11px;color:#4a5568;margin-top:4px;line-height:1.4}
+.about-search-wrap{position:absolute;top:148px;left:0;right:0;padding:8px 18px;border-bottom:1px solid #e2e8f0;background:#fafbfc;z-index:1}
+.about-search{width:100%;padding:8px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;outline:none;box-sizing:border-box}
 .about-search:focus{border-color:#1D9E75}
-.about-table-wrap{padding:0 24px 20px;overflow-x:auto}
-.about-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:12px}
-.about-table thead th{background:#f5f6f8;padding:8px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#7a8fa8;border-bottom:2px solid #e2e8f0}
+.about-body{position:absolute;top:200px;left:0;right:0;bottom:0;overflow-y:scroll;-webkit-overflow-scrolling:touch}
+.about-table-wrap{padding:8px 18px 40px}
+.about-table{width:100%;border-collapse:collapse;font-size:12px}
+.about-table thead th{background:#f5f6f8;padding:8px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#7a8fa8;border-bottom:2px solid #e2e8f0}
 .about-table tbody tr{border-bottom:1px solid #f0f4f8}
 .about-table tbody tr.current-ver{background:#e8f7f2}
-.about-table td{padding:8px 10px;vertical-align:top}
-.about-ver-badge{display:inline-block;font-family:monospace;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;background:#f0f4f8;color:#3a4f6a;white-space:nowrap}
+.about-table td{padding:8px;vertical-align:top}
+.about-ver-badge{display:inline-block;font-family:monospace;font-size:11px;font-weight:700;padding:2px 6px;border-radius:5px;background:#f0f4f8;color:#3a4f6a;white-space:nowrap}
 .about-ver-badge.current{background:#1D9E75;color:#fff}
 .about-change-text{color:#1a2332;line-height:1.5;font-size:12px}
 
@@ -843,7 +842,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.25-m';
+const VER = '2.1.27-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3261,6 +3260,8 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.27-m','About modal rebuilt with position:absolute layout — eliminates all flex scroll ambiguity on mobile; hdr/current/search are fixed; body uses explicit top:200px bottom:0 bounds for reliable scroll on all Android Chrome versions'],
+  ['2.1.26-m','Fixed About modal scrolling on mobile: overflow-y:scroll with -webkit-overflow-scrolling:touch, min-height:0 on flex child, card uses full overlay height'],
   ['2.1.25-m','Fixed About modal only showing one entry — about-body scroll wrapper was missing so table clipped; all 52 changelog entries now visible and scrollable'],
   ['2.1.24-m','CRITICAL FIX: About modal CSS was missing from <style> block — overlay rendered visible blocking ALL taps on the entire app; added complete About modal CSS including display:none initial state'],
   ['2.1.23-m','Fixed About button not tappable — was pushed off screen by tb-badges margin-left:auto; moved button inside tb-badges container'],
@@ -3496,12 +3497,12 @@ window.addEventListener('DOMContentLoaded', () => {
       <div class="about-current-ver" id="about-cur-ver">—</div>
       <div class="about-current-desc" id="about-cur-desc">—</div>
     </div>
+    <div class="about-search-wrap">
+      <input class="about-search" id="about-search" type="text"
+        placeholder="Search versions or changes…"
+        oninput="filterAbout(this.value)">
+    </div>
     <div class="about-body">
-      <div class="about-search-wrap">
-        <input class="about-search" id="about-search" type="text"
-          placeholder="Search versions or changes…"
-          oninput="filterAbout(this.value)">
-      </div>
       <div class="about-table-wrap">
         <table class="about-table">
           <thead>
