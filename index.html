@@ -782,6 +782,32 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
   </div>
 </div>
 
+<!-- About Modal -->
+<div id="about-overlay" onclick="if(event.target===this)closeAbout()">
+  <div id="about-card">
+    <div id="about-hdr-bar">
+      <h2>CureLog</h2>
+      <button id="about-close-btn" onclick="closeAbout()">X</button>
+    </div>
+    <div id="about-cur-block">
+      <div id="about-cur-lbl">Current Version</div>
+      <div id="about-cur-ver">--</div>
+      <div id="about-cur-desc">--</div>
+    </div>
+    <div id="about-search-bar">
+      <input id="about-search-inp" type="text"
+        placeholder="Search versions or changes..."
+        oninput="filterAbout(this.value)">
+    </div>
+    <div id="about-scroll">
+      <table>
+        <thead><tr><th style="width:90px">Version</th><th>Changes</th></tr></thead>
+        <tbody id="about-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <script>
 
 
@@ -845,7 +871,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.43-m';
+const VER = '2.1.44-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3280,6 +3306,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.44-m','Restored missing About modal HTML (about-overlay/about-card) which was dropped during rebuild -- About button now works again'],
   ['2.1.43-m','Moved foreground warning to below Start Session button (no longer blocks S2 sensor status); shortened min/max temp unit from degF to degF symbol to save tile space'],
   ['2.1.42-m','Fixed log headers: CureLog Phase 1 -> CureLog Android Mobile Truck App (6x); Removed contradictory cap-5000 comment; Removed sessStartMs field; uses A.sessStart (3x); Removed _toggleSettingsOld (dead function)'],
   ['2.1.41-m','Renamed to CureLog Android Mobile Truck App'],
