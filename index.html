@@ -785,6 +785,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 <script>
 
 
+
 // ── MOBILE NAV ────────────────────────────────────────────────
 function goPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -843,7 +844,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.41-m';
+const VER = '2.1.42-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -901,7 +902,7 @@ const BAT2C = 'a7642a19-b986-4693-bc60-3028002646f2';
 
 // ── STATE ─────────────────────────────────────────────────────
 const A = { // app state -- single object, no nested mutation issues
-  sess: { truck:'',job:'',shot:'',seg:'',tubeDia:'',tubeThick:'',tubeLen:'',active:false }, sessStartMs: null,
+  sess: { truck:'',job:'',shot:'',seg:'',tubeDia:'',tubeThick:'',tubeLen:'',active:false },
   dev:  false,
   s1: { con:false, dev:null, srv:null, svc:null, chr:null, scale:1.0, useNotify:false,
         psi:null, batt:null, name:'', tx:null, calOff:0,
@@ -995,19 +996,7 @@ function switchTab(name) {
   if (panel) panel.classList.add('on');
 }
 function toggleSettings() { goPage('settings'); }
-function _toggleSettingsOld() {
-  // Switch to monitor tab first, then open/toggle the settings collapsible
-  switchTab('monitor');
-  const isOpen = A.collOpen['settings'];
-  if (!isOpen) {
-    togColl('settings');
-    // Scroll to top of monitor panel so settings is visible
-    const panel = $('panel-monitor');
-    if (panel) panel.scrollTop = 0;
-  } else {
-    togColl('settings');
-  }
-}
+
 
 function togColl(name) {
   A.collOpen[name] = !A.collOpen[name];
@@ -1984,9 +1973,8 @@ function pushReading({ psi, tempC, src, tsMs }) {
   // Firebase upload queue -- deduplicated per bucket key
   if (A.sess.active && !A.rdMap[k]._qu) { A.rdMap[k]._qu = true; A.upQ.push(k); }
 
-  // Cap readings map at 5000 entries to prevent memory growth
+  // rdMap holds all readings for the session -- no pruning.
   const keys = Object.keys(A.rdMap);
-  // rdMap kept in full -- no pruning. Firebase is source of truth.
 
   // rdg-cnt = unique 1-second buckets in rdMap (S1+S2 merged, one row per second)
   const totalRdg = Object.keys(A.rdMap).length;
@@ -2333,7 +2321,7 @@ function exportLog(e) {
   // Header
   const now  = new Date();
   lines.push('===============================================');
-  lines.push('  CureLog Phase 1 -- Activity Log');
+  lines.push('  CureLog Android Mobile Truck App -- Activity Log');
   lines.push('  Version: v' + VER + '  (CureLog Truck App)');
   lines.push('  Exported: ' + now.toLocaleString());
   lines.push('');
@@ -2362,7 +2350,7 @@ function doCSV() {
   const s = A.set;
   const rows = Object.values(A.rdMap).sort((a,b) => a.tsMs - b.tsMs);
   const meta = [
-    '# CureLog Phase 1 -- Readings Log',
+    '# CureLog Android Mobile Truck App -- Readings Log',
     '# Version: v' + VER + '  (CureLog Truck App)',
     '# Truck: '     + (A.sess.truck     || '--'),
     '# Job: '       + (A.sess.job       || '--'),
@@ -2577,12 +2565,12 @@ function initFB() {
     LOG('Firebase path: ' + A.fbPath, 'info');
     $('sf-fb').textContent = 'curelog-phase1-default-rtdb.firebaseio.com';
     // Write session start timestamp so dashboard can measure duration correctly
-    A.sessStartMs = Date.now();
+    A.sessStart = Date.now();
     // Use REST API for _session write -- works from content:// origin on Android
     fbSet(A.fbPath + '/_session', {
-      startMs: A.sessStartMs,
+      startMs: A.sessStart,
       truck: A.sess.truck, job: A.sess.job, shot: A.sess.shot, seg: A.sess.seg,
-      startIso: new Date(A.sessStartMs).toISOString(),
+      startIso: new Date(A.sessStart).toISOString(),
       tubeDia:   A.sess.tubeDia   || null,
       tubeThick: A.sess.tubeThick || null,
       tubeLen:   A.sess.tubeLen   || null
@@ -2691,7 +2679,7 @@ async function sdProceed() {
     if (el && el.children.length > 0) {
       const lines = [
         '===============================================',
-        '  CureLog Phase 1 -- Connection Log',
+        '  CureLog Android Mobile Truck App -- Connection Log',
         '  Version: v' + VER + '  (CureLog Truck App)',
         '  Exported: ' + now.toLocaleString(),
         ''
@@ -2718,7 +2706,7 @@ async function sdProceed() {
     if (el && el.children.length > 0) {
       const lines = [
         '===============================================',
-        '  CureLog Phase 1 -- Activity Log',
+        '  CureLog Android Mobile Truck App -- Activity Log',
         '  Version: v' + VER + '  (CureLog Truck App)',
         '  Exported: ' + now.toLocaleString(),
         ''
@@ -2745,7 +2733,7 @@ async function sdProceed() {
     const rows = Object.values(A.rdMap).sort((a,b) => a.tsMs - b.tsMs);
     if (rows.length > 0) {
       const sdMeta = [
-        '# CureLog Phase 1 -- Readings Log',
+        '# CureLog Android Mobile Truck App -- Readings Log',
         '# Version: v' + VER + '  (CureLog Truck App)',
         '# Truck: '      + (A.sess.truck     || '--'),
         '# Job: '        + (A.sess.job       || '--'),
@@ -2929,7 +2917,7 @@ function downloadConnLog() {
   const now = new Date();
   const lines = [
     '===============================================',
-    '  CureLog Phase 1 -- Connection Log',
+    '  CureLog Android Mobile Truck App -- Connection Log',
     '  Version: v' + VER + '  (CureLog Truck App)',
     '  Downloaded: ' + now.toLocaleString(),
     '===============================================',
@@ -3290,6 +3278,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.42-m','Fixed log headers: CureLog Phase 1 -> CureLog Android Mobile Truck App (6x); Removed contradictory cap-5000 comment; Removed sessStartMs field; uses A.sessStart (3x); Removed _toggleSettingsOld (dead function)'],
   ['2.1.41-m','Renamed to CureLog Android Mobile Truck App'],
   ['2.1.40-m','BLE resilience improvements: (1) data watchdog detects 20s silence and forces reconnect; (2) visibility change triggers immediate reconnect + backoff reset when app foregrounded; (3) lastReadMs tracked per sensor; (4) field warning in startup overlay'],
   ['2.1.39-m','Replaced clock emoji in overlay header and topbar with inline SVG pipe+waveform icon matching the app favicon'],
@@ -3538,6 +3527,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setCloud('off', 'Cloud: offline');
   }
 });
+
 
 
 </script>
