@@ -780,6 +780,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
 
 
+
 // ── MOBILE NAV ────────────────────────────────────────────────
 function goPage(name) { switchTab(name); } // iPad alias
 
@@ -822,7 +823,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.54-ipad';
+const VER = '2.1.55-ipad';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -2870,31 +2871,59 @@ function sdKeepOpen() {
 
 async function sdClose() {
   $('sd-overlay').classList.remove('show');
-  // Try window.close() — works if tab was opened by script
+  // Try window.close() -- works if tab was opened programmatically
   try { window.close(); } catch(e) {}
   await sleep(400);
-  // If still open (Bluefy/Safari block window.close on user-opened tabs),
-  // replace page with a clean session-ended screen
+  // Bluefy/Safari block window.close() on user-opened tabs -- this always runs on iPad.
+  // Replace the page with a clear session-ended screen that shows how to close the tab.
   if (!window.closed) {
     document.body.style.margin = '0';
     document.body.innerHTML = `
       <div style="display:flex;align-items:center;justify-content:center;
-                  height:100vh;background:#0e1a28;font-family:-apple-system,sans-serif;
-                  padding:24px;box-sizing:border-box">
-        <div style="text-align:center;max-width:400px">
-          <div style="font-size:64px;margin-bottom:12px">&#10003;</div>
-          <div style="font-size:24px;font-weight:700;color:#1D9E75;margin-bottom:8px">Session Ended</div>
-          <div style="font-size:13px;color:#8896a5;margin-bottom:6px">Sensors disconnected. Data saved to cloud.</div>
-          <div style="font-size:13px;color:#8896a5;margin-bottom:28px">Logs saved to Downloads.</div>
+                  min-height:100vh;background:#0e1a28;font-family:-apple-system,sans-serif;
+                  padding:32px 24px;box-sizing:border-box">
+        <div style="text-align:center;max-width:420px;width:100%">
+          <div style="font-size:56px;margin-bottom:10px">&#10003;</div>
+          <div style="font-size:22px;font-weight:700;color:#1D9E75;margin-bottom:6px">Session Ended</div>
+          <div style="font-size:13px;color:#8896a5;margin-bottom:24px">
+            Sensors disconnected. Data saved to cloud. Logs saved to Downloads.
+          </div>
+
           <button onclick="location.reload()"
             style="width:100%;padding:16px;background:#1D9E75;color:#fff;border:none;
                    border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;
-                   margin-bottom:12px">
+                   margin-bottom:28px">
             &#8635; Start New Session
           </button>
-          <div style="font-size:11px;color:#4a6080;background:#1a2332;padding:10px 20px;
-                      border-radius:8px;display:inline-block">
-            Or close this tab manually in Bluefy
+
+          <div style="background:#1a2332;border-radius:12px;padding:18px 20px;text-align:left">
+            <div style="font-size:12px;font-weight:700;color:#fbbf24;margin-bottom:12px;text-align:center">
+              TO CLOSE THIS TAB IN BLUEFY
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px">
+              <div style="width:24px;height:24px;border-radius:50%;background:#2a3a4a;color:#1D9E75;
+                          font-weight:700;font-size:13px;display:flex;align-items:center;
+                          justify-content:center;flex-shrink:0">1</div>
+              <div style="font-size:13px;color:#c8d6e5;line-height:1.5">
+                Tap the <strong style="color:#fff">tab bar icon</strong> at the bottom of Bluefy
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px">
+              <div style="width:24px;height:24px;border-radius:50%;background:#2a3a4a;color:#1D9E75;
+                          font-weight:700;font-size:13px;display:flex;align-items:center;
+                          justify-content:center;flex-shrink:0">2</div>
+              <div style="font-size:13px;color:#c8d6e5;line-height:1.5">
+                Find this tab and swipe it <strong style="color:#fff">up or left</strong> to close
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px">
+              <div style="width:24px;height:24px;border-radius:50%;background:#2a3a4a;color:#1D9E75;
+                          font-weight:700;font-size:13px;display:flex;align-items:center;
+                          justify-content:center;flex-shrink:0">3</div>
+              <div style="font-size:13px;color:#c8d6e5;line-height:1.5">
+                Or press the iPad <strong style="color:#fff">Home button</strong> to return to the home screen
+              </div>
+            </div>
           </div>
         </div>
       </div>`;
@@ -3285,6 +3314,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.55-ipad','Improved Close App screen: window.close() still attempted, fallback now shows step-by-step Bluefy tab-close instructions since Safari/Bluefy block window.close on user-opened tabs'],
   ['2.1.54-ipad','Fixed Firebase Status in Settings not updating: sf-wc/sf-qc/sf-ec now refreshed every 200ms in updateDisp'],
   ['2.1.53-ipad','Updated startup overlay subtitle: fill job details first, then connect sensors'],
   ['2.1.52-ipad','Fixed oversized icon in topbar: constrained to 36x36px via CSS and SVG dimensions'],
@@ -3524,6 +3554,7 @@ window.addEventListener('DOMContentLoaded', () => {
     LOG('Firebase: pre-connected OK','ok');
   } catch(e){ LOG('Firebase pre-init: '+e.message,'err'); setCloud('off','Cloud: offline'); }
 });
+
 
 
 
