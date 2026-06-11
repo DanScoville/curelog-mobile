@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiPgogIDxyZWN0IHdpZHRoPSIxMDI0IiBoZWlnaHQ9IjEwMjQiIHJ4PSIyMjQiIGZpbGw9IiMwZTFhMjgiLz4KICA8Y2lyY2xlIGN4PSI1MTIiIGN5PSI1MTIiIHI9IjM2OCIgZmlsbD0iIzBmMjAzNSIvPgogIDxjaXJjbGUgY3g9IjUxMiIgY3k9IjUxMiIgcj0iMzY4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxRDlFNzUiIHN0cm9rZS13aWR0aD0iNDIiLz4KICA8Y2lyY2xlIGN4PSI1MTIiIGN5PSI1MTIiIHI9IjI1MiIgZmlsbD0iIzBhMTUyMCIvPgogIDxjaXJjbGUgY3g9IjUxMiIgY3k9IjUxMiIgcj0iMjUyIiBmaWxsPSJub25lIiBzdHJva2U9IiMxYTNhNWMiIHN0cm9rZS13aWR0aD0iMTgiLz4KICA8Y2xpcFBhdGggaWQ9ImMiPjxjaXJjbGUgY3g9IjUxMiIgY3k9IjUxMiIgcj0iMjM0Ii8+PC9jbGlwUGF0aD4KICA8ZyBjbGlwLXBhdGg9InVybCgjYykiPgogICAgPHBvbHlsaW5lIHBvaW50cz0iMjc4LDUxMiAzMzAsNTEyIDM2MiwzODQgNDAyLDY0MCA0MzQsNDU0IDQ2Niw1NzAgNDk4LDQxNiA1MzAsNTEyIDc0Niw1MTIiCiAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFEOUU3NSIgc3Ryb2tlLXdpZHRoPSIzOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPC9nPgogIDxyZWN0IHg9IjM3NiIgeT0iNzAwIiB3aWR0aD0iMjcyIiBoZWlnaHQ9Ijk2IiByeD0iMjQiIGZpbGw9IiMxRDlFNzUiLz4KICA8dGV4dCB4PSI1MTIiIHk9Ijc2OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ii1hcHBsZS1zeXN0ZW0sSGVsdmV0aWNhLHNhbnMtc2VyaWYiCiAgICBmb250LXNpemU9IjUyIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iNCI+QlRLPC90ZXh0Pgo8L3N2Zz4=">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiPgogIDxyZWN0IHdpZHRoPSIxMDI0IiBoZWlnaHQ9IjEwMjQiIHJ4PSIyMjQiIGZpbGw9IiMwZTFhMjgiLz4KICA8Y2lyY2xlIGN4PSI1MTIiIGN5PSI1MTIiIHI9IjM2OCIgZmlsbD0iIzBmMjAzNSIvPgogIDxjaXJjbGUgY3g9IjUxMiIgY3k9IjUxMiIgcj0iMzY4IiBmaWxsPSJub25lIiBzdHJva2U9IiMxRDlFNzUiIHN0cm9rZS13aWR0aD0iNDIiLz4KICA8Y2lyY2xlIGN4PSI1MTIiIGN5PSI1MTIiIHI9IjI1MiIgZmlsbD0iIzBhMTUyMCIvPgogIDxjaXJjbGUgY3g9IjUxMiIgY3k9IjUxMiIgcj0iMjUyIiBmaWxsPSJub25lIiBzdHJva2U9IiMxYTNhNWMiIHN0cm9rZS13aWR0aD0iMTgiLz4KICA8Y2xpcFBhdGggaWQ9ImMiPjxjaXJjbGUgY3g9IjUxMiIgY3k9IjUxMiIgcj0iMjM0Ii8+PC9jbGlwUGF0aD4KICA8ZyBjbGlwLXBhdGg9InVybCgjYykiPgogICAgPHBvbHlsaW5lIHBvaW50cz0iMjc4LDUxMiAzMzAsNTEyIDM2MiwzODQgNDAyLDY0MCA0MzQsNDU0IDQ2Niw1NzAgNDk4LDQxNiA1MzAsNTEyIDc0Niw1MTIiCiAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFEOUU3NSIgc3Ryb2tlLXdpZHRoPSIzOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPC9nPgogIDxyZWN0IHg9IjM3NiIgeT0iNzAwIiB3aWR0aD0iMjcyIiBoZWlnaHQ9Ijk2IiByeD0iMjQiIGZpbGw9IiMxRDlFNzUiLz4KICA8dGV4dCB4PSI1MTIiIHk9Ijc2OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ii1hcHBsZS1zeXN0ZW0sSGVsdmV0aWNhLHNhbnMtc2VyaWYiCiAgICBmb250LXNpemU9IjUyIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iNCI+QlRLPC90ZXh0Pgo8L3N2Zz4=">
+<meta name="theme-color" content="#0e1a28">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQ3VyZUxvZyBNb2JpbGUgVHJ1Y2siLCJzaG9ydF9uYW1lIjoiQ3VyZUxvZyIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMGUxYTI4IiwidGhlbWVfY29sb3IiOiIjMUQ5RTc1IiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIWnBaWGRDYjNnOUlqQWdNQ0F4TURJMElERXdNalFpUGdvZ0lEeHlaV04wSUhkcFpIUm9QU0l4TURJMElpQm9aV2xuYUhROUlqRXdNalFpSUhKNFBTSXlNalFpSUdacGJHdzlJaU13WlRGaE1qZ2lMejRLSUNBOFkybHlZMnhsSUdONFBTSTFNVElpSUdONVBTSTFNVElpSUhJOUlqTTJPQ0lnWm1sc2JEMGlJekJtTWpBek5TSXZQZ29nSUR4amFYSmpiR1VnWTNnOUlqVXhNaUlnWTNrOUlqVXhNaUlnY2owaU16WTRJaUJtYVd4c1BTSnViMjVsSWlCemRISnZhMlU5SWlNeFJEbEZOelVpSUhOMGNtOXJaUzEzYVdSMGFEMGlORElpTHo0S0lDQThZMmx5WTJ4bElHTjRQU0kxTVRJaUlHTjVQU0kxTVRJaUlISTlJakkxTWlJZ1ptbHNiRDBpSXpCaE1UVXlNQ0l2UGdvZ0lEeGphWEpqYkdVZ1kzZzlJalV4TWlJZ1kzazlJalV4TWlJZ2NqMGlNalV5SWlCbWFXeHNQU0p1YjI1bElpQnpkSEp2YTJVOUlpTXhZVE5oTldNaUlITjBjbTlyWlMxM2FXUjBhRDBpTVRnaUx6NEtJQ0E4WTJ4cGNGQmhkR2dnYVdROUltTWlQanhqYVhKamJHVWdZM2c5SWpVeE1pSWdZM2s5SWpVeE1pSWdjajBpTWpNMElpOCtQQzlqYkdsd1VHRjBhRDRLSUNBOFp5QmpiR2x3TFhCaGRHZzlJblZ5YkNnall5a2lQZ29nSUNBZ1BIQnZiSGxzYVc1bElIQnZhVzUwY3owaU1qYzRMRFV4TWlBek16QXNOVEV5SURNMk1pd3pPRFFnTkRBeUxEWTBNQ0EwTXpRc05EVTBJRFEyTml3MU56QWdORGs0TERReE5pQTFNekFzTlRFeUlEYzBOaXcxTVRJaUNpQWdJQ0FnSUdacGJHdzlJbTV2Ym1VaUlITjBjbTlyWlQwaUl6RkVPVVUzTlNJZ2MzUnliMnRsTFhkcFpIUm9QU0l6T0NJZ2MzUnliMnRsTFd4cGJtVmpZWEE5SW5KdmRXNWtJaUJ6ZEhKdmEyVXRiR2x1WldwdmFXNDlJbkp2ZFc1a0lpOCtDaUFnUEM5blBnb2dJRHh5WldOMElIZzlJak0zTmlJZ2VUMGlOekF3SWlCM2FXUjBhRDBpTWpjeUlpQm9aV2xuYUhROUlqazJJaUJ5ZUQwaU1qUWlJR1pwYkd3OUlpTXhSRGxGTnpVaUx6NEtJQ0E4ZEdWNGRDQjRQU0kxTVRJaUlIazlJamMyT0NJZ2RHVjRkQzFoYm1Ob2IzSTlJbTFwWkdSc1pTSWdabTl1ZEMxbVlXMXBiSGs5SWkxaGNIQnNaUzF6ZVhOMFpXMHNTR1ZzZG1WMGFXTmhMSE5oYm5NdGMyVnlhV1lpQ2lBZ0lDQm1iMjUwTFhOcGVtVTlJalV5SWlCbWIyNTBMWGRsYVdkb2REMGlOekF3SWlCbWFXeHNQU0lqWm1abVptWm1JaUJzWlhSMFpYSXRjM0JoWTJsdVp6MGlOQ0krUWxSTFBDOTBaWGgwUGdvOEwzTjJaejQ9Iiwic2l6ZXMiOiJhbnkiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0e1a28">
-<title>CureLog Mobile</title>
+<title>CureLog Android Mobile Truck App</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/3.0.1/chartjs-plugin-annotation.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -39,8 +42,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
   box-shadow:0 2px 12px rgba(0,0,0,.3);
 }
 .tb-logo{display:flex;align-items:center;gap:6px}
-.tb-logo-icon{width:28px;height:28px;background:var(--g);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px}
-.tb-logo-text{font-size:17px;font-weight:700;color:#fff;letter-spacing:-.3px}
+.tb-logo-icon{width:28px;height:28px;background:var(--g);border-radius:7px;display:flex;align-items:center;justify-content:center;padding:0;font-weight:700;color:#fff;letter-spacing:-.3px}
 .tb-logo-text span{color:var(--g)}
 .tb-badges{display:flex;align-items:center;gap:6px;margin-left:auto}
 #tb-truck-badge{font-size:10px;font-weight:700;background:rgba(255,255,255,.12);color:#fff;padding:3px 8px;border-radius:20px;display:none}
@@ -313,7 +315,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
   <!-- ── TOP BAR ── -->
   <div id="topbar">
     <div class="tb-logo">
-      <div class="tb-logo-icon">🕐</div>
+      <div class="tb-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="display:block"><circle cx="50" cy="50" r="44" fill="#0f2035"/><circle cx="50" cy="50" r="44" fill="none" stroke="#1D9E75" stroke-width="8"/><circle cx="50" cy="50" r="29" fill="#0a1520"/><circle cx="50" cy="50" r="29" fill="none" stroke="#1a3a5c" stroke-width="4"/><clipPath id="ic"><circle cx="50" cy="50" r="25"/></clipPath><g clip-path="url(#ic)"><polyline points="25,50 32,50 36,37 41,63 45,44 49,56 53,40 57,50 75,50" fill="none" stroke="#1D9E75" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div>
       <div class="tb-logo-text">Cure<span>Log</span></div>
     </div>
     <div class="tb-badges">
@@ -336,7 +338,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
         <div class="su-field">
           <label>Truck ID</label>
           <div class="su-inp-prefix">
-            <span class="su-prefix-lbl">TVK-</span>
+            <span class="su-prefix-lbl">BTK-</span>
             <input id="fi-truck" type="text" inputmode="numeric" maxlength="5" placeholder="00001" oninput="chkReady()">
           </div>
         </div>
@@ -420,7 +422,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
       <!-- Start Session Footer — fixed to screen bottom, shown only on Setup tab -->
       <div id="start-footer" style="display:block">
         <div class="su-hint" id="su-hint" style="margin-bottom:8px">Connect at least one sensor to continue</div>
-        <button class="btn-start" id="btn-start" disabled
+        <div style="background:#1a2332;border-radius:10px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px"><div style="font-size:18px;flex-shrink:0;color:#fbbf24">&#9888;</div><div><div style="font-size:11px;font-weight:700;color:#fbbf24;margin-bottom:3px">Keep app in foreground during cure</div><div style="font-size:11px;color:#8896a5;line-height:1.5">Switching apps or locking screen will disconnect BLE sensors on iOS. The app will auto-reconnect and resume logging, but a gap in data will occur. For best results keep this screen active for the full duration of the cure.</div></div></div>
+     <button class="btn-start" id="btn-start" disabled
           onclick="startSession()"
           ontouchstart="this.classList.add('tapping')"
           ontouchend="this.classList.remove('tapping');startSession()"
@@ -544,7 +547,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
         <div style="display:flex;align-items:center;justify-content:space-between">
           <div>
             <div style="font-size:14px;font-weight:700;color:var(--t1)" id="settings-ver-display">v—</div>
-            <div style="font-size:11px;color:var(--t3);margin-top:2px">CureLog Mobile Truck App</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:2px">CureLog Android Android Mobile Truck App</div>
           </div>
           <button onclick="openAbout()" style="padding:10px 18px;background:var(--g);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent;min-height:44px">ℹ About</button>
         </div>
@@ -781,6 +784,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
 <script>
 
+
 // ── MOBILE NAV ────────────────────────────────────────────────
 function goPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -839,7 +843,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.36-m';
+const VER = '2.1.41-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -903,14 +907,14 @@ const A = { // app state -- single object, no nested mutation issues
         psi:null, batt:null, name:'', tx:null, calOff:0,
         minP:null, maxP:null,
         lrEnabled:null, hpSupported:null, hpEnabled:null,
-        manualDisc:false, reConAttempts:0, reConHandle:null },
+        manualDisc:false, reConAttempts:0, reConHandle:null, lastReadMs:0 },
   s2: { con:false, dev:null, srv:null, chr:null,
         tempC:null, batt:null, name:'',
         minT:null, maxT:null,
         manualDisc:false,    // true when user clicked Disconnect -- suppresses auto-reconnect
         reConAttempts:0,     // backoff counter
         reConHandle:null,    // setTimeout handle for next reconnect
-        keepAliveH:null },
+        keepAliveH:null, lastReadMs:0 },
   set: { tUnit:'F', pUnit:'PSI', uclEn:true, ucl:40, lclEn:true, lcl:5, s1Color:'#1D9E75', s2Color:'#378ADD', s1Style:'solid', s2Style:'dashed', s1Width:2, s2Width:1.5,
          yPauto:true, yPmin:0,   yPmax:60,
          yTauto:true, yTmin:50,  yTmax:120,
@@ -1532,6 +1536,7 @@ async function doConnectS1(dev) {
 
 // Pressure notification handler -- fires whenever sensor pushes a new value
 function onS1PressNotify(event) {
+  A.s1.lastReadMs = Date.now();
   const dv = event.target.value;
   const now = Date.now();
   if (A.s1._lastNotify) {
@@ -1837,6 +1842,7 @@ function discS2() {
 }
 
 function onS2Temp(event) {
+  A.s2.lastReadMs = Date.now();
   const dv = event.target.value;
   const now = Date.now();
   if (A.s2._lastNotify) {
@@ -2145,6 +2151,31 @@ function fmtCollect(ms) {
   return String(h).padStart(2,'0')+':'+String(m%60).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
 }
 
+// ── DATA WATCHDOG ────────────────────────────────────────────────────
+let _wdH = null;
+const WD_SILENCE_MS = 20000;
+
+function startWatchdog() {
+  if (_wdH) return;
+  _wdH = setInterval(() => {
+    if (!A.sess || !A.sess.active) return;
+    const now = Date.now();
+    if (A.s1.con && A.s1.lastReadMs > 0 && (now - A.s1.lastReadMs) > WD_SILENCE_MS) {
+      LOG('S1: WATCHDOG -- no data for ' + Math.round((now - A.s1.lastReadMs)/1000) + 's -- forcing reconnect', 'err');
+      onS1Disc();
+    }
+    if (A.s2.con && A.s2.lastReadMs > 0 && (now - A.s2.lastReadMs) > WD_SILENCE_MS) {
+      LOG('S2: WATCHDOG -- no data for ' + Math.round((now - A.s2.lastReadMs)/1000) + 's -- forcing reconnect', 'err');
+      onS2Disc();
+    }
+  }, 15000);
+  LOG('Data watchdog active -- reconnects if sensor silent for 20s', 'info');
+}
+
+function stopWatchdog() {
+  if (_wdH) { clearInterval(_wdH); _wdH = null; }
+}
+
 function startDisp() {
   if (A.dispH) return;
   if (!sparkChart) {
@@ -2155,6 +2186,7 @@ function startDisp() {
   }
   // Session info updated via updateSessionInfoDisplays() in startSession()
   A.dispH = setInterval(updateDisp, 200);
+  startWatchdog();
   if (!A.diagH) A.diagH = setInterval(logDiagnostics, 30000);
 }
 
@@ -2470,7 +2502,7 @@ function startSession() {
   // Guard against double-fire (touchend + onclick both fire on mobile)
   if (A.sess.active) { LOG('startSession: already active, ignoring duplicate call', 'warn'); return; }
 
-  A.sess.truck     = 'TVK-' + $('fi-truck').value.trim();
+  A.sess.truck     = 'BTK-' + $('fi-truck').value.trim();
   A.sess.job       = $('fi-job').value.trim();
   A.sess.shot      = $('fi-shot').value.trim();
   A.sess.seg       = $('fi-seg').value.trim();
@@ -2503,7 +2535,7 @@ function startSession() {
 
 function devBypass() {
   A.dev = true; A.sess.active = true;
-  A.sess.truck = 'TVK-DEV01';
+  A.sess.truck = 'BTK-DEV01';
   A.sess.job   = $('fi-job').value.trim()  || 'DEV JOB';
   A.sess.shot  = $('fi-shot').value.trim() || 'DEV SHOT';
   A.sess.seg   = $('fi-seg').value.trim()  || '1';
@@ -2569,8 +2601,8 @@ function initFB() {
 // ── SHUTDOWN MODAL LOGIC ─────────────────────────────────────
 
 function sdFilename(logType) {
-  // Format: Truck App - <Log Type> - TVK-00001 - Job 05062026 - Shot 001 - Seg 003 - 2026-05-06
-  const t = A.sess.truck || 'TVK-???';
+  // Format: Truck App - <Log Type> - BTK-00001 - Job 05062026 - Shot 001 - Seg 003 - 2026-05-06
+  const t = A.sess.truck || 'BTK-???';
   const j = A.sess.job   || '???';
   const s = A.sess.shot  || '???';
   const g = A.sess.seg   || '???';
@@ -2582,6 +2614,7 @@ function sdFilename(logType) {
 }
 
 function shutdownApp() {
+  stopWatchdog();
   releaseWakeLock();
   const connEl   = $('su-clog');
   const actEl    = $('alog');
@@ -3257,6 +3290,11 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.41-m','Renamed to CureLog Android Mobile Truck App'],
+  ['2.1.40-m','BLE resilience improvements: (1) data watchdog detects 20s silence and forces reconnect; (2) visibility change triggers immediate reconnect + backoff reset when app foregrounded; (3) lastReadMs tracked per sensor; (4) field warning in startup overlay'],
+  ['2.1.39-m','Replaced clock emoji in overlay header and topbar with inline SVG pipe+waveform icon matching the app favicon'],
+  ['2.1.38-m','Added app icon: pipe cross-section with waveform on dark navy; embedded as SVG favicon, Apple touch icon, and PWA manifest for home screen install on iOS/Android/desktop'],
+  ['2.1.37-m','Changed truck ID prefix from TVK to BTK (Boiler Truck) across all labels, placeholders, and log messages'],
   ['2.1.36-m','Removed FIFO limits on connection log (was 120) and activity log (was 500) -- text entries are lightweight; readings table display cap of 2000 rows kept as that limits DOM size not data'],
   ['2.1.35-m','Fixed Wake Lock not working: non-ASCII chars (checkmark, em-dash) in Wake Lock LOG strings caused silent JS parse failure on some Android Chrome versions; all JS string literals now ASCII-only'],
   ['2.1.34-m','REAL root cause of truncated changelog: HTML tags in descriptions (v2.1.24 had &lt;style&gt;, v2.1.2 had &lt;/body&gt;) were parsed as actual HTML when set via innerHTML, consuming all remaining rows. Fixed by HTML-escaping all descriptions.'],
@@ -3300,11 +3338,11 @@ const CHANGELOG = [
   ['2.0.6','Removed S1/S2 sensor assignment dropdown row from monitor panel'],
   ['2.0.5','Tube parameters moved inline next to Seg number in timer bar header (removed flex:1 gap that pushed tube info to right edge)'],
   ['2.0.4','Fixed chart session info not displaying -- moved population to startSession() with 100ms delay to ensure DOM is ready'],
-  ['2.0.3','Session data (TVK . Job . Shot . Seg . tube specs) added above chart legend -- visible in screenshots'],
+  ['2.0.3','Session data (BTK . Job . Shot . Seg . tube specs) added above chart legend -- visible in screenshots'],
   ['2.0.2','Min/Max stat values increased from 15px to 20px; stat labels 9px -&gt; 10px'],
   ['2.0.1','Tube parameters font matched to same size/color as session path text in timer bar'],
-  ['2.0.0','Session info header row added to Active Collection timer bar showing TVK . Job . Shot . Seg . tube specs'],
-  ['1.9.9','Structured file naming: App - LogType - TVK# - Job - Shot - Seg - Date.ext for all exports'],
+  ['2.0.0','Session info header row added to Active Collection timer bar showing BTK . Job . Shot . Seg . tube specs'],
+  ['1.9.9','Structured file naming: App - LogType - BTK# - Job - Shot - Seg - Date.ext for all exports'],
   ['1.9.8','Version string in all log headers now includes app name: (CureLog Truck App)'],
   ['1.9.7','Session info strip in readings log upgraded to full session header with tube specs'],
   ['1.9.6','Tube spec strip added above readings table in Readings Log'],
@@ -3432,7 +3470,23 @@ function releaseWakeLock() {
   if (_wakeLock) { _wakeLock.release().catch(()=>{}); _wakeLock = null; }
 }
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && A.sess && A.sess.active && !_wakeLock) acquireWakeLock();
+  if (!document.hidden) {
+    if (A.sess && A.sess.active && !_wakeLock) acquireWakeLock();
+    if (A.sess && A.sess.active) {
+      setTimeout(() => {
+        if (!A.s1.con && !A.s1.manualDisc && A.s1.dev) {
+          LOG('S1: foregrounded -- scheduling reconnect', 'warn');
+          A.s1.reConAttempts = 0;
+          scheduleS1Reconnect();
+        }
+        if (!A.s2.con && !A.s2.manualDisc && A.s2.dev) {
+          LOG('S2: foregrounded -- scheduling reconnect', 'warn');
+          A.s2.reConAttempts = 0;
+          scheduleS2Reconnect();
+        }
+      }, 800);
+    }
+  }
 });
 
 // ── BOOT ─────────────────────────────────────────────────────
@@ -3441,13 +3495,13 @@ window.addEventListener('DOMContentLoaded', () => {
   loadSettings(); loadTruck(); loadFilters();
   updateLegend();
   ['sf-ver','su-ver','tb-ver'].forEach(id => { const e = $(id); if(e) e.textContent = 'v' + VER; });
-  LOG('CureLog Phase 1 Mobile Truck App -- v' + VER, 'ok');
+  LOG('CureLog Android Android Mobile Truck App -- v' + VER, 'ok');
   // Sync Start Session button state on load
   setTimeout(chkReady, 300);
   setTimeout(chkReady, 1000);
   setTimeout(chkReady, 2500);
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) setTimeout(chkReady, 200);
+    if (!document.hidden) { setTimeout(chkReady, 200); }
   });
   // Warn if on iOS running from local file
   const _ua = navigator.userAgent;
@@ -3485,30 +3539,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-</script>
 
-<!-- About Modal -->
-<div id="about-overlay" onclick="if(event.target===this)closeAbout()">
-  <div id="about-card">
-    <div id="about-hdr-bar">
-      <h2>CureLog</h2>
-      <button id="about-close-btn" onclick="closeAbout()">X</button>
-    </div>
-    <div id="about-cur-block">
-      <div id="about-cur-lbl">Current Version</div>
-      <div id="about-cur-ver">--</div>
-      <div id="about-cur-desc">--</div>
-    </div>
-    <div id="about-search-bar">
-      <input id="about-search-inp" type="text"
-        placeholder="Search versions or changes..."
-        oninput="filterAbout(this.value)">
-    </div>
-    <div id="about-scroll">
-      <table>
-        <thead><tr><th style="width:90px">Version</th><th>Changes</th></tr></thead>
-        <tbody id="about-tbody"></tbody>
-      </table>
-    </div>
-  </div>
-</div>>
+</script>
+</body>
+</html>
