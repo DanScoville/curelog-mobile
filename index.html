@@ -422,12 +422,12 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
       <!-- Start Session Footer — fixed to screen bottom, shown only on Setup tab -->
       <div id="start-footer" style="display:block">
         <div class="su-hint" id="su-hint" style="margin-bottom:8px">Connect at least one sensor to continue</div>
-        <div style="background:#1a2332;border-radius:10px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px"><div style="font-size:18px;flex-shrink:0;color:#fbbf24">&#9888;</div><div><div style="font-size:11px;font-weight:700;color:#fbbf24;margin-bottom:3px">Keep app in foreground during cure</div><div style="font-size:11px;color:#8896a5;line-height:1.5">Switching apps or locking screen will disconnect BLE sensors on iOS. The app will auto-reconnect and resume logging, but a gap in data will occur. For best results keep this screen active for the full duration of the cure.</div></div></div>
-     <button class="btn-start" id="btn-start" disabled
+        <button class="btn-start" id="btn-start" disabled
           onclick="startSession()"
           ontouchstart="this.classList.add('tapping')"
           ontouchend="this.classList.remove('tapping');startSession()"
           ontouchcancel="this.classList.remove('tapping')">▶ Start Session</button>
+     <div style="background:#1a2332;border-radius:10px;padding:10px 14px;margin-top:10px;display:flex;align-items:flex-start;gap:10px"><div style="font-size:16px;flex-shrink:0;color:#fbbf24">&#9888;</div><div><div style="font-size:11px;font-weight:700;color:#fbbf24;margin-bottom:2px">Keep app in foreground during cure</div><div style="font-size:11px;color:#8896a5;line-height:1.5">Switching apps or locking screen disconnects sensors. App will auto-reconnect but a data gap may occur.</div></div></div>
       </div>
     </div>
 
@@ -786,6 +786,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
 
 
+
 // ── MOBILE NAV ────────────────────────────────────────────────
 function goPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -844,7 +845,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.42-m';
+const VER = '2.1.43-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -2239,8 +2240,9 @@ function updateDisp() {
     const disp = s.tUnit === 'F' ? cToF(A.s2.tempC) : A.s2.tempC;
     const unit = 'deg' + s.tUnit;
     setText('sv2', disp.toFixed(1)); $('su2').textContent = unit;
-    $('smn2').textContent = A.s2.minT !== null ? A.s2.minT.toFixed(1) + unit : '--';
-    $('smx2').textContent = A.s2.maxT !== null ? A.s2.maxT.toFixed(1) + unit : '--';
+    const _u2 = '°' + s.tUnit; // ° symbol saves space vs 'deg'
+    $('smn2').textContent = A.s2.minT !== null ? A.s2.minT.toFixed(1) + _u2 : '--';
+    $('smx2').textContent = A.s2.maxT !== null ? A.s2.maxT.toFixed(1) + _u2 : '--';
     $('sb2').classList.remove('dim');
   }
   if (Date.now() - _tblTs > 1000) { _tblTs = Date.now(); rebuildTbl(); }
@@ -3278,6 +3280,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.43-m','Moved foreground warning to below Start Session button (no longer blocks S2 sensor status); shortened min/max temp unit from degF to degF symbol to save tile space'],
   ['2.1.42-m','Fixed log headers: CureLog Phase 1 -> CureLog Android Mobile Truck App (6x); Removed contradictory cap-5000 comment; Removed sessStartMs field; uses A.sessStart (3x); Removed _toggleSettingsOld (dead function)'],
   ['2.1.41-m','Renamed to CureLog Android Mobile Truck App'],
   ['2.1.40-m','BLE resilience improvements: (1) data watchdog detects 20s silence and forces reconnect; (2) visibility change triggers immediate reconnect + backoff reset when app foregrounded; (3) lastReadMs tracked per sensor; (4) field warning in startup overlay'],
@@ -3527,6 +3530,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setCloud('off', 'Cloud: offline');
   }
 });
+
 
 
 
