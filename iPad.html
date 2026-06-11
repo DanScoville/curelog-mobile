@@ -37,7 +37,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
   display:flex;align-items:center;padding:0 16px;gap:10px;
   z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.3);
 }
-.tb-icon{padding:0;font-weight:700;color:#fff}
+.tb-icon{width:36px;height:36px;flex-shrink:0;padding:0;font-weight:700;color:#fff}
 .tb-name span{color:var(--g)}
 .tb-bdg{font-size:11px;font-weight:700;color:rgba(255,255,255,.8);background:rgba(255,255,255,.1);border-radius:5px;padding:2px 8px;display:none}
 .tb-bdg.truck{color:var(--g);background:var(--gl)}
@@ -311,7 +311,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
 <!-- ── TOPBAR ── -->
 <div id="topbar">
-  <div class="tb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="display:block"><circle cx="50" cy="50" r="44" fill="#0f2035"/><circle cx="50" cy="50" r="44" fill="none" stroke="#1D9E75" stroke-width="8"/><circle cx="50" cy="50" r="29" fill="#0a1520"/><circle cx="50" cy="50" r="29" fill="none" stroke="#1a3a5c" stroke-width="4"/><clipPath id="ic"><circle cx="50" cy="50" r="25"/></clipPath><g clip-path="url(#ic)"><polyline points="25,50 32,50 36,37 41,63 45,44 49,56 53,40 57,50 75,50" fill="none" stroke="#1D9E75" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div>
+  <div class="tb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="36" height="36" style="display:block"><circle cx="50" cy="50" r="44" fill="#0f2035"/><circle cx="50" cy="50" r="44" fill="none" stroke="#1D9E75" stroke-width="8"/><circle cx="50" cy="50" r="29" fill="#0a1520"/><circle cx="50" cy="50" r="29" fill="none" stroke="#1a3a5c" stroke-width="4"/><clipPath id="ic"><circle cx="50" cy="50" r="25"/></clipPath><g clip-path="url(#ic)"><polyline points="25,50 32,50 36,37 41,63 45,44 49,56 53,40 57,50 75,50" fill="none" stroke="#1D9E75" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div>
   <span class="tb-name">Cure<span>Log</span></span>
   <span class="tb-bdg truck" id="tb-truck">&mdash;</span>
   <span class="tb-bdg" id="tb-job">Job: &mdash;</span>
@@ -602,10 +602,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 <div id="su-overlay">
  <div id="su-card">
   <div class="su-hdr">
-   <div class="su-hdr-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="display:block"><circle cx="50" cy="50" r="44" fill="#0f2035"/><circle cx="50" cy="50" r="44" fill="none" stroke="#1D9E75" stroke-width="8"/><circle cx="50" cy="50" r="29" fill="#0a1520"/><circle cx="50" cy="50" r="29" fill="none" stroke="#1a3a5c" stroke-width="4"/><clipPath id="ic"><circle cx="50" cy="50" r="25"/></clipPath><g clip-path="url(#ic)"><polyline points="25,50 32,50 36,37 41,63 45,44 49,56 53,40 57,50 75,50" fill="none" stroke="#1D9E75" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div>
+   <div class="su-hdr-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="36" height="36" style="display:block"><circle cx="50" cy="50" r="44" fill="#0f2035"/><circle cx="50" cy="50" r="44" fill="none" stroke="#1D9E75" stroke-width="8"/><circle cx="50" cy="50" r="29" fill="#0a1520"/><circle cx="50" cy="50" r="29" fill="none" stroke="#1a3a5c" stroke-width="4"/><clipPath id="ic"><circle cx="50" cy="50" r="25"/></clipPath><g clip-path="url(#ic)"><polyline points="25,50 32,50 36,37 41,63 45,44 49,56 53,40 57,50 75,50" fill="none" stroke="#1D9E75" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div>
    <div>
     <h1>Start New Shot</h1>
-    <p>Connect sensors, fill job details, then press Start</p>
+    <p>Fill job details, connect sensors, then press Start</p>
    </div>
    <span id="su-ver" style="font-family:monospace;font-size:11px;color:var(--g);background:rgba(29,158,117,.15);border:1px solid rgba(29,158,117,.3);border-radius:4px;padding:2px 8px;margin-left:auto;align-self:flex-start">v--</span>
   </div>
@@ -772,18 +772,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
   <span id="su-log-expand-btn"></span>
   <span id="yp-range-wrap"></span>
   <span id="yt-range-wrap"></span>
-  <span id="si-sn1"></span>
-  <span id="si-sb1"></span>
-  <span id="si-ssc"></span>
-  <span id="si-stx"></span>
-  <span id="si-sn2"></span>
-  <span id="si-sb2"></span>
-  <span id="si-sp2"></span>
-  <span id="si-per2"></span>
-  <span id="sv1"></span>
-  <span id="sv2"></span>
 </div>
 <script>
+
+
 
 
 
@@ -830,7 +822,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.50-ipad';
+const VER = '2.1.54-ipad';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -888,7 +880,7 @@ const BAT2C = 'a7642a19-b986-4693-bc60-3028002646f2';
 
 // ── STATE ─────────────────────────────────────────────────────
 const A = { // app state -- single object, no nested mutation issues
-  sess: { truck:'',job:'',shot:'',seg:'',tubeDia:'',tubeThick:'',tubeLen:'',active:false }, sessStartMs: null,
+  sess: { truck:'',job:'',shot:'',seg:'',tubeDia:'',tubeThick:'',tubeLen:'',active:false },
   dev:  false,
   s1: { con:false, dev:null, srv:null, svc:null, chr:null, scale:1.0, useNotify:false,
         psi:null, batt:null, name:'', tx:null, calOff:0,
@@ -987,19 +979,7 @@ function switchTab(name) {
   if (name === 'setup') setTimeout(chkReady, 100);
 }
 function toggleSettings() { goPage('settings'); }
-function _toggleSettingsOld() {
-  // Switch to monitor tab first, then open/toggle the settings collapsible
-  switchTab('monitor');
-  const isOpen = A.collOpen['settings'];
-  if (!isOpen) {
-    togColl('settings');
-    // Scroll to top of monitor panel so settings is visible
-    const panel = $('panel-monitor');
-    if (panel) panel.scrollTop = 0;
-  } else {
-    togColl('settings');
-  }
-}
+
 
 function togColl(name) {
   A.collOpen[name] = !A.collOpen[name];
@@ -1972,9 +1952,8 @@ function pushReading({ psi, tempC, src, tsMs }) {
   // Firebase upload queue -- deduplicated per bucket key
   if (A.sess.active && !A.rdMap[k]._qu) { A.rdMap[k]._qu = true; A.upQ.push(k); }
 
-  // Cap readings map at 5000 entries to prevent memory growth
+  // rdMap holds all readings for the session -- no pruning.
   const keys = Object.keys(A.rdMap);
-  // rdMap kept in full -- no pruning. Firebase is source of truth.
 
   // rdg-cnt = unique 1-second buckets in rdMap (S1+S2 merged, one row per second)
   const totalRdg = Object.keys(A.rdMap).length;
@@ -2229,19 +2208,20 @@ function updateDisp() {
   const s = A.set;
   if (A.s1.con && A.s1.psi !== null) {
     const v = psiConv(A.s1.psi, s.pUnit);
-    setText('sv1', v); $('su1').textContent = s.pUnit;
-    $('smn1').textContent = A.s1.minP !== null ? psiConv(A.s1.minP, s.pUnit) : '--';
-    $('smx1').textContent = A.s1.maxP !== null ? psiConv(A.s1.maxP, s.pUnit) : '--';
-    $('sb1').classList.remove('dim');
-    $('sb1').classList.toggle('ucl', s.uclEn && A.s1.psi > s.ucl);
+    const _lp = $('live-psi');   if (_lp) _lp.textContent = v;
+    const _lu1 = $('su1');       if (_lu1) _lu1.textContent = s.pUnit;
+    const _ln1 = $('live-pmin'); if (_ln1) _ln1.textContent = A.s1.minP !== null ? psiConv(A.s1.minP, s.pUnit) : '--';
+    const _lx1 = $('live-pmax'); if (_lx1) _lx1.textContent = A.s1.maxP !== null ? psiConv(A.s1.maxP, s.pUnit) : '--';
+    const _t1  = $('tile-s1');   if (_t1) { _t1.classList.remove('dim'); _t1.classList.toggle('ucl', s.uclEn && A.s1.psi > s.ucl); }
   }
   if (A.s2.con && A.s2.tempC !== null) {
     const disp = s.tUnit === 'F' ? cToF(A.s2.tempC) : A.s2.tempC;
     const unit = 'deg' + s.tUnit;
-    setText('sv2', disp.toFixed(1)); $('su2').textContent = unit;
-    $('smn2').textContent = A.s2.minT !== null ? A.s2.minT.toFixed(1) + unit : '--';
-    $('smx2').textContent = A.s2.maxT !== null ? A.s2.maxT.toFixed(1) + unit : '--';
-    $('sb2').classList.remove('dim');
+    const _lt  = $('live-temp');      if (_lt) _lt.textContent = disp.toFixed(1);
+    const _ltu = $('live-temp-unit'); if (_ltu) _ltu.textContent = unit;
+    const _ln2 = $('live-tmin');      if (_ln2) _ln2.textContent = A.s2.minT !== null ? A.s2.minT.toFixed(1) + unit : '--';
+    const _lx2 = $('live-tmax');      if (_lx2) _lx2.textContent = A.s2.maxT !== null ? A.s2.maxT.toFixed(1) + unit : '--';
+    const _t2  = $('tile-s2');        if (_t2) _t2.classList.remove('dim');
   }
   if (Date.now() - _tblTs > 1000) { _tblTs = Date.now(); rebuildTbl(); }
   // Update collection timer
@@ -2269,6 +2249,11 @@ function updateDisp() {
   }
 
   // Session info set once by updateSessionInfoDisplays() in startSession()
+
+  // Update Firebase status counters in Settings panel
+  const _wc = $('sf-wc'); if (_wc) _wc.textContent = A.fbWrites;
+  const _qc = $('sf-qc'); if (_qc) _qc.textContent = A.upQ.length;
+  const _ec = $('sf-ec'); if (_ec) _ec.textContent = A.fbErrors;
 }
 function setText(id, v) {
   const el = $(id);
@@ -2321,7 +2306,7 @@ function exportLog(e) {
   // Header
   const now  = new Date();
   lines.push('===============================================');
-  lines.push('  CureLog Phase 1 -- Activity Log');
+  lines.push('  CureLog iPad Truck App -- Activity Log');
   lines.push('  Version: v' + VER + '  (CureLog Truck App)');
   lines.push('  Exported: ' + now.toLocaleString());
   lines.push('');
@@ -2350,7 +2335,7 @@ function doCSV() {
   const s = A.set;
   const rows = Object.values(A.rdMap).sort((a,b) => a.tsMs - b.tsMs);
   const meta = [
-    '# CureLog Phase 1 -- Readings Log',
+    '# CureLog iPad Truck App -- Readings Log',
     '# Version: v' + VER + '  (CureLog Truck App)',
     '# Truck: '     + (A.sess.truck     || '--'),
     '# Job: '       + (A.sess.job       || '--'),
@@ -2573,12 +2558,12 @@ function initFB() {
     LOG('Firebase path: ' + A.fbPath, 'info');
     $('sf-fb').textContent = 'curelog-phase1-default-rtdb.firebaseio.com';
     // Write session start timestamp so dashboard can measure duration correctly
-    A.sessStartMs = Date.now();
+    A.sessStart = Date.now();
     // Use REST API for _session write -- works from content:// origin on Android
     fbSet(A.fbPath + '/_session', {
-      startMs: A.sessStartMs,
+      startMs: A.sessStart,
       truck: A.sess.truck, job: A.sess.job, shot: A.sess.shot, seg: A.sess.seg,
-      startIso: new Date(A.sessStartMs).toISOString(),
+      startIso: new Date(A.sessStart).toISOString(),
       tubeDia:   A.sess.tubeDia   || null,
       tubeThick: A.sess.tubeThick || null,
       tubeLen:   A.sess.tubeLen   || null
@@ -2687,7 +2672,7 @@ async function sdProceed() {
     if (el && el.children.length > 0) {
       const lines = [
         '===============================================',
-        '  CureLog Phase 1 -- Connection Log',
+        '  CureLog iPad Truck App -- Connection Log',
         '  Version: v' + VER + '  (CureLog Truck App)',
         '  Exported: ' + now.toLocaleString(),
         ''
@@ -2714,7 +2699,7 @@ async function sdProceed() {
     if (el && el.children.length > 0) {
       const lines = [
         '===============================================',
-        '  CureLog Phase 1 -- Activity Log',
+        '  CureLog iPad Truck App -- Activity Log',
         '  Version: v' + VER + '  (CureLog Truck App)',
         '  Exported: ' + now.toLocaleString(),
         ''
@@ -2741,7 +2726,7 @@ async function sdProceed() {
     const rows = Object.values(A.rdMap).sort((a,b) => a.tsMs - b.tsMs);
     if (rows.length > 0) {
       const sdMeta = [
-        '# CureLog Phase 1 -- Readings Log',
+        '# CureLog iPad Truck App -- Readings Log',
         '# Version: v' + VER + '  (CureLog Truck App)',
         '# Truck: '      + (A.sess.truck     || '--'),
         '# Job: '        + (A.sess.job       || '--'),
@@ -2939,7 +2924,7 @@ function downloadConnLog() {
   const now = new Date();
   const lines = [
     '===============================================',
-    '  CureLog Phase 1 -- Connection Log',
+    '  CureLog iPad Truck App -- Connection Log',
     '  Version: v' + VER + '  (CureLog Truck App)',
     '  Downloaded: ' + now.toLocaleString(),
     '===============================================',
@@ -3300,6 +3285,10 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.54-ipad','Fixed Firebase Status in Settings not updating: sf-wc/sf-qc/sf-ec now refreshed every 200ms in updateDisp'],
+  ['2.1.53-ipad','Updated startup overlay subtitle: fill job details first, then connect sensors'],
+  ['2.1.52-ipad','Fixed oversized icon in topbar: constrained to 36x36px via CSS and SVG dimensions'],
+  ['2.1.51-ipad','Fixed log headers: CureLog Phase 1 -> CureLog iPad Truck App (6x); Removed contradictory cap-5000 comment; Removed sessStartMs field; uses A.sessStart (3x); Removed _toggleSettingsOld (dead function); FIXED display bug: updateDisp now targets live-psi/live-temp tile IDs; Removed 10 zero-reference stub elements'],
   ['2.1.50-ipad','BLE resilience: data watchdog (20s silence threshold), foreground reconnect via visibilitychange, lastReadMs tracking per sensor, field warning in startup overlay'],
   ['2.1.49-ipad','Replaced clock emoji in overlay header and topbar with inline SVG pipe+waveform icon matching the app favicon'],
   ['2.1.48-ipad','Added app icon: pipe cross-section with waveform on dark navy; embedded as SVG favicon, Apple touch icon, and PWA manifest for home screen install on iOS/Android/desktop'],
@@ -3535,6 +3524,8 @@ window.addEventListener('DOMContentLoaded', () => {
     LOG('Firebase: pre-connected OK','ok');
   } catch(e){ LOG('Firebase pre-init: '+e.message,'err'); setCloud('off','Cloud: offline'); }
 });
+
+
 
 
 
