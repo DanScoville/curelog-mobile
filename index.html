@@ -315,7 +315,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
   <!-- ── TOP BAR ── -->
   <div id="topbar">
-    <div style="display:flex;align-items:center;gap:12px;flex-shrink:0"><div style="width:44px;height:44px;flex-shrink:0;border-radius:11px;background:#1a2e44;padding:4px;box-sizing:border-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="display:block"><circle cx="50" cy="50" r="44" fill="#0f2035"/><circle cx="50" cy="50" r="44" fill="none" stroke="#1D9E75" stroke-width="8"/><circle cx="50" cy="50" r="29" fill="#0a1520"/><circle cx="50" cy="50" r="29" fill="none" stroke="#1a3a5c" stroke-width="4"/><clipPath id="ic"><circle cx="50" cy="50" r="25"/></clipPath><g clip-path="url(#ic)"><polyline points="25,50 32,50 36,37 41,63 45,44 49,56 53,40 57,50 75,50" fill="none" stroke="#1D9E75" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div><div style="display:flex;flex-direction:column;justify-content:center;line-height:1.2"><span style="font-size:20px;font-weight:700;color:#ffffff;letter-spacing:-.3px">CureLog</span></div></div>
+    <div style="display:flex;align-items:center;gap:12px;flex-shrink:0"><div style="width:44px;height:44px;flex-shrink:0;border-radius:11px;background:#1a2e44;padding:4px;box-sizing:border-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="display:block"><circle cx="50" cy="50" r="44" fill="#0f2035"/><circle cx="50" cy="50" r="44" fill="none" stroke="#1D9E75" stroke-width="8"/><circle cx="50" cy="50" r="29" fill="#0a1520"/><circle cx="50" cy="50" r="29" fill="none" stroke="#1a3a5c" stroke-width="4"/><clipPath id="ic"><circle cx="50" cy="50" r="25"/></clipPath><g clip-path="url(#ic)"><polyline points="25,50 32,50 36,37 41,63 45,44 49,56 53,40 57,50 75,50" fill="none" stroke="#1D9E75" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div><div style="display:flex;flex-direction:column;justify-content:center;line-height:1.2"><span style="font-size:20px;font-weight:700;color:#ffffff;letter-spacing:-.3px">CureLog</span><span style="font-size:11px;font-weight:400;color:#6ab4d4;letter-spacing:.1px">Azuria Water Solutions</span></div></div>
     <div class="tb-badges">
       <span id="tb-truck-badge"></span>
       <span id="tb-job-badge"></span>
@@ -814,6 +814,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
 
 
+
 // ── MOBILE NAV ────────────────────────────────────────────────
 function goPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -872,7 +873,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.56-m';
+const VER = '2.1.57-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3307,6 +3308,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.57-m','Restored Azuria Water Solutions subtitle as stacked second line under CureLog in topbar'],
   ['2.1.56-m','Removed Azuria subtitle and About button from topbar to make room for End Session button on narrow phone screens'],
   ['2.1.55-m','Removed Truck App pill from topbar (too crowded on phone screen); fixed duplicate Android Android in app name'],
   ['2.1.54-m','Restored Truck App pill to original sibling position (after logo block)'],
@@ -3570,6 +3572,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setCloud('off', 'Cloud: offline');
   }
 });
+
 
 
 
