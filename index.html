@@ -322,7 +322,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
       <div id="tb-cloud"><div class="cdot off" id="cdot"></div><span id="clbl">Offline</span></div>
       <span class="tb-ver" id="tb-ver">v0</span>
     </div>
-    <button id="tb-end-btn" onclick="shutdownApp()">⏹ End Session</button>
+    <button id="tb-end-btn" onclick="shutdownApp()">⏹ End</button>
   </div>
 
   <!-- ── PAGES ── -->
@@ -815,6 +815,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
 
 
+
 // ── MOBILE NAV ────────────────────────────────────────────────
 function goPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -873,7 +874,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.57-m';
+const VER = '2.1.58-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3308,6 +3309,7 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.58-m','Shortened End Session button to End to fit topbar on narrow phone screens'],
   ['2.1.57-m','Restored Azuria Water Solutions subtitle as stacked second line under CureLog in topbar'],
   ['2.1.56-m','Removed Azuria subtitle and About button from topbar to make room for End Session button on narrow phone screens'],
   ['2.1.55-m','Removed Truck App pill from topbar (too crowded on phone screen); fixed duplicate Android Android in app name'],
@@ -3572,6 +3574,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setCloud('off', 'Cloud: offline');
   }
 });
+
 
 
 
