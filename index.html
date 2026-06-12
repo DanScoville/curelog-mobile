@@ -315,7 +315,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
   <!-- ── TOP BAR ── -->
   <div id="topbar">
-    <div style="display:flex;align-items:center;gap:12px;flex-shrink:0"><div style="width:44px;height:44px;flex-shrink:0;border-radius:11px;background:#1a2e44;padding:4px;box-sizing:border-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="display:block"><circle cx="50" cy="50" r="44" fill="#0f2035"/><circle cx="50" cy="50" r="44" fill="none" stroke="#1D9E75" stroke-width="8"/><circle cx="50" cy="50" r="29" fill="#0a1520"/><circle cx="50" cy="50" r="29" fill="none" stroke="#1a3a5c" stroke-width="4"/><clipPath id="ic"><circle cx="50" cy="50" r="25"/></clipPath><g clip-path="url(#ic)"><polyline points="25,50 32,50 36,37 41,63 45,44 49,56 53,40 57,50 75,50" fill="none" stroke="#1D9E75" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div><div style="display:flex;flex-direction:column;justify-content:center;line-height:1.2"><span style="font-size:20px;font-weight:700;color:#ffffff;letter-spacing:-.3px">CureLog</span><span style="display:inline-flex;align-items:center;gap:4px;border:1px solid rgba(29,158,117,.5);border-radius:6px;padding:2px 8px;margin-left:8px;vertical-align:middle"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span style="font-size:10px;font-weight:600;color:#1D9E75;letter-spacing:.3px">Truck App</span></span><span style="font-size:11px;font-weight:400;color:#6ab4d4;letter-spacing:.1px">Azuria Water Solutions</span></div></div>
+    <div style="display:flex;align-items:center;gap:12px;flex-shrink:0"><div style="width:44px;height:44px;flex-shrink:0;border-radius:11px;background:#1a2e44;padding:4px;box-sizing:border-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="display:block"><circle cx="50" cy="50" r="44" fill="#0f2035"/><circle cx="50" cy="50" r="44" fill="none" stroke="#1D9E75" stroke-width="8"/><circle cx="50" cy="50" r="29" fill="#0a1520"/><circle cx="50" cy="50" r="29" fill="none" stroke="#1a3a5c" stroke-width="4"/><clipPath id="ic"><circle cx="50" cy="50" r="25"/></clipPath><g clip-path="url(#ic)"><polyline points="25,50 32,50 36,37 41,63 45,44 49,56 53,40 57,50 75,50" fill="none" stroke="#1D9E75" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div><div style="display:flex;flex-direction:column;justify-content:center;line-height:1.2"><span style="font-size:20px;font-weight:700;color:#ffffff;letter-spacing:-.3px">CureLog</span><span style="font-size:11px;font-weight:400;color:#6ab4d4;letter-spacing:.1px">Azuria Water Solutions</span></div></div>
     <div class="tb-badges">
       <span id="tb-truck-badge"></span>
       <span id="tb-job-badge"></span>
@@ -544,7 +544,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
         <div style="display:flex;align-items:center;justify-content:space-between">
           <div>
             <div style="font-size:14px;font-weight:700;color:var(--t1)" id="settings-ver-display">v—</div>
-            <div style="font-size:11px;color:var(--t3);margin-top:2px">CureLog Android Android Mobile Truck App</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:2px">CureLog Android Mobile Truck App</div>
           </div>
           <button onclick="openAbout()" style="padding:10px 18px;background:var(--g);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent;min-height:44px">ℹ About</button>
         </div>
@@ -813,6 +813,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
 
 
 
+
 // ── MOBILE NAV ────────────────────────────────────────────────
 function goPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -871,7 +872,7 @@ function toggleConnLog() {
 
 
 'use strict';
-const VER = '2.1.53-m';
+const VER = '2.1.55-m';
 
 // ── FIREBASE ─────────────────────────────────────────────────
 const FB_CFG = {
@@ -3306,6 +3307,8 @@ function updateSessionInfoDisplays() {
 
 
 const CHANGELOG = [
+  ['2.1.55-m','Removed Truck App pill from topbar (too crowded on phone screen); fixed duplicate Android Android in app name'],
+  ['2.1.54-m','Restored Truck App pill to original sibling position (after logo block)'],
   ['2.1.53-m','Moved Truck App pill inline next to CureLog title (same line, right of text)'],
   ['2.1.52-m','Added Truck App pill tag next to topbar logo'],
   ['2.1.51-m','Standardized logo across all apps: 44px icon + bold CureLog + Azuria Water Solutions subtitle, matching brand reference image'],
@@ -3566,6 +3569,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setCloud('off', 'Cloud: offline');
   }
 });
+
 
 
 
